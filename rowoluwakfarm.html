@@ -6,44 +6,34 @@
   <title>Rowo Luwak Farm</title>
   <link rel="icon" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTKsbS7JvrajCS5CnwpvvMH0qiVmRlaXhDvXuLeBa60_9fBE0Uu3A_HoH5DF0K_4fO3dgaromwXhWDabPz4IDIoCTQ7GaOez4iBDBPRfopo6lRMMNXeR4CXGacY1CA-lKwOA_K7aiPv4iflYF6MnlM_To_NW1hJN7qWXevIJbrdjFiAS1edbzLFY86-rw/s600/Rowo%20Luwak%20Farm.png" type="image/x-icon">
   <style>
+    ::-webkit-scrollbar {
+    display: none;}
     html, body {
+      height: 100%;
       margin: 0;
       padding: 0;
-      height: 100%;
       overflow: hidden;
-      font-family: sans-serif;
     }
+
     .iframe-container {
       position: relative;
       width: 100%;
-      height: 100vh;
+      height: 100%;
     }
+
     iframe {
       width: 100%;
       height: 100%;
       border: none;
     }
-    .loader {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1.2rem;
-      color: #666;
-      z-index: 10;
-    }
   </style>
 </head>
 <body>
   <div class="iframe-container">
-    <div class="loader" id="loader">Loading app...</div>
-    <iframe 
-      src="https://rowoluwakfarm.blogspot.com/" 
-      title="Rowo Luwak Farm"
-      onload="document.getElementById('loader').style.display='none';"
-      allowfullscreen>
-    </iframe>
+  <iframe 
+  src="https://rowoluwakfarm.blogspot.com/"
+  style="border:none;" allow="geolocation; camera; microphone; fullscreen">
+ </iframe>
   </div>
 </body>
 </html>
-
