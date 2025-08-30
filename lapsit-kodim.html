@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lapsit Kodim 1412</title>
   <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/LOGO-KOREM-143.png/250px-LOGO-KOREM-143.png" type="image/x-icon">
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
       font-family: sans-serif;
+      /* Mengatur padding body agar konten iframe tidak menempel di tepi atas */
+      padding-top: 1rem;
     }
     .iframe-container {
       position: relative;
+      /* Mengubah tinggi agar iframe tidak memenuhi seluruh viewport */
       width: 100%;
-      height: 100vh;
+      height: 90vh; /* Menggunakan 90% dari tinggi viewport agar ada ruang di bawah */
+      padding-bottom: 20px; /* Menambahkan ruang di bawah iframe */
     }
     iframe {
       width: 100%;
@@ -32,11 +33,17 @@
       color: #666;
       z-index: 10;
     }
+    .footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="iframe-container">
-    <div class="loader" id="loader">Loading app...</div>
+    <div class="loader" id="loader">Memuat aplikasi...</div>
     <iframe 
       src="https://script.google.com/macros/s/AKfycbwLRWMrY8eWEvOz9f80h7cEeOM9I9-f7cMLk8EM9tE_7LauJrKh5eVwQGy0-iMplq4k/exec" 
       title="Lapsit Kodim 1412"
@@ -44,6 +51,9 @@
       allowfullscreen>
     </iframe>
   </div>
+
+  <footer class="footer">
+    <p>Ini adalah footer website asli Anda.</p>
+  </footer>
 </body>
 </html>
-
