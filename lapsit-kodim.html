@@ -3,22 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Judul Halaman -->
   <title>Lapsit Kodim 1412/Koloka</title>
+  
+  <!-- Favicon -->
   <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/LOGO-KOREM-143.png/40px-LOGO-KOREM-143.png" type="image/x-icon">
+  
+  <!-- Meta Tags for Social Media Sharing -->
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="Lapsit Kodim 1412/Koloka">
+  <meta name="description" content="Aplikasi Layanan Pusat Informasi dan Teknologi Kodim 1412/Koloka">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://googlesheets2045.github.io/lapsit-kodim.html">
+  <meta property="og:title" content="Lapsit Kodim 1412/Koloka">
+  <meta property="og:description" content="Aplikasi Layanan Pusat Informasi dan Teknologi Kodim 1412/Koloka">
+  <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/LOGO-KOREM-143.png/400px-LOGO-KOREM-143.png">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://yourdomain.com/">
+  <meta property="twitter:title" content="Lapsit Kodim 1412/Koloka">
+  <meta property="twitter:description" content="Aplikasi Layanan Pusat Informasi dan Teknologi Kodim 1412/Koloka">
+  <meta property="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/LOGO-KOREM-143.png/400px-LOGO-KOREM-143.png">
+  
   <style>
     ::-webkit-scrollbar {
-    display: none;}
+      display: none;
+    }
+    
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
       overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
     }
 
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      color: white;
+      text-align: center;
+    }
+    
+    .header {
+      margin-bottom: 30px;
+    }
+    
+    .logo {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .logo img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
     .iframe-container {
       position: relative;
       width: 100%;
-      height: 100%;
+      height: 70vh;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      margin-top: 20px;
     }
 
     iframe {
@@ -26,14 +103,49 @@
       height: 100%;
       border: none;
     }
+    
+    .notice {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      p {
+        font-size: 1rem;
+      }
+      
+      .iframe-container {
+        height: 60vh;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="iframe-container">
-  <iframe 
-  src="https://script.google.com/macros/s/AKfycbzfGctc-4VN8CdHWh7DMonyfhUpG-gZnf4F9xi8JAN6H7SpQf3zVa9QZLixf_di8OAH/exec"
-  style="border:none;" allow="geolocation; camera; microphone; fullscreen">
- </iframe>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/LOGO-KOREM-143.png/240px-LOGO-KOREM-143.png" alt="Logo Kodim 1412/Koloka">
+      </div>
+      <h1>Lapsit Kodim 1412/Koloka</h1>
+      <p>Aplikasi Layanan Pusat Informasi dan Teknologi Kodim 1412/Koloka</p>
+    </div>
+    
+    <div class="iframe-container">
+      <iframe 
+        src="https://script.google.com/macros/s/AKfycbzfGctc-4VN8CdHWh7DMonyfhUpG-gZnf4F9xi8JAN6H7SpQf3zVa9QZLixf_di8OAH/exec"
+        allow="geolocation; camera; microphone; fullscreen">
+      </iframe>
+    </div>
+    
+    <div class="notice">
+      <p>Pastikan Anda menggunakan browser modern untuk pengalaman terbaik. Aplikasi ini memerlukan izin akses lokasi, kamera, dan mikrofon untuk fungsi tertentu.</p>
+    </div>
   </div>
 </body>
 </html>
