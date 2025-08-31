@@ -3,14 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lapsit Kodim 1412/Koloka</title>
-  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/LOGO-KOREM-143.png/40px-LOGO-KOREM-143.png" type="image/x-icon">
+  <title>Lapsit Kodim 1412/Kolaka</title>
   
+  <!-- Favicon and OG Image for social sharing -->
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/LOGO-KOREM-143.png/40px-LOGO-KOREM-143.png" type="image/x-icon">
   <meta content='https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/LOGO-KOREM-143.png/40px-LOGO-KOREM-143.png' property='og:image'/>
   
   <style>
+    /* Hide the scrollbar for a cleaner look */
     ::-webkit-scrollbar {
-    display: none;}
+      display: none;
+    }
+    /* Ensure the body and HTML take up the full screen and prevent overflow */
     html, body {
       height: 100%;
       margin: 0;
@@ -18,12 +22,14 @@
       overflow: hidden;
     }
 
+    /* Container for the iframe to manage its size */
     .iframe-container {
       position: relative;
       width: 100%;
       height: 100%;
     }
 
+    /* Style the iframe to fit its container perfectly */
     iframe {
       width: 100%;
       height: 100%;
@@ -33,10 +39,11 @@
 </head>
 <body>
   <div class="iframe-container">
-  <iframe 
-  src="https://script.google.com/macros/s/AKfycbzfGctc-4VN8CdHWh7DMonyfhUpG-gZnf4F9xi8JAN6H7SpQf3zVa9QZLixf_di8OAH/exec"
-  style="border:none;" allow="geolocation; camera; microphone; fullscreen">
- </iframe>
+    <iframe  
+      src="https://script.google.com/macros/s/AKfycbzfGctc-4VN8CdHWh7DMonyfhUpG-gZnf4F9xi8JAN6H7SpQf3zVa9QZLixf_di8OAH/exec"
+      style="border:none;" 
+      allow="geolocation; camera; microphone; fullscreen">
+    </iframe>
   </div>
 </body>
 </html>
