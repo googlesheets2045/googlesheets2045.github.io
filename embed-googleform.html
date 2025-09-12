@@ -1,82 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Google Form Tanpa Keterangan Footer</title>
-    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Google_Forms_2020_Logo.svg/800px-Google_Forms_2020_Logo.svg.png" type="image/x-icon">
-    <style>
-        ::-webkit-scrollbar {
-            display: none;
-        }
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google Form</title>
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Google_Forms_2020_Logo.svg/800px-Google_Forms_2020_Logo.svg.png" type="image/x-icon">
+  <style>
+    ::-webkit-scrollbar {
+    display: none;}
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
 
-        .container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-sizing: border-box;
-        }
+    .iframe-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
 
-        .form-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            max-width: 100%;
-            box-shadow: none;
-            border-radius: 0;
-            overflow: hidden;
-            background-color: white;
-        }
-        
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* This is the new "false footer" with a watermark */
-        .false-footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 120px; /* Adjust this value as needed to cover the text */
-            background-color: white;
-            z-index: 10;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .watermark-text {
-            color: #555c4d; /* Army green color */
-            font-size: 14px;
-            opacity: 0.8;
-        }
-    </style>
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="form-container">
-            <iframe
-                src="https://docs.google.com/forms/d/e/1FAIpQLSfAyz_B-YRCnNpdwTIOoIdJPaAuXASx-QR0kt54oINYC6l1ig/viewform?embedded=true"
-                allow="geolocation; camera; microphone; fullscreen">
-            </iframe>
-            <div class="false-footer">
-                <span class="watermark-text">Form ini dibuat oleh digitaltechnology2045</span>
-            </div>
-        </div>
-    </div>
+  <div class="iframe-container">
+  <iframe 
+  src="https://docs.google.com/forms/d/e/ID/viewform"
+  style="border:none;" allow="geolocation; camera; microphone; fullscreen">
+ </iframe>
+  </div>
 </body>
 </html>
