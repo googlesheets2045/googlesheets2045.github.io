@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mufid Jaya Motor</title>
+    <link rel="icon" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjR0kT5nx1F0LdAx1jpUUj3tqER_B9ga8jtu5iaP2b0FbfhYOivs9_5CMcvgTgdFArOHvlL41Vj0Hh6n3yjkd8P-_gWirIemnYV282iV_o0O3SBEfJYF-8Od1dEnrChOnlOee2A_-lPlhLT10z79KHhFGlsUVrnOMLjqu02vxVb5PgN_f7IX0vRAsmwnBw/s16000/icon-192x192.png" type="image/x-icon">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Mufid Motor">
+    
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Style untuk popup notifikasi */
+        .install-popup {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            font-family: sans-serif;
+            z-index: 1000;
+        }
+        .install-popup h4 {
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        .install-popup p {
+            font-size: 0.9em;
+            color: #555;
+        }
+        .install-popup button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            margin: 0 5px;
+        }
+        #installButton {
+            background-color: #007bff;
+            color: white;
+        }
+        #cancelButton {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <iframe src="https://script.google.com/macros/s/AKfycbyxlAL5mRmFiKxkBaDCDAdawfeL47SAOal9KpfZRQrb9po1z_TpKga1uEif_4LYJGXJ/exec"></iframe>
+
+    <div id="install-popup" class="install-popup" style="display: none;">
+        <h4>Mufid Motor</h4>
+        <p>Situs ini memiliki fungsionalitas aplikasi. Instal di perangkat Anda untuk pengalaman yang lebih baik.</p>
+        <button id="installButton">Instal</button>
+        <button id="cancelButton">Tutup</button>
+    </div>
+
+    <script>
+        let deferredPrompt;
+        const installPopup = document.getElementById('install-popup');
+        const installButton = document.getElementById('installButton');
+        const cancelButton = document.getElementById('cancelButton');
+
+        // Mendaftarkan service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                    console.log('Service Worker registered!');
+                }).catch(function(err) {
+                    console.log('Service Worker registration failed: ', err);
+                });
+            });
+        }
+
+        // Event beforeinstallprompt akan terpicu ketika PWA bisa diinstal
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Mencegah browser menampilkan notifikasi bawaan
+            e.preventDefault();
+            // Simpan event untuk digunakan nanti
+            deferredPrompt = e;
+            // Tampilkan popup notifikasi kustom Anda
+            installPopup.style.display = 'block';
+        });
+
+        // Tangani klik tombol "Instal"
+        installButton.addEventListener('click', (e) => {
+            // Sembunyikan popup
+            installPopup.style.display = 'none';
+            // Panggil event yang tersimpan untuk memicu instalasi
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    console.log('User choice:', choiceResult.outcome);
+                    deferredPrompt = null;
+                });
+            }
+        });
+
+        // Tangani klik tombol "Tutup"
+        cancelButton.addEventListener('click', () => {
+            installPopup.style.display = 'none';
+        });
+
+        // Mendeteksi ketika PWA sudah terinstal
+        window.addEventListener('appinstalled', (e) => {
+            console.log('Aplikasi PWA sudah terinstal!');
+            installPopup.style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>
