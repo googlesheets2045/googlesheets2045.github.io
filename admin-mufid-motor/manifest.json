@@ -1,6 +1,6 @@
 {
   "name": "Admin Mufid Jaya Motor",
-  "short_name": "Admin Mufid Motor",
+  "short_name": "Admin Mufid",
   "description": "Melayani jual beli motor second di seluruh wilayah Indonesia",
   "start_url": "./",
   "display": "standalone",
@@ -18,5 +18,6 @@
       "type": "image/png"
     }
   ]
+
 
 }
