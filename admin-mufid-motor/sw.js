@@ -1,4 +1,4 @@
-const CACHE_NAME = 'admin-mufid-motor-cache-v1';
+const CACHE_NAME = 'admin-mufid-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -28,4 +28,5 @@ self.addEventListener('fetch', event => {
         return fetch(event.request);
       })
   );
+
 });
