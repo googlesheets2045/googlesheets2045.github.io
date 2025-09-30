@@ -1,23 +1,31 @@
-// Ultra Fast Service Worker - Minimal Cache
-const CACHE_NAME = 'mufid-ultra-v1';
+const CACHE_NAME = 'mufid-motor-cache-v1';
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/sw.js',
+  '/images/icon-192x192.png',
+  '/images/icon-512x512.png'
+];
 
-self.addEventListener('install', (e) => {
-  self.skipWaiting();
-  e.waitUntil(
+self.addEventListener('install', event => {
+  event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(['/']))
+      .then(cache => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
   );
 });
 
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then(keys => 
-      Promise.all(keys.map(key => key !== CACHE_NAME && caches.delete(key)))
-    ).then(() => self.clients.claim())
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      })
   );
-});
-
-self.addEventListener('fetch', (e) => {
-  // Network-only strategy - Fastest for iframe content
-  e.respondWith(fetch(e.request));
 });
