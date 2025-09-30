@@ -6,6 +6,9 @@
     <title>Mufid Jaya Motor</title>
     <link rel="icon" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjR0kT5nx1F0LdAx1jpUUj3tqER_B9ga8jtu5iaP2b0FbfhYOivs9_5CMcvgTgdFArOHvlL41Vj0Hh6n3yjkd8P-_gWirIemnYV282iV_o0O3SBEfJYF-8Od1dEnrChOnlOee2A_-lPlhLT10z79KHhFGlsUVrnOMLjqu02vxVb5PgN_f7IX0vRAsmwnBw/s16000/icon-192x192.png" type="image/x-icon">
     
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://script.google.com/macros/s/AKfycbyxlAL5mRmFiKxkBaDCDAdawfeL47SAOal9KpfZRQrb9po1z_TpKga1uEif_4LYJGXJ/exec" as="document">
+    
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ffffff">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,16 +16,60 @@
     <meta name="apple-mobile-web-app-title" content="Mufid Motor">
     
     <style>
+        /* Critical CSS - Load First */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             overflow: hidden;
+            font-family: sans-serif;
         }
+        
+        .loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        .loading-text {
+            color: #333;
+            font-size: 14px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         iframe {
             width: 100%;
             height: 100%;
             border: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .iframe-loaded {
+            opacity: 1;
         }
 
         /* Style untuk popup notifikasi */
@@ -38,6 +85,7 @@
             text-align: center;
             font-family: sans-serif;
             z-index: 1000;
+            display: none;
         }
         .install-popup h4 {
             margin-top: 0;
@@ -67,9 +115,21 @@
     </style>
 </head>
 <body>
-    <iframe src="https://script.google.com/macros/s/AKfycbz2AgWYgGstVRsab5moZDeN0Gh5gVw3WqthcbWVeHgi-CrFK2VV79rKB8DfQa0LEgiF/exec"></iframe>
+    <!-- Loading Screen -->
+    <div class="loading-container" id="loadingContainer">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Memuat aplikasi...</div>
+    </div>
 
-    <div id="install-popup" class="install-popup" style="display: none;">
+    <!-- Main Content -->
+    <iframe 
+        src="https://script.google.com/macros/s/AKfycbyxlAL5mRmFiKxkBaDCDAdawfeL47SAOal9KpfZRQrb9po1z_TpKga1uEif_4LYJGXJ/exec" 
+        id="mainFrame"
+        onload="onIframeLoad()"
+        loading="eager">
+    </iframe>
+
+    <div id="install-popup" class="install-popup">
         <h4>Mufid Motor</h4>
         <p>Situs ini memiliki fungsionalitas aplikasi. Instal di perangkat Anda untuk pengalaman yang lebih baik.</p>
         <button id="installButton">Instal</button>
@@ -77,37 +137,73 @@
     </div>
 
     <script>
+        // Optimized loading sequence
         let deferredPrompt;
+        const loadingContainer = document.getElementById('loadingContainer');
+        const mainFrame = document.getElementById('mainFrame');
         const installPopup = document.getElementById('install-popup');
         const installButton = document.getElementById('installButton');
         const cancelButton = document.getElementById('cancelButton');
 
-        // Mendaftarkan service worker
+        // Function to handle iframe load
+        function onIframeLoad() {
+            console.log('Iframe loaded successfully');
+            
+            // Add fade-in effect to iframe
+            mainFrame.classList.add('iframe-loaded');
+            
+            // Hide loading screen with delay for smooth transition
+            setTimeout(() => {
+                loadingContainer.style.opacity = '0';
+                setTimeout(() => {
+                    loadingContainer.style.display = 'none';
+                }, 300);
+            }, 500);
+        }
+
+        // Handle iframe loading errors
+        mainFrame.addEventListener('error', function() {
+            console.error('Failed to load iframe');
+            loadingContainer.innerHTML = `
+                <div style="text-align: center; color: #ff4444;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">⚠️</div>
+                    <div class="loading-text">Gagal memuat aplikasi</div>
+                    <button onclick="window.location.reload()" style="margin-top: 15px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Coba Lagi
+                    </button>
+                </div>
+            `;
+        });
+
+        // Register service worker with optimized timing
         if ('serviceWorker' in navigator) {
+            // Register SW after initial load
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js').then(function(registration) {
-                    console.log('Service Worker registered!');
-                }).catch(function(err) {
-                    console.log('Service Worker registration failed: ', err);
-                });
+                setTimeout(() => {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(function(registration) {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        })
+                        .catch(function(err) {
+                            console.log('Service Worker registration failed: ', err);
+                        });
+                }, 1000);
             });
         }
 
-        // Event beforeinstallprompt akan terpicu ketika PWA bisa diinstal
+        // PWA Installation handling
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Mencegah browser menampilkan notifikasi bawaan
             e.preventDefault();
-            // Simpan event untuk digunakan nanti
             deferredPrompt = e;
-            // Tampilkan popup notifikasi kustom Anda
-            installPopup.style.display = 'block';
+            
+            // Show install popup only after main content is loaded
+            setTimeout(() => {
+                installPopup.style.display = 'block';
+            }, 2000);
         });
 
-        // Tangani klik tombol "Instal"
         installButton.addEventListener('click', (e) => {
-            // Sembunyikan popup
             installPopup.style.display = 'none';
-            // Panggil event yang tersimpan untuk memicu instalasi
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
@@ -117,19 +213,46 @@
             }
         });
 
-        // Tangani klik tombol "Tutup"
         cancelButton.addEventListener('click', () => {
             installPopup.style.display = 'none';
         });
 
-        // Mendeteksi ketika PWA sudah terinstal
         window.addEventListener('appinstalled', (e) => {
             console.log('Aplikasi PWA sudah terinstal!');
             installPopup.style.display = 'none';
         });
+
+        // Performance optimization: Preconnect to Google domains
+        const preconnectLinks = [
+            'https://script.google.com',
+            'https://blogger.googleusercontent.com'
+        ];
+        
+        preconnectLinks.forEach(url => {
+            const link = document.createElement('link');
+            link.rel = 'preconnect';
+            link.href = url;
+            link.crossOrigin = 'anonymous';
+            document.head.appendChild(link);
+        });
+
+        // Cache warming for critical resources
+        if ('caches' in window) {
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    caches.open('mufid-motor-cache-v1').then(cache => {
+                        const criticalUrls = [
+                            '/',
+                            '/index.html',
+                            '/manifest.json'
+                        ];
+                        cache.addAll(criticalUrls).catch(err => {
+                            console.log('Cache warming failed:', err);
+                        });
+                    });
+                }, 2000);
+            });
+        }
     </script>
 </body>
-
-
 </html>
-
