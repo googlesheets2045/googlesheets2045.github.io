@@ -252,10 +252,12 @@
             font-weight: bold;
         }
         
-        /* Hapus Gaya Penjelasan AI - Biarkan ini kosong atau hapus */
-        #explanation-box {
-            display: none !important; /* Memastikan kotak penjelasan tidak muncul */
-        }
+        /* HAPUS GAYA Penjelasan AI */
+        /*
+        #explanation-box { ... }
+        #explanation-box h4 { ... }
+        #explanation-loading { ... }
+        */
         
         .navigation-center {
             display: flex;
@@ -717,7 +719,11 @@
         const resultHomeBtn = document.getElementById('result-home-btn');
         const levelSelectionHome = document.getElementById('level-selection-home');
 
-        // TIDAK ADA ELEMEN AI EXPLANATION
+        /* BARIS DIHAPUS: AI Explanation Elements
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationLoading = document.getElementById('explanation-loading');
+        const explanationText = document.getElementById('explanation-text');
+        */
 
         // Event listeners
         physicsBtn.addEventListener('click', () => showLevelSelection('physics'));
@@ -733,10 +739,11 @@
         resultHomeBtn.addEventListener('click', showMainMenu);
         levelSelectionHome.addEventListener('click', showMainMenu);
 
-        // ===============================
-        // FUNGSI AI GENERATION (DIHAPUS)
-        // ===============================
-        /* Fungsi async function generateExplanation() telah dihapus di sini */
+        /* DIHAPUS: FUNGSI AI GENERATION
+        async function generateExplanation(questionText, correctAnswer) {
+            // ... (Seluruh fungsi generateExplanation dihapus)
+        }
+        */
 
         // ===============================
         // FUNGSI GAMEFLOW
@@ -808,7 +815,8 @@
             quizCategoryElement.textContent = categoryNames[category];
             quizLevelElement.textContent = level;
             
-            // TIDAK PERLU menyembunyikan explanationBox karena sudah dihapus dari HTML/CSS
+            // Sembunyikan penjelasan saat memulai soal baru (walaupun elemennya dihapus, kita memastikan tidak ada logika yang tertinggal)
+            // explanationBox.style.display = 'none';
             
             updatePlayerInfo(); // Update info kategori saat level dimulai
             showQuestion();
@@ -860,7 +868,8 @@
                 nextBtn.textContent = 'Selanjutnya ➡️';
             }
 
-            // TIDAK PERLU LOGIKA UNTUK MENAMPILKAN ULANG PENJELASAN
+            // HAPUS LOGIKA PENJELASAN AI DARI showQuestion
+            // if (isAnswered) { explanationBox.style.display = 'block'; ... } else { explanationBox.style.display = 'none'; }
         }
 
         function selectOption(event) {
@@ -885,9 +894,14 @@
                 }
             }
             
-            // Hapus Panggilan generateExplanation di sini
-            
-            // TIDAK PERLU LOGIKA UNTUK MENYIMPAN PENJELASAN
+            // HAPUS PANGGILAN GENERATE EXPLANATION DARI AI
+            /*
+            explanationBox.style.display = 'block';
+            explanationLoading.style.display = 'block';
+            explanationText.textContent = '';
+            await generateExplanation(question.question, correctAnswerText);
+            gameState.currentQuestions[gameState.currentQuestionIndex].explanation = explanationText.textContent;
+            */
         }
 
         function showPreviousQuestion() {
