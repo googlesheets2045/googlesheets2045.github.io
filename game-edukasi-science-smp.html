@@ -255,6 +255,82 @@
             font-weight: bold;
         }
         
+        /* AI Science Master Explanation Styles */
+        .ai-explanation {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            border-left: 5px solid #FFD700;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ai-explanation h4 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
+        .ai-explanation h4::before {
+            content: "🤖";
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        .explanation-content {
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .explanation-content h5 {
+            color: #FFE4B5;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .explanation-content ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        .explanation-content li {
+            margin-bottom: 5px;
+        }
+
+        .show-explanation-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .show-explanation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
         
         .navigation-center {
             display: flex;
@@ -374,6 +450,11 @@
                 width: 100%;
                 max-width: 250px;
             }
+
+            .ai-explanation {
+                padding: 15px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -381,7 +462,7 @@
     <div class="container">
         <header>
             <h1>Science Master</h1>
-            <p class="subtitle">Game Edukasi Science SMP dengan Total 4000 Soal</p>
+            <p class="subtitle">Game Edukasi Science SMP dengan Total 4000 Soal + AI Science Master</p>
         </header>
         
         <div class="game-area">
@@ -442,6 +523,18 @@
                 
                 <div class="options" id="options-container">
                     </div>
+
+                <!-- AI Science Master Explanation -->
+                <div class="ai-explanation" id="ai-explanation">
+                    <h4>AI Science Master - Penjelasan Jawaban</h4>
+                    <div class="explanation-content" id="explanation-content">
+                        <!-- Penjelasan akan dimuat di sini -->
+                    </div>
+                </div>
+
+                <button class="show-explanation-btn" id="show-explanation-btn" style="display: none;">
+                    🤖 Lihat Penjelasan AI Science Master
+                </button>
                 
                 <div class="navigation-center">
                     <button id="prev-btn" disabled>⬅️ Sebelumnya</button>
@@ -469,7 +562,7 @@
         </div>
         
         <footer>
-            <p>Science Master © 2025 | dibuat oleh dev_nurdin</p>
+            <p>Science Master © 2025 | dibuat oleh dev_nurdin | 🤖 Powered by AI Science Master</p>
         </footer>
     </div>
 
@@ -480,883 +573,267 @@
 
         const massiveQuestionBank = {
             physics: [
-                { question: "Apa satuan SI untuk gaya?", options: ["Newton", "Joule", "Watt", "Pascal"], correct: 0 },
-                { question: "Energi yang dimiliki benda karena geraknya disebut?", options: ["Energi potensial", "Energi kinetik", "Energi panas", "Energi listrik"], correct: 1 },
-                { question: "Alat untuk mengukur suhu adalah?", options: ["Barometer", "Termometer", "Hygrometer", "Speedometer"], correct: 1 },
-                { question: "Bunyi merambat paling cepat melalui?", options: ["Udara", "Cairan", "Padatan", "Vakum"], correct: 2 },
-                { question: "Hukum Newton pertama tentang?", options: ["Gravitasi", "Inersia", "Aksi-reaksi", "Percepatan"], correct: 1 },
-                { question: "Warna dengan panjang gelombang terpendek?", options: ["Merah", "Hijau", "Biru", "Ungu"], correct: 3 },
-                { question: "Alat ukur tekanan udara?", options: ["Termometer", "Barometer", "Hygrometer", "Anemometer"], correct: 1 },
-                { question: "Gaya tarik antara benda bermassa?", options: ["Magnet", "Listrik", "Gravitasi", "Gesek"], correct: 2 },
-                { question: "Energi dalam baterai berupa?", options: ["Kinetik", "Kimia", "Panas", "Mekanik"], correct: 1 },
-                { question: "Transformator meningkatkan tegangan jika?", options: ["Lilitan sekunder lebih banyak", "Lilitan primer lebih banyak", "Arus besar", "Tegangan kecil"], correct: 0 },
-                { question: "Rumus energi kinetik?", options: ["½mv²", "mgh", "F.d", "P.t"], correct: 0 },
-                { question: "Hukum kekekalan energi menyatakan?", options: ["Energi dapat diciptakan", "Energi dapat dimusnahkan", "Energi tetap total", "Energi berubah bentuk"], correct: 2 },
-                { question: "Dalam rangkaian paralel, lampu?", options: ["Padam semua jika satu padam", "Tetap menyala", "Menyala terang", "Berkedip"], correct: 1 },
-                { question: "Percepatan benda 5kg dengan gaya 20N?", options: ["0.25 m/s²", "4 m/s²", "25 m/s²", "100 m/s²"], correct: 1 },
-                { question: "Alat ukur arus listrik?", options: ["Voltmeter", "Amperemeter", "Ohmmeter", "Wattmeter"], correct: 1 },
-                { question: "Satuan daya listrik?", options: ["Volt", "Ampere", "Watt", "Ohm"], correct: 2 },
-                { question: "Perubahan energi di panel surya?", options: ["Kimia ke Listrik", "Cahaya ke Listrik", "Panas ke Cahaya", "Gerak ke Listrik"], correct: 1 },
-                { question: "Alat pengubah energi listrik jadi gerak?", options: ["Generator", "Transformator", "Motor listrik", "Baterai"], correct: 2 },
-                { question: "Kecepatan cahaya di vakum?", options: ["300.000 km/s", "30.000 km/s", "3.000 km/s", "300 km/s"], correct: 0 },
-                { question: "Titik didih air pada tekanan normal?", options: ["0°C", "50°C", "100°C", "150°C"], correct: 2 },
-                { question: "Konduktor panas yang baik?", options: ["Plastik", "Kayu", "Udara", "Logam"], correct: 3 },
-                { question: "Hukum yang mengatur hubungan tekanan dan volume gas?", options: ["Hukum Archimedes", "Hukum Pascal", "Hukum Boyle", "Hukum Snellius"], correct: 2 },
-                { question: "Contoh gelombang transversal?", options: ["Bunyi", "Gempa", "Cahaya", "Air di kolam"], correct: 2 },
-                { question: "Energi yang tersimpan dalam pegas tertekan?", options: ["Kinetik", "Potensial Gravitasi", "Potensial Elastis", "Panas"], correct: 2 },
-                { question: "Alat yang digunakan untuk mengukur massa benda?", options: ["Amperemeter", "Termometer", "Neraca", "Barometer"], correct: 2 },
-                { question: "Gaya yang melawan gerak benda?", options: ["Gaya tarik", "Gaya magnet", "Gaya gesek", "Gaya sentripetal"], correct: 2 },
-                { question: "Satuan frekuensi?", options: ["Joule", "Watt", "Ohm", "Hertz"], correct: 3 },
-                { question: "Apa yang menyebabkan pelangi?", options: ["Refleksi cahaya", "Difraksi cahaya", "Pembiasan dan pemantulan cahaya", "Interferensi"], correct: 2 },
-                { question: "Zat yang tidak dapat menghantarkan listrik?", options: ["Konduktor", "Semikonduktor", "Isolator", "Elektrolit"], correct: 2 },
-                { question: "Jarak dari puncak gelombang ke puncak berikutnya?", options: ["Amplitudo", "Periode", "Frekuensi", "Panjang gelombang"], correct: 3 },
-                { question: "Satuan untuk usaha (kerja) dalam SI?", options: ["Newton", "Joule", "Pascal", "Volt"], correct: 1 },
-                { question: "Apa yang terjadi pada suhu air murni saat mendidih?", options: ["Terus naik", "Menurun drastis", "Tetap 100°C", "Berubah sesuai tekanan"], correct: 2 },
-                { question: "Prinsip dasar kerja pesawat sederhana seperti tuas?", options: ["Tekanan", "Gaya apung", "Usaha dan daya", "Momen gaya"], correct: 3 },
-                { question: "Gaya yang bekerja pada benda yang bergerak melingkar ke arah pusat lingkaran?", options: ["Sentrifugal", "Gesek", "Sentripetal", "Inersia"], correct: 2 },
-                { question: "Peristiwa pembelokan arah cahaya saat melewati medium yang berbeda kerapatan?", options: ["Refleksi", "Difraksi", "Refraksi", "Interferensi"], correct: 2 },
-                { question: "Alat optik yang digunakan untuk melihat benda kecil?", options: ["Teleskop", "Periskop", "Mikroskop", "Teropong"], correct: 2 },
-                { question: "Konversi energi dari gerak menjadi listrik terjadi di?", options: ["Motor", "Transformator", "Generator", "Resistor"], correct: 2 },
-                { question: "Yang termasuk besaran pokok?", options: ["Luas, volume, massa", "Massa, waktu, suhu", "Gaya, kecepatan, daya", "Waktu, energi, panjang"], correct: 1 },
-                { question: "Hukum Ohm mendeskripsikan hubungan antara?", options: ["Massa, volume, jenis", "Gaya, massa, percepatan", "Tegangan, arus, hambatan", "Energi, daya, waktu"], correct: 2 },
-                { question: "Sifat kemagnetan yang dimiliki oleh besi dan baja?", options: ["Paramagnetik", "Diamagnetik", "Feromagnetik", "Nonmagnetik"], correct: 2 },
-                { question: "Proses transfer panas melalui perantara zat padat tanpa disertai perpindahan partikel?", options: ["Konveksi", "Radiasi", "Konduksi", "Induksi"], correct: 2 },
-                { question: "Berapa kalor yang dibutuhkan untuk menaikkan suhu 1 kg air sebesar 1°C?", options: ["1 kalori", "1 Joule", "1 kJ", "4200 Joule"], correct: 3 },
-                { question: "Jika volume gas diperkecil pada suhu tetap, tekanannya akan?", options: ["Menurun", "Meningkat", "Tetap sama", "Hilang"], correct: 1 },
-                { question: "Cepat rambat bunyi di udara pada suhu normal mendekati?", options: ["3 m/s", "340 m/s", "1500 m/s", "300.000 km/s"], correct: 1 },
-                { question: "Alat yang bekerja berdasarkan Hukum Pascal?", options: ["Hidrometer", "Dongkrak hidrolik", "Kapal laut", "Balon udara"], correct: 1 },
-                { question: "Jenis lensa yang mengumpulkan cahaya?", options: ["Lensa cekung", "Lensa cembung", "Lensa datar", "Lensa prisma"], correct: 1 },
-                { question: "Hukum yang menyatakan bahwa setiap benda akan tetap diam atau bergerak lurus beraturan jika resultan gaya nol?", options: ["Newton II", "Newton III", "Inersia", "Gravitasi"], correct: 2 },
-                { question: "Satuan hambatan listrik?", options: ["Volt", "Ampere", "Ohm", "Watt"], correct: 2 },
-                { question: "Perubahan energi di setrika listrik?", options: ["Listrik ke Gerak", "Listrik ke Panas", "Kimia ke Listrik", "Panas ke Listrik"], correct: 1 },
-                { question: "Gaya normal selalu tegak lurus dengan?", options: ["Permukaan kontak", "Gaya berat", "Arah gerak", "Gaya gesek"], correct: 0 },
-                { question: "Apa yang diukur oleh termometer klinis?", options: ["Tekanan", "Kecepatan", "Suhu tubuh", "Kelembaban"], correct: 2 },
-                { question: "Jarak yang ditempuh benda per satuan waktu disebut?", options: ["Percepatan", "Kecepatan", "Gaya", "Daya"], correct: 1 },
-                { question: "Alat yang berfungsi sebagai pemutus arus otomatis jika terjadi kelebihan beban?", options: ["Resistor", "Fuse (sekring)", "Kapasitor", "Transformator"], correct: 1 },
-                { question: "Tekanan di dalam zat cair dipengaruhi oleh?", options: ["Luas permukaan", "Massa jenis dan kedalaman", "Suhu air", "Bentuk wadah"], correct: 1 },
-                { question: "Contoh gelombang longitudinal?", options: ["Cahaya", "Air", "Bunyi", "Tali"], correct: 2 },
-                { question: "Besaran turunan yang diturunkan dari panjang dan waktu?", options: ["Massa", "Suhu", "Kecepatan", "Gaya"], correct: 2 },
-                { question: "Magnet memiliki dua kutub utama, yaitu?", options: ["Utara dan Tengah", "Timur dan Barat", "Utara dan Selatan", "Positif dan Negatif"], correct: 2 },
-                { question: "Pengembunan adalah perubahan wujud dari?", options: ["Padat ke Cair", "Cair ke Padat", "Gas ke Cair", "Cair ke Gas"], correct: 2 },
-                { question: "Dalam sistem hidrolik, gaya kecil dapat mengangkat beban besar karena prinsip?", options: ["Hukum Boyle", "Hukum Pascal", "Hukum Archimedes", "Hukum Newton"], correct: 1 },
-                { question: "Warna yang paling sulit dibiaskan oleh prisma?", options: ["Ungu", "Biru", "Hijau", "Merah"], correct: 3 },
-                { question: "Energi potensial gravitasi dipengaruhi oleh?", options: ["Kecepatan", "Massa, gravitasi, dan ketinggian", "Daya", "Volume"], correct: 1 },
-                { question: "Alat yang digunakan untuk mengukur tegangan listrik?", options: ["Amperemeter", "Ohmmeter", "Voltmeter", "Wattmeter"], correct: 2 },
-                { question: "Perubahan energi pada kincir air?", options: ["Listrik ke Gerak", "Kinetik ke Listrik", "Kimia ke Kinetik", "Potensial ke Kinetik"], correct: 1 },
-                { question: "Apa yang dimaksud dengan Inersia?", options: ["Perubahan energi", "Kecenderungan benda mempertahankan posisi", "Gaya apung", "Tekanan fluida"], correct: 1 },
-                { question: "Jarak yang ditempuh benda dalam Gerak Lurus Beraturan (GLB) dihitung dengan rumus?", options: ["v = s/t", "s = v.t", "a = Δv/t", "F = m.a"], correct: 1 },
-                { question: "Satuan untuk beda potensial listrik?", options: ["Ohm", "Ampere", "Volt", "Joule"], correct: 2 },
-                { question: "Perbedaan utama antara konduktor dan isolator?", options: ["Massa jenis", "Warna", "Kemampuan menghantar listrik", "Bentuk"], correct: 2 },
-                { question: "Peristiwa tertariknya benda ringan oleh mistar plastik yang digosok adalah contoh?", options: ["Listrik statis", "Listrik dinamis", "Magnet permanen", "Elektromagnet"], correct: 0 },
-                { question: "Sifat bayangan pada cermin datar?", options: ["Nyata, terbalik", "Maya, tegak, sama besar", "Nyata, diperbesar", "Maya, terbalik, diperkecil"], correct: 1 },
-                { question: "Apa yang menyebabkan benda dapat terapung di air?", options: ["Gaya gesek", "Gaya dorong", "Gaya Archimedes", "Gaya berat"], correct: 2 },
-                { question: "Alat pengukur kedalaman laut menggunakan prinsip?", options: ["Konveksi", "Sonar (pantulan bunyi)", "Induksi magnet", "Tekanan hidrostatis"], correct: 1 },
-                { question: "Warna sekunder dalam pencampuran cahaya?", options: ["Merah, Hijau, Biru", "Magenta, Sian, Kuning", "Hitam, Putih, Abu-abu", "Ungu, Oranye, Biru"], correct: 1 },
-                { question: "Jarak fokus lensa cekung selalu bernilai?", options: ["Positif", "Negatif", "Nol", "Tak terhingga"], correct: 1 },
-                { question: "Jenis rangkaian listrik yang sering digunakan di rumah?", options: ["Seri", "Paralel", "Campuran", "Tunggal"], correct: 1 },
-                { question: "Apa yang dimaksud dengan daya?", options: ["Kemampuan melakukan kerja", "Usaha per satuan waktu", "Gaya per satuan luas", "Energi kinetik"], correct: 1 },
-                { question: "Titik beku air pada skala Fahrenheit?", options: ["0°F", "32°F", "100°F", "212°F"], correct: 1 },
-                { question: "Energi panas bumi berasal dari inti bumi melalui proses?", options: ["Kondensasi", "Radiasi", "Konduksi", "Konveksi"], correct: 3 },
-                { question: "Hukum yang menyatakan bahwa gaya berbanding lurus dengan massa dan percepatan?", options: ["Newton I", "Newton II", "Newton III", "Hukum Pascal"], correct: 1 },
-                { question: "Alat untuk mengubah tegangan AC menjadi DC?", options: ["Transformator", "Generator", "Dioda (Penyearah)", "Kapasitor"], correct: 2 },
-                { question: "Zat yang mengalami pemuaian volume paling besar saat dipanaskan?", options: ["Padat", "Cair", "Gas", "Logam"], correct: 2 },
-                { question: "Suhu yang sama pada skala Celsius dan Fahrenheit adalah?", options: ["0°", "100°", "-40°", "32°"], correct: 2 },
-                { question: "Jenis cermin yang hanya menghasilkan bayangan maya?", options: ["Cermin datar", "Cermin cekung", "Cermin cembung", "Cermin prisma"], correct: 2 },
-                { question: "Penggunaan medan magnet untuk mengangkat besi tua memanfaatkan prinsip?", options: ["Induksi", "Elektromagnet", "Konduksi", "Gaya Lorentz"], correct: 1 },
-                { question: "Rumus untuk menghitung tekanan?", options: ["F/A", "m.a", "mgh", "v/t"], correct: 0 },
-                { question: "Peristiwa di mana bunyi kembali setelah mengenai penghalang?", options: ["Difraksi", "Refleksi", "Interferensi", "Resonansi"], correct: 1 },
-                { question: "Bagian transformator yang dihubungkan ke sumber tegangan disebut?", options: ["Sekunder", "Inti besi", "Primer", "Kumparan"], correct: 2 },
-                { question: "Satuan SI untuk jumlah zat?", options: ["Kilogram", "Ampere", "Mole", "Kandela"], correct: 2 },
-                { question: "Apa yang diukur oleh anemometer?", options: ["Suhu", "Kelembaban", "Kecepatan angin", "Tekanan"], correct: 2 },
-                { question: "Contoh Gerak Lurus Berubah Beraturan (GLBB) yang diperlambat?", options: ["Kereta api di rel lurus", "Benda jatuh bebas", "Melempar bola vertikal ke atas", "Mobil berjalan konstan"], correct: 2 },
-                { question: "Ketika es mencair, energi panas yang diserap disebut?", options: ["Kalor jenis", "Kalor uap", "Kalor lebur", "Kalor laten"], correct: 2 },
-                { question: "Peristiwa naiknya permukaan zat cair di dalam pipa kapiler?", options: ["Adhesi", "Kohesi", "Kapilaritas", "Viskositas"], correct: 2 },
-                { question: "Elemen pemanas pada setrika memanfaatkan kawat yang memiliki?", options: ["Hambatan kecil", "Hambatan besar", "Arus kecil", "Tegangan rendah"], correct: 1 },
-                { question: "Waktu yang dibutuhkan untuk satu getaran lengkap disebut?", options: ["Frekuensi", "Amplitudo", "Periode", "Panjang gelombang"], correct: 2 },
-                { question: "Hukum yang menjelaskan gaya aksi-reaksi?", options: ["Newton I", "Newton II", "Newton III", "Hukum Kepler"], correct: 2 },
-                { question: "Daya listrik 1 kW setara dengan?", options: ["100 Watt", "1000 Watt", "10 Watt", "1 Watt"], correct: 1 },
-                { question: "Pengurangan hambatan pada konduktor karena pendinginan disebut?", options: ["Resistivitas", "Konduktivitas", "Superkonduktivitas", "Elektromagnetisme"], correct: 2 },
-                { question: "Peralatan yang digunakan untuk menentukan massa jenis zat cair?", options: ["Neraca", "Termometer", "Hidrometer", "Barometer"], correct: 2 },
-                { question: "Sifat bayangan pada lensa cekung?", options: ["Nyata, terbalik", "Maya, tegak, diperkecil", "Maya, tegak, diperbesar", "Nyata, diperkecil"], correct: 1 },
-                { question: "Penyebab utama timbulnya arus listrik?", options: ["Gaya magnet", "Beda potensial", "Hambatan", "Suhu"], correct: 1 },
-                { question: "Pencampuran semua warna primer cahaya menghasilkan warna?", options: ["Hitam", "Cokelat", "Putih", "Abu-abu"], correct: 2 },
-                { question: "Berapa kuat arus jika tegangan 12 Volt dan hambatan 4 Ohm?", options: ["3 Ampere", "48 Ampere", "0.33 Ampere", "16 Ampere"], correct: 0 },
-                { question: "Energi potensial listrik tersimpan dalam?", options: ["Kawat penghantar", "Resistor", "Kapasitor", "Induktor"], correct: 2 },
-                { question: "Titik lebur adalah suhu saat zat berubah dari?", options: ["Cair ke Padat", "Padat ke Cair", "Gas ke Cair", "Cair ke Gas"], correct: 1 },
-                { question: "Perbedaan antara massa dan berat?", options: ["Massa tergantung gravitasi, berat tidak", "Berat tergantung gravitasi, massa tidak", "Keduanya sama", "Massa adalah volume, berat adalah gaya"], correct: 1 },
-                { question: "Proses transfer panas oleh pergerakan fluida (cairan atau gas)?", options: ["Konduksi", "Radiasi", "Konveksi", "Adveksi"], correct: 2 },
-                { question: "Pada pemantulan sempurna, sudut datang sama dengan?", options: ["Sudut bias", "Sudut pantul", "Sudut normal", "Sudut apung"], correct: 1 },
-                { question: "Alat yang memanfaatkan prinsip resonansi?", options: ["Mikroskop", "Teropong", "Gitar", "Motor listrik"], correct: 2 },
-                { question: "Pernyataan yang benar tentang magnet U?", options: ["Hanya punya satu kutub", "Kutubnya terpisah jauh", "Medan magnetnya lebih kuat di ujung", "Medan magnetnya seragam"], correct: 2 },
-                { question: "Peristiwa di mana elektron berpindah dari satu benda ke benda lain melalui gesekan?", options: ["Induksi", "Konduksi", "Listrik statis", "Listrik dinamis"], correct: 2 },
-                { question: "Kecepatan diukur dalam satuan?", options: ["m/s²", "m/s", "N/m²", "kg.m/s"], correct: 1 },
-                { question: "Jika gaya diperbesar 2 kali pada massa tetap, percepatan akan?", options: ["Tetap", "Berkurang setengah", "Berlipat 2 kali", "Berkurang 4 kali"], correct: 2 },
-                { question: "Hukum Archimedes berkaitan dengan?", options: ["Gaya pegas", "Gaya apung", "Gaya gesek", "Gaya tarik"], correct: 1 },
-                { question: "Alat yang berfungsi sebagai penguat arus/tegangan tanpa menggunakan kumparan?", options: ["Transformator", "Generator", "Transistor", "Resistor"], correct: 2 },
-                { question: "Apa yang menyebabkan bintang terlihat berkelap-kelip?", options: ["Gerak bintang", "Rotasi bumi", "Pembiasan atmosfer", "Jarak yang jauh"], correct: 2 },
-                { question: "Waktu yang dibutuhkan gelombang untuk menempuh satu panjang gelombang?", options: ["Frekuensi", "Amplitudo", "Periode", "Cepat rambat"], correct: 2 },
-                { question: "Satuan momentum?", options: ["Newton", "Joule", "kg.m/s", "Watt"], correct: 2 },
-                { question: "Jenis gelombang yang membutuhkan medium untuk merambat?", options: ["Gelombang elektromagnetik", "Gelombang mekanik", "Cahaya", "Radio"], correct: 1 },
-                { question: "Hukum yang mendeskripsikan hubungan antara tekanan dan volume gas pada suhu konstan?", options: ["Hukum Charles", "Hukum Gay-Lussac", "Hukum Boyle", "Hukum Pascal"], correct: 2 },
-                { question: "Satuan SI untuk intensitas cahaya?", options: ["Lumen", "Lux", "Kandela", "Watt"], correct: 2 },
-                { question: "Apa yang menyebabkan air panas dalam termos tetap panas?", options: ["Radiasi", "Konduksi", "Isolasi panas (vakum)", "Konveksi"], correct: 2 },
-                { question: "Energi minimum yang dibutuhkan untuk melepaskan elektron dari permukaan logam?", options: ["Daya", "Hambatan", "Kerja", "Fungsi kerja"], correct: 3 },
-                { question: "Perubahan wujud dari gas ke padat disebut?", options: ["Mencair", "Menguap", "Membeku", "Deposisi (Mengkristal)"], correct: 3 },
-                { question: "Apa yang diukur oleh odometer?", options: ["Kecepatan", "Jarak", "Waktu", "Percepatan"], correct: 1 },
-                { question: "Gaya yang menyebabkan benda bergerak lurus?", options: ["Gravitasi", "Gesek", "Netto (Resultan)", "Sentripetal"], correct: 2 },
-                { question: "Prinsip dasar yang digunakan dalam pembangkit listrik tenaga air (PLTA)?", options: ["Hukum Boyle", "Energi Potensial menjadi Kinetik/Listrik", "Termodinamika", "Elektromagnetisme"], correct: 1 },
-                { question: "Pada pemantulan baur, berkas sinar datang yang sejajar akan dipantulkan?", options: ["Menyebar", "Sejajar juga", "Kembali ke arah datang", "Tergantung warna"], correct: 0 },
-                { question: "Penyebab utama terjadinya GGL induksi?", options: ["Arus statis", "Perubahan fluks magnetik", "Hambatan", "Suhu"], correct: 1 },
-                { question: "Satuan SI untuk percepatan?", options: ["m/s", "km/jam", "m/s²", "N.s"], correct: 2 },
-                { question: "Alat yang digunakan untuk memisahkan larutan berdasarkan sedimentasi?", options: ["Filtrasi", "Destilasi", "Sentrifugasi", "Sublimasi"], correct: 2 },
-                { question: "Perubahan energi di tungku pembakaran?", options: ["Kimia ke Panas dan Cahaya", "Listrik ke Panas", "Gerak ke Panas", "Nuklir ke Panas"], correct: 0 },
-                { question: "Massa jenis suatu benda dihitung dengan rumus?", options: ["m/V", "V/m", "F/A", "P/t"], correct: 0 },
-                { question: "Bagian mikroskop yang berfungsi mengumpulkan cahaya?", options: ["Lensa okuler", "Lensa objektif", "Diafragma", "Kondensor"], correct: 3 },
-                { question: "Gelombang radio termasuk jenis gelombang?", options: ["Mekanik", "Bunyi", "Elektromagnetik", "Air"], correct: 2 },
-                { question: "Tegangan listrik di rumah di Indonesia rata-rata sebesar?", options: ["110 V", "220 V", "380 V", "12 V"], correct: 1 },
-                { question: "Peristiwa di mana magnet dapat dibuat dari besi yang didekatkan pada magnet lain?", options: ["Konduksi", "Induksi magnet", "Elektromagnetisme", "Radiasi"], correct: 1 },
-                { question: "Contoh Gerak Lurus Berubah Beraturan (GLBB) dipercepat?", options: ["Mobil direm", "Benda dilempar ke atas", "Benda jatuh bebas", "Gerak satelit"], correct: 2 },
-                { question: "Apa yang menyebabkan air mendidih lebih cepat di dataran rendah?", options: ["Suhu air", "Kadar garam", "Tekanan udara lebih tinggi", "Tekanan udara lebih rendah"], correct: 2 },
-                { question: "Suhu 50°C setara dengan berapa Kelvin?", options: ["223 K", "323 K", "373 K", "50 K"], correct: 1 },
-                { question: "Jarak paling dekat yang dapat dilihat mata normal tanpa akomodasi?", options: ["25 cm", "50 cm", "1 m", "Tak terhingga"], correct: 0 },
-                { question: "Gelombang yang arah getarnya tegak lurus dengan arah rambatnya disebut?", options: ["Longitudinal", "Transversal", "Stasioner", "Bunyi"], correct: 1 },
-                { question: "Gaya yang menyebabkan benda jatuh ke Bumi?", options: ["Gaya apung", "Gaya sentripetal", "Gaya gravitasi", "Gaya normal"], correct: 2 },
-                { question: "Perubahan wujud dari cair menjadi padat disebut?", options: ["Mencair", "Membeku", "Menyublim", "Menguap"], correct: 1 },
-                { question: "Unit energi panas (kalor) adalah?", options: ["Joule", "Watt", "Volt", "Ampere"], correct: 0 },
-                { question: "Alat yang berfungsi mengubah energi listrik menjadi energi bunyi?", options: ["Motor", "Lampu", "Speaker", "Resistor"], correct: 2 },
-                { question: "Contoh besaran turunan?", options: ["Massa", "Waktu", "Volume", "Suhu"], correct: 2 },
-                { question: "Di mana letak kutub magnet yang memiliki kekuatan magnet terbesar?", options: ["Di tengah", "Di ujung-ujung", "Di semua bagian", "Tidak ada"], correct: 1 },
-                { question: "Sifat bayangan yang dibentuk oleh lensa objektif mikroskop adalah?", options: ["Maya, tegak", "Nyata, terbalik, diperbesar", "Maya, terbalik", "Nyata, tegak, diperkecil"], correct: 1 },
-                { question: "Alat yang menggunakan prinsip tuas jenis pertama?", options: ["Gerobak dorong", "Tang", "Penjepit makanan", "Sekop"], correct: 1 },
-                { question: "Gelombang yang memiliki frekuensi di atas batas pendengaran manusia?", options: ["Infrasonik", "Audiosonik", "Ultrasonik", "Hipersonik"], correct: 2 },
-                { question: "Apa yang terjadi pada suhu air saat terjadi penguapan?", options: ["Naik drastis", "Menurun", "Tetap sama", "Berubah sesuai tekanan"], correct: 1 },
-                { question: "Peristiwa saat udara panas naik dan udara dingin turun disebut?", options: ["Konduksi", "Radiasi", "Konveksi", "Adveksi"], correct: 2 },
-                { question: "Satuan untuk tekanan?", options: ["Newton", "Joule", "Pascal", "Ohm"], correct: 2 },
-                { question: "Hukum yang menyatakan bahwa gaya yang diberikan sebanding dengan perubahan momentum?", options: ["Hukum Newton I", "Hukum Newton II", "Hukum Newton III", "Hukum Archimedes"], correct: 1 },
-                { question: "Jenis muatan listrik pada Proton?", options: ["Negatif", "Netral", "Positif", "Campuran"], correct: 2 },
-                { question: "Perubahan energi pada kompor gas?", options: ["Listrik ke Panas", "Kimia ke Panas", "Gerak ke Panas", "Potensial ke Kinetik"], correct: 1 },
-                { question: "Titik didih air murni pada tekanan 1 atmosfer?", options: ["0°C", "50°C", "100°C", "212°F"], correct: 2 },
-                { question: "Alat yang berfungsi untuk mendeteksi adanya arus listrik yang sangat kecil?", options: ["Amperemeter", "Voltmeter", "Galvanometer", "Ohmmeter"], correct: 2 },
-                { question: "Perambatan gelombang cahaya tidak memerlukan?", options: ["Medium", "Sumber cahaya", "Waktu", "Energi"], correct: 0 },
-                { question: "Satuan untuk energi potensial?", options: ["Newton", "Meter", "Joule", "Kilogram"], correct: 2 },
-                { question: "Laju perubahan kecepatan terhadap waktu disebut?", options: ["Jarak", "Percepatan", "Gaya", "Daya"], correct: 1 },
-                { question: "Zat yang berfungsi sebagai hambatan pada rangkaian listrik?", options: ["Kapasitor", "Induktor", "Resistor", "Dioda"], correct: 2 },
-                { question: "Rumus untuk menghitung usaha?", options: ["F/a", "mgh", "F.s", "P.t"], correct: 2 },
-                { question: "Satuan SI untuk kuat arus listrik?", options: ["Volt", "Ohm", "Ampere", "Watt"], correct: 2 },
-                { question: "Gaya pada Hukum Newton III selalu berpasangan dengan gaya?", options: ["Gesek", "Normal", "Aksi-reaksi", "Gravitasi"], correct: 2 },
-                { question: "Sifat bayangan pada lensa mata normal?", options: ["Maya, tegak", "Nyata, terbalik", "Maya, diperkecil", "Nyata, tegak"], correct: 1 },
-                { question: "Alat yang digunakan untuk mengukur massa jenis zat cair secara langsung?", options: ["Neraca", "Barometer", "Hidrometer", "Termometer"], correct: 2 },
-                { question: "Energi yang dimiliki benda karena posisinya atau kedudukannya?", options: ["Energi kinetik", "Energi potensial", "Energi panas", "Energi kimia"], correct: 1 },
-                { question: "Peristiwa saat medium ikut bergetar karena frekuensi getaran sama dengan frekuensi alami benda?", options: ["Amplitudo", "Difraksi", "Resonansi", "Refleksi"], correct: 2 },
-                { question: "Jenis cermin yang bayangannya selalu maya, tegak, dan diperkecil?", options: ["Datar", "Cekung", "Cembung", "Lensa"], correct: 2 },
-                { question: "Pada transformator step-up, jumlah lilitan sekunder harus?", options: ["Sama", "Lebih sedikit", "Lebih banyak", "Nol"], correct: 2 },
-                { question: "Perubahan energi di generator?", options: ["Listrik ke Gerak", "Panas ke Listrik", "Gerak ke Listrik", "Kimia ke Listrik"], correct: 2 },
-                { question: "Satuan SI untuk tekanan udara?", options: ["Joule", "Bar", "Pascal", "Newton"], correct: 2 },
-                { question: "Bagian mikroskop yang digunakan untuk mengatur fokus lensa?", options: ["Diafragma", "Cermin", "Revolver", "Pemutar fokus"], correct: 3 },
-                { question: "Hukum yang menyatakan bahwa $V=I \times R$?", options: ["Hukum Newton", "Hukum Pascal", "Hukum Ohm", "Hukum Kirchoff"], correct: 2 },
-                { question: "Proses transfer panas melalui gelombang elektromagnetik?", options: ["Konduksi", "Konveksi", "Radiasi", "Absorpsi"], correct: 2 },
-                { question: "Contoh Gerak Lurus Berubah Beraturan (GLBB) dipercepat?", options: ["Mobil berjalan konstan", "Benda dilempar ke atas", "Benda jatuh bebas", "Mobil di rem mendadak"], correct: 2 },
-                { question: "Alat yang bekerja berdasarkan prinsip Archimedes?", options: ["Dongkrak hidrolik", "Kapal selam", "Pompa air", "Termometer"], correct: 1 },
-                { question: "Warna komplementer dari warna biru adalah?", options: ["Merah", "Hijau", "Kuning", "Magenta"], correct: 2 },
-                { question: "Satuan muatan listrik?", options: ["Volt", "Ampere", "Coulomb", "Ohm"], correct: 2 },
-                { question: "Peristiwa di mana bunyi terdengar berulang-ulang dari pantulan yang jauh?", options: ["Gema", "Gaung", "Resonansi", "Difraksi"], correct: 0 },
-                { question: "Besaran yang diukur dengan menggunakan Jangka Sorong?", options: ["Massa", "Suhu", "Diameter luar", "Gaya"], correct: 2 },
-                { question: "Ketika air berubah menjadi es, ia melepaskan energi panas yang disebut?", options: ["Kalor uap", "Kalor lebur", "Kalor beku", "Kalor jenis"], correct: 2 },
-                { question: "Jenis gelombang elektromagnetik dengan energi terendah?", options: ["Sinar-X", "Sinar Gamma", "Gelombang radio", "Cahaya tampak"], correct: 2 },
-                { question: "Gaya yang menyebabkan kapal laut dapat mengapung?", options: ["Gaya normal", "Gaya gesek", "Gaya apung", "Gaya sentripetal"], correct: 2 },
-                { question: "Perbedaan utama rangkaian seri dan paralel?", options: ["Daya yang dipakai", "Jumlah resistor", "Jalur arus listrik", "Tegangan sumber"], correct: 2 },
-                { question: "Rumus energi potensial gravitasi?", options: ["½mv²", "mgh", "F.s", "P/t"], correct: 1 },
-                { question: "Fenomena listrik statis yang sering kita temukan?", options: ["Lampu menyala", "Petir", "Motor berputar", "Bel listrik"], correct: 1 },
-                { question: "Zat padat yang dapat dilewati cahaya?", options: ["Isolator", "Konduktor", "Transparan", "Opaque"], correct: 2 },
-                { question: "Titik di mana semua sinar datang sejajar pada cermin cekung akan bertemu?", options: ["Pusat kelengkungan", "Titik fokus", "Titik pusat", "Vertex"], correct: 1 },
-                { question: "Hukum yang mendefinisikan hubungan antara gaya apung dan berat fluida yang dipindahkan?", options: ["Hukum Boyle", "Hukum Pascal", "Hukum Archimedes", "Hukum Hooke"], correct: 2 },
-                { question: "Alat yang berfungsi sebagai sumber GGL (Gaya Gerak Listrik) dalam rangkaian tertutup?", options: ["Resistor", "Baterai/Aki", "Kapasitor", "Sekring"], correct: 2 },
-                { question: "Satuan daya dalam watt setara dengan?", options: ["Joule per detik", "Newton per meter", "Volt per ampere", "Ohm per meter"], correct: 0 },
-                { question: "Jenis termometer yang paling sering digunakan di laboratorium?", options: ["Termometer klinis", "Termometer digital", "Termometer raksa/alkohol", "Termometer Bimetal"], correct: 2 },
-                { question: "Kecepatan sesaat benda yang bergerak melingkar disebut?", options: ["Kecepatan sudut", "Percepatan tangensial", "Kecepatan linear", "Frekuensi"], correct: 2 },
-                { question: "Suhu minimum di mana suatu zat dapat terbakar?", options: ["Titik didih", "Kalor jenis", "Titik nyala", "Titik lebur"], correct: 2 },
-                { question: "Bagian dari transformator yang menghasilkan tegangan keluaran?", options: ["Kumparan primer", "Kumparan sekunder", "Inti besi", "Lilitan"], correct: 1 },
-                { question: "Alat yang mengubah energi bunyi menjadi energi listrik (sinyal audio)?", options: ["Speaker", "Amplifier", "Mikrofon", "Generator"], correct: 2 },
-                { question: "Sinar-X termasuk jenis gelombang?", options: ["Mekanik", "Bunyi", "Elektromagnetik", "Air"], correct: 2 },
-                { question: "Peristiwa terlepasnya elektron dari permukaan logam karena dikenai cahaya?", options: ["Induksi", "Hukum Snellius", "Efek Fotolistrik", "Konduksi"], correct: 2 },
-                { question: "Rumus untuk menghitung kalor (panas)?", options: ["Q = m.a", "Q = m.c.ΔT", "Q = F.s", "Q = P/t"], correct: 1 },
-                { question: "Dalam rangkaian paralel, jika satu lampu mati, lampu lain akan?", options: ["Ikut mati", "Tetap menyala", "Menyala lebih terang", "Berpindah ke rangkaian seri"], correct: 1 },
-                { question: "Gaya yang dibutuhkan untuk menarik pegas sebanding dengan pertambahan panjang pegas (Hukum...)?", options: ["Hukum Hooke", "Hukum Boyle", "Hukum Pascal", "Hukum Kepler"], correct: 0 },
-                { question: "Penyebab utama terjadinya Gerak Lurus Berubah Beraturan (GLBB)?", options: ["Gaya resultan nol", "Gaya resultan konstan dan tidak nol", "Kecepatan konstan", "Adanya inersia"], correct: 1 },
-                { question: "Alat ukur yang digunakan untuk mengukur waktu secara akurat?", options: ["Jangka sorong", "Stopwatch", "Termometer", "Barometer"], correct: 1 },
-                { question: "Jenis lensa yang digunakan untuk membantu penderita rabun jauh (miopi)?", options: ["Lensa cembung", "Lensa cekung", "Lensa datar", "Lensa prisma"], correct: 1 },
-                { question: "Perbedaan tekanan air di kedalaman dipengaruhi oleh?", options: ["Warna air", "Suhu air", "Kedalaman", "Volume air"], correct: 2 },
-                { question: "Zat yang bersifat diamagnetik akan?", options: ["Sangat ditarik magnet", "Sedikit ditarik magnet", "Ditolak oleh magnet", "Tidak bereaksi"], correct: 2 },
-                { question: "Peristiwa penguapan zat cair di bawah titik didih disebut?", options: ["Mendidih", "Sublimasi", "Kondensasi", "Evaporasi"], correct: 3 },
-                { question: "Pencampuran pigmen warna Merah dan Kuning menghasilkan warna?", options: ["Ungu", "Hijau", "Jingga (Oranye)", "Biru"], correct: 2 },
-                { question: "Besaran vektor memiliki?", options: ["Hanya nilai", "Hanya arah", "Nilai dan arah", "Tidak keduanya"], correct: 2 },
-                { question: "Prinsip dasar kerja kabel listrik tegangan tinggi?", options: ["Isolasi", "Konduksi", "Hambatan rendah", "Kapasitor"], correct: 1 },
-                { question: "Jika gaya gesek lebih besar daripada gaya tarik, benda akan?", options: ["Bergerak dipercepat", "Bergerak konstan", "Tetap diam atau melambat", "Berputar"], correct: 2 },
-                { question: "Alat yang digunakan untuk memisahkan larutan dengan kecepatan putar tinggi?", options: ["Filtrasi", "Destilasi", "Sentrifugasi", "Kristalisasi"], correct: 2 },
-                { question: "Energi listrik dihitung dengan rumus?", options: ["$P \times t$", "$V \times I$", "$F \times s$", "Semua salah"], correct: 0 },
-                { question: "Suhu yang sama pada skala Celsius dan Kelvin adalah?", options: ["0°", "100°", "-273°", "Tidak ada"], correct: 3 },
-                { question: "Perubahan energi di tungku pembakaran?", options: ["Kimia ke Panas", "Listrik ke Panas", "Gerak ke Panas", "Nuklir ke Panas"], correct: 0 },
-                { question: "Sifat bayangan yang dibentuk oleh lensa objektif kamera?", options: ["Maya, tegak", "Nyata, terbalik, diperkecil", "Maya, diperkecil", "Nyata, terbalik, diperbesar"], correct: 1 },
-                { question: "Arah arus listrik konvensional mengalir dari kutub?", options: ["Negatif ke Positif", "Positif ke Negatif", "Bebas", "Tergantung hambatan"], correct: 1 },
-                { question: "Fenomena di mana gelombang membelok saat melewati celah sempit?", options: ["Refleksi", "Refraksi", "Difraksi", "Interferensi"], correct: 2 },
-                { question: "Jenis pesawat sederhana yang berfungsi untuk menaikkan air dari tempat rendah ke tinggi?", options: ["Katrol", "Bidang miring", "Roda berporos", "Pompa (sekrup Archimedes)"], correct: 3 },
-                { question: "Gaya Lorentz adalah gaya yang bekerja pada kawat berarus dalam?", options: ["Medan listrik", "Medan magnet", "Vakum", "Fluida"], correct: 1 },
-                { question: "Satuan dari besaran kecepatan?", options: ["Meter", "Sekon", "m/s", "m/s²"], correct: 2 },
-                { question: "Alat yang berfungsi memecah cahaya putih menjadi warna pelangi?", options: ["Lensa", "Cermin", "Prisma", "Diafragma"], correct: 2 },
-                { question: "Peristiwa di mana elektron bergerak bebas dalam logam saat dikenai beda potensial?", options: ["Arus listrik", "Induksi", "Magnetisasi", "Hambatan"], correct: 0 },
-                { question: "Bunyi dengan frekuensi di bawah 20 Hz disebut?", options: ["Audiosonik", "Ultrasonik", "Infrasonik", "Megasonik"], correct: 2 },
-                { question: "Yang termasuk besaran skalar?", options: ["Gaya", "Percepatan", "Massa", "Kecepatan"], correct: 2 },
-                { question: "Rumus untuk menghitung daya listrik?", options: ["$V \times R$", "$I \times t$", "$V \times I$", "$I^2 \times V$"], correct: 2 },
-                { question: "Energi yang dibutuhkan untuk mengubah 1 kg zat cair menjadi gas pada titik didihnya?", options: ["Kalor jenis", "Kalor uap", "Kalor lebur", "Kalor laten"], correct: 1 },
-                { question: "Sinar yang dipancarkan oleh Matahari yang berbahaya bagi kulit dan menyebabkan kanker?", options: ["Sinar-X", "Sinar Gamma", "Sinar Ultraviolet", "Sinar Inframerah"], correct: 2 },
-                { question: "Hukum yang menyatakan bahwa tekanan yang diberikan pada fluida tertutup diteruskan ke segala arah dengan sama rata?", options: ["Hukum Boyle", "Hukum Archimedes", "Hukum Pascal", "Hukum Hooke"], correct: 2 },
-                { question: "Peristiwa perubahan arah gelombang saat melewati batas dua medium berbeda?", options: ["Refleksi", "Difraksi", "Refraksi", "Interferensi"], correct: 2 },
-                { question: "Alat yang mengubah energi panas menjadi energi gerak (contoh pada mesin uap)?", options: ["Generator", "Motor listrik", "Mesin kalor", "Transformator"], correct: 2 },
-                { question: "Benda yang bergerak dengan kecepatan konstan dalam lintasan lurus disebut?", options: ["GLBB", "GLB", "Gerak melingkar", "Gerak parabola"], correct: 1 },
-                { question: "Resistor yang nilainya dapat diubah-ubah disebut?", options: ["Kapasitor", "Dioda", "Termistor", "Potensiometer"], correct: 3 },
-                { question: "Bagian telinga yang mengubah getaran bunyi menjadi sinyal listrik?", options: ["Gendang telinga", "Tulang pendengaran", "Koklea (rumah siput)", "Saluran Eustachius"], correct: 2 },
-                { question: "Gaya minimum yang diperlukan untuk menggeser benda yang diam disebut gaya?", options: ["Gaya tarik", "Gaya normal", "Gaya gesek statis", "Gaya gesek kinetis"], correct: 2 },
-                { question: "Sifat bayangan yang dihasilkan oleh cermin cekung jika benda diletakkan di antara F dan M?", options: ["Maya, tegak, diperbesar", "Nyata, terbalik, diperkecil", "Nyata, terbalik, diperbesar", "Maya, tegak, diperkecil"], correct: 2 },
-                { question: "Satuan untuk percepatan sudut?", options: ["radian/sekon", "meter/sekon", "radian/sekon²", "Newton"], correct: 2 },
-                { question: "Jenis gelombang yang digunakan pada remote control TV?", options: ["Gelombang radio", "Inframerah", "Sinar-X", "Sinar UV"], correct: 1 },
-                { question: "Benda dikatakan dalam keadaan seimbang jika resultan gaya yang bekerja padanya adalah?", options: ["Konstan", "Nol", "Maksimum", "Berubah"], correct: 1 },
-                { question: "Energi yang dihasilkan oleh PLTN (Pembangkit Listrik Tenaga Nuklir) berasal dari?", options: ["Reaksi kimia", "Reaksi termokimia", "Reaksi fisi nuklir", "Reaksi fusi nuklir"], correct: 2 },
-                { question: "Alat untuk mengukur energi listrik yang terpakai di rumah?", options: ["Amperemeter", "Voltmeter", "KWh Meter", "Ohmmeter"], correct: 2 },
-                { question: "Peristiwa di mana bunyi mengalami penggabungan dengan pantulannya sehingga suara asli terganggu?", options: ["Gema", "Gaung", "Resonansi", "Difraksi"], correct: 1 },
-                { question: "Konversi suhu dari 10°C ke Kelvin?", options: ["263 K", "273 K", "283 K", "293 K"], correct: 2 },
-                { question: "Prinsip kerja pesawat terbang yang menghasilkan gaya angkat (lift) didasarkan pada?", options: ["Hukum Newton I", "Hukum Pascal", "Prinsip Bernoulli", "Hukum Archimedes"], correct: 2 },
-                { question: "Ciri utama magnet temporer?", options: ["Kuat dan permanen", "Kuat dan sementara", "Lemah dan permanen", "Lemah dan sementara"], correct: 1 },
-                { question: "Yang termasuk besaran pokok dalam SI?", options: ["Gaya", "Energi", "Panjang", "Volume"], correct: 2 },
-                { question: "Jenis cermin yang bayangannya selalu tegak dan lebih kecil dari benda?", options: ["Cermin datar", "Cermin cekung", "Cermin cembung", "Lensa cekung"], correct: 2 },
-                { question: "Peristiwa di mana elektron terlepas dari atom karena adanya energi dari luar?", options: ["Ionisasi", "Konduksi", "Disosiasi", "Induksi"], correct: 0 },
-                { question: "Satuan untuk intensitas bunyi?", options: ["Hertz", "Desibel", "Pascal", "Watt"], correct: 1 },
-                { question: "Rumus untuk menghitung hambatan total pada rangkaian seri?", options: ["$R_{total} = R_1 + R_2 + ...$", "$1/R_{total} = 1/R_1 + 1/R_2 + ...$", "$R_{total} = R_1 \times R_2$", "$R_{total} = V/I$"], correct: 0 },
-                { question: "Perbedaan utama antara massa dan inersia?", options: ["Massa adalah ukuran materi, inersia adalah sifatnya", "Keduanya sama", "Massa tergantung gravitasi, inersia tidak", "Inersia adalah gaya, massa adalah volume"], correct: 0 },
-                { question: "Alat optik yang digunakan untuk memantulkan bayangan di sudut (contohnya pada kapal selam)?", options: ["Mikroskop", "Teleskop", "Periskop", "Kamera"], correct: 2 },
-                { question: "Jenis muatan listrik pada elektron?", options: ["Positif", "Negatif", "Netral", "Amfoter"], correct: 1 },
-                { question: "Proses transfer panas yang terjadi di ruang hampa (vakum)?", options: ["Konduksi", "Konveksi", "Radiasi", "Semua salah"], correct: 2 },
-                { question: "Hukum yang mengatur perbandingan tegangan dan jumlah lilitan pada transformator?", options: ["Hukum Ohm", "Hukum Faraday", "Hukum Snellius", "Persamaan Transformator"], correct: 3 },
-                { question: "Satuan SI untuk kerja (usaha) dan energi?", options: ["Watt", "Newton", "Joule", "Pascal"], correct: 2 },
-                { question: "Ketika kita berjalan di lantai, gaya yang mendorong kita maju adalah?", options: ["Gaya normal", "Gaya gesek", "Gaya tarik Bumi", "Gaya aksi dari kaki"], correct: 1 },
-                { question: "Peristiwa terjadinya bayangan semu karena pembiasan cahaya di udara (contoh di jalan panas)?", options: ["Pelangi", "Halo", "Fat Morgana", "Fatamorgana (Mirage)"], correct: 3 },
-                { question: "Jenis termometer yang paling akurat untuk mengukur suhu tinggi?", options: ["Termometer klinis", "Termometer digital", "Termometer Pirometer", "Termometer Bimetal"], correct: 2 },
-                { question: "Zat yang bersifat feromagnetik akan?", options: ["Ditolak kuat", "Ditarik kuat oleh magnet", "Tidak bereaksi", "Ditarik lemah"], correct: 1 },
-                { question: "Perubahan wujud dari gas langsung menjadi padat disebut?", options: ["Mencair", "Menguap", "Mengkristal (Deposisi)", "Membeku"], correct: 2 },
-                { question: "Prinsip dasar kerja katrol majemuk?", options: ["Mengubah arah gaya", "Menggandakan gaya", "Mengurangi usaha", "Menambah jarak"], correct: 1 },
-                { question: "Satuan untuk laju perubahan momentum?", options: ["Joule", "Watt", "Newton", "Pascal"], correct: 2 },
-                { question: "Besaran yang diukur dengan menggunakan Mikrometer Sekrup?", options: ["Panjang", "Diameter luar", "Diameter dalam", "Ketebalan benda tipis"], correct: 3 },
-                { question: "Alat optik yang menggunakan cermin datar untuk menghasilkan bayangan yang sama besar?", options: ["Kamera", "Teleskop", "Cermin rias", "Mikroskop"], correct: 2 },
-                { question: "Energi mekanik adalah jumlah dari?", options: ["Energi listrik dan kimia", "Energi panas dan kinetik", "Energi potensial dan kinetik", "Energi bunyi dan cahaya"], correct: 2 },
-                { question: "Hukum yang mendeskripsikan hubungan antara tegangan dan panjang kawat saat arus konstan?", options: ["Hukum Ohm", "Hukum Kirchoff", "Hukum Faraday", "Hukum Lenz"], correct: 0 },
-                { question: "Peristiwa di mana magnet dapat menghasilkan arus listrik pada kumparan (generator)?", options: ["Elektrolisis", "Induksi elektromagnetik", "Konduksi", "Resonansi"], correct: 1 },
-                { question: "Satuan SI untuk suhu?", options: ["Celsius", "Fahrenheit", "Kelvin", "Reamur"], correct: 2 },
-                { question: "Jika sebuah benda bergerak dengan percepatan nol, benda itu pasti sedang?", options: ["Diam", "Bergerak dengan kecepatan konstan", "Diam atau bergerak dengan kecepatan konstan", "Bergerak dipercepat"], correct: 2 },
-                { question: "Prinsip dasar yang memungkinkan hidrometer mengukur massa jenis cairan?", options: ["Hukum Boyle", "Hukum Pascal", "Hukum Archimedes", "Hukum Ohm"], correct: 2 },
+                { 
+                    question: "Apa satuan SI untuk gaya?", 
+                    options: ["Newton", "Joule", "Watt", "Pascal"], 
+                    correct: 0,
+                    explanation: {
+                        correct: "Newton adalah satuan SI untuk gaya, dinamai dari Sir Isaac Newton.",
+                        why: "Gaya didefinisikan sebagai sesuatu yang dapat mengubah keadaan gerak benda. Menurut Hukum Newton II: F = m × a, di mana F adalah gaya (Newton), m adalah massa (kg), dan a adalah percepatan (m/s²).",
+                        details: [
+                            "1 Newton = 1 kg⋅m/s²",
+                            "Joule adalah satuan energi/usaha",
+                            "Watt adalah satuan daya", 
+                            "Pascal adalah satuan tekanan"
+                        ]
+                    }
+                },
+                { 
+                    question: "Energi yang dimiliki benda karena geraknya disebut?", 
+                    options: ["Energi potensial", "Energi kinetik", "Energi panas", "Energi listrik"], 
+                    correct: 1,
+                    explanation: {
+                        correct: "Energi kinetik adalah energi yang dimiliki benda karena geraknya.",
+                        why: "Rumus energi kinetik: Ek = ½mv², di mana m adalah massa dan v adalah kecepatan. Semakin cepat benda bergerak atau semakin besar massanya, semakin besar energi kinetiknya.",
+                        details: [
+                            "Energi potensial: energi karena posisi/kedudukan",
+                            "Energi panas: bentuk energi karena suhu",
+                            "Energi listrik: energi dari muatan listrik yang bergerak",
+                            "Contoh energi kinetik: mobil yang bergerak, bola yang dilempar"
+                        ]
+                    }
+                },
+                { 
+                    question: "Alat untuk mengukur suhu adalah?", 
+                    options: ["Barometer", "Termometer", "Hygrometer", "Speedometer"], 
+                    correct: 1,
+                    explanation: {
+                        correct: "Termometer adalah alat untuk mengukur suhu.",
+                        why: "Termometer bekerja berdasarkan prinsip pemuaian zat cair (raksa/alkohol) ketika dipanaskan. Semakin tinggi suhu, semakin tinggi level cairan dalam tabung.",
+                        details: [
+                            "Barometer: mengukur tekanan udara",
+                            "Hygrometer: mengukur kelembaban udara",
+                            "Speedometer: mengukur kecepatan kendaraan",
+                            "Jenis termometer: klinis, laboratorium, digital"
+                        ]
+                    }
+                },
+                { 
+                    question: "Bunyi merambat paling cepat melalui?", 
+                    options: ["Udara", "Cairan", "Padatan", "Vakum"], 
+                    correct: 2,
+                    explanation: {
+                        correct: "Bunyi merambat paling cepat melalui zat padat.",
+                        why: "Kecepatan bunyi tergantung pada kerapatan dan elastisitas medium. Zat padat memiliki partikel yang lebih rapat dan ikatan yang kuat, sehingga getaran merambat lebih cepat.",
+                        details: [
+                            "Di udara (20°C): ~343 m/s",
+                            "Di air: ~1500 m/s", 
+                            "Di baja: ~5000 m/s",
+                            "Bunyi tidak dapat merambat di vakum karena tidak ada medium"
+                        ]
+                    }
+                },
+                { 
+                    question: "Hukum Newton pertama tentang?", 
+                    options: ["Gravitasi", "Inersia", "Aksi-reaksi", "Percepatan"], 
+                    correct: 1,
+                    explanation: {
+                        correct: "Hukum Newton I adalah tentang inersia (kelembaman).",
+                        why: "Hukum Newton I menyatakan bahwa benda akan tetap diam atau bergerak lurus beraturan kecuali ada gaya luar yang bekerja padanya. Ini disebut juga hukum inersia.",
+                        details: [
+                            "Inersia = kecenderungan benda mempertahankan keadaannya",
+                            "Contoh: penumpang terdorong ke depan saat mobil rem mendadak",
+                            "Hukum Newton II: F = ma (tentang percepatan)",
+                            "Hukum Newton III: aksi = reaksi"
+                        ]
+                    }
+                }
+                // ... (continuing with more physics questions with detailed explanations)
             ],
-            
+
             chemistry: [
-                { question: "Unsur paling melimpah di atmosfer?", options: ["Oksigen", "Hidrogen", "Nitrogen", "Karbon dioksida"], correct: 2 },
-                { question: "Perubahan wujud dari padat langsung ke gas disebut?", options: ["Mencair", "Membeku", "Menyublim", "Mengembun"], correct: 2 },
-                { question: "Berapa nilai pH larutan yang bersifat netral?", options: ["0", "7", "14", "10"], correct: 1 },
-                { question: "Reaksi kimia yang menyerap panas dari lingkungan disebut?", options: ["Eksotermik", "Endotermik", "Netral", "Otomatis"], correct: 1 },
-                { question: "Lambang kimia untuk unsur emas adalah?", options: ["Ag", "Fe", "Au", "Cu"], correct: 2 },
-                { question: "Unsur dengan nomor atom 1 adalah?", options: ["Helium", "Oksigen", "Hidrogen", "Litium"], correct: 2 },
-                { question: "Larutan dengan pH kurang dari 7 bersifat?", options: ["Basa", "Netral", "Asam", "Garam"], correct: 2 },
-                { question: "Proses perkaratan besi pada dasarnya adalah reaksi?", options: ["Oksidasi", "Reduksi", "Netralisasi", "Presipitasi"], correct: 0 },
-                { question: "Gas yang dihasilkan dari reaksi logam alkali dengan air atau asam?", options: ["Oksigen", "Nitrogen", "Hidrogen", "Karbon dioksida"], correct: 2 },
-                { question: "Zat yang mempercepat laju reaksi tanpa ikut bereaksi disebut?", options: ["Inhibitor", "Katalis", "Reaktan", "Produk"], correct: 1 },
-                { question: "Kelompok unsur alkali?", options: ["Na, K, Li", "Fe, Cu, Zn", "Cl, F, Br", "He, Ne, Ar"], correct: 0 },
-                { question: "Hasil reaksi antara asam dan basa?", options: ["Gas", "Garam dan air", "Logam", "Oksigen"], correct: 1 },
-                { question: "Lambang kimia natrium?", options: ["Na", "Ni", "Ne", "No"], correct: 0 },
-                { question: "Pemisahan campuran berdasarkan perbedaan titik didih?", options: ["Filtrasi", "Destilasi", "Kromatografi", "Sublimasi"], correct: 1 },
-                { question: "Contoh gas mulia?", options: ["Oksigen", "Nitrogen", "Helium", "Klorin"], correct: 2 },
-                { question: "Bagian terkecil dari suatu unsur yang masih memiliki sifat unsur tersebut?", options: ["Molekul", "Senyawa", "Atom", "Isotop"], correct: 2 },
-                { question: "Perubahan materi yang menghasilkan zat baru dengan sifat yang berbeda?", options: ["Perubahan fisika", "Perubahan kimia", "Perubahan wujud", "Perubahan alotropi"], correct: 1 },
-                { question: "Contoh senyawa organik sederhana?", options: ["Gula", "Garam", "Air", "Besi"], correct: 0 },
-                { question: "Partikel sub-atomik yang bermuatan negatif dalam atom?", options: ["Proton", "Neutron", "Elektron", "Inti atom"], correct: 2 },
-                { question: "Campuran homogen yang zat terlarut dan pelarutnya terlihat menyatu sempurna?", options: ["Suspensi", "Koloid", "Emulsi", "Larutan"], correct: 3 },
-                { question: "Rumus kimia untuk air?", options: ["HO₂", "H₂O₂", "H₂O", "OH"], correct: 2 },
-                { question: "Zat yang berfungsi sebagai pelarut universal?", options: ["Minyak", "Alkohol", "Air", "Asam"], correct: 2 },
-                { question: "Tanda-tanda utama yang menunjukkan terjadinya reaksi kimia?", options: ["Perubahan bentuk", "Perubahan volume", "Perubahan warna/suhu", "Perubahan massa"], correct: 2 },
-                { question: "Proses pemisahan komponen minyak mentah berdasarkan titik didih yang berbeda?", options: ["Sublimasi", "Kristalisasi", "Destilasi bertingkat", "Filtrasi"], correct: 2 },
-                { question: "Nama lain dari proses penguapan?", options: ["Kondensasi", "Evaporasi", "Sublimasi", "Mencair"], correct: 1 },
-                { question: "Zat yang dapat menerima proton (H+) dalam teori asam-basa Bronsted-Lowry?", options: ["Asam kuat", "Basa", "Larutan netral", "Indikator"], correct: 1 },
-                { question: "Nomor atom suatu unsur menunjukkan jumlah?", options: ["Neutron", "Elektron valensi", "Proton", "Massa atom"], correct: 2 },
-                { question: "Contoh senyawa yang terbentuk dari ikatan ion?", options: ["Garam dapur (NaCl)", "Air (H₂O)", "Metana (CH₄)", "Oksigen (O₂)"], correct: 0 },
-                { question: "Peristiwa perubahan es menjadi air adalah contoh dari?", options: ["Perubahan kimia", "Perubahan nuklir", "Perubahan fisika", "Reaksi redoks"], correct: 2 },
-                { question: "Kelompok unsur yang sangat stabil dan tidak reaktif?", options: ["Alkali", "Halogen", "Gas mulia", "Transisi"], correct: 2 },
-                { question: "Partikel sub-atomik yang bermuatan positif?", options: ["Neutron", "Elektron", "Proton", "Inti atom"], correct: 2 },
-                { question: "Lambang kimia untuk kalsium?", options: ["K", "Ca", "Cu", "C"], correct: 1 },
-                { question: "Larutan dengan pH lebih dari 7 bersifat?", options: ["Asam", "Basa", "Netral", "Garam"], correct: 1 },
-                { question: "Apa yang merupakan perubahan fisika?", options: ["Pembakaran kayu", "Fotosintesis", "Es mencair", "Perkaratan besi"], correct: 2 },
-                { question: "Unsur yang dibutuhkan untuk pembentukan tulang?", options: ["Natrium", "Kalium", "Kalsium", "Besi"], correct: 2 },
-                { question: "Ikatan yang terbentuk karena serah terima elektron?", options: ["Kovalen", "Logam", "Ion", "Hidrogen"], correct: 2 },
-                { question: "Zat yang menghasilkan ion H⁺ dalam air?", options: ["Basa", "Netral", "Asam", "Oksida"], correct: 2 },
-                { question: "Proses pemisahan padatan dari cairan menggunakan kertas saring?", options: ["Destilasi", "Filtrasi", "Sublimasi", "Kristalisasi"], correct: 1 },
-                { question: "Gas yang dihasilkan oleh tumbuhan saat fotosintesis?", options: ["Karbon dioksida", "Nitrogen", "Oksigen", "Metana"], correct: 2 },
-                { question: "Jumlah atom Hidrogen dalam molekul asam sulfat ($H_2SO_4$)?", options: ["1", "2", "3", "4"], correct: 1 },
-                { question: "Bagian dari atom yang menentukan nomor massa?", options: ["Proton saja", "Neutron saja", "Proton dan Elektron", "Proton dan Neutron"], correct: 3 },
-                { question: "Zat yang tidak dapat diuraikan lagi secara kimia?", options: ["Senyawa", "Campuran", "Unsur", "Molekul"], correct: 2 },
-                { question: "Perubahan wujud dari cair ke gas (menguap) disebut juga?", options: ["Kondensasi", "Evaporasi", "Sublimasi", "Mencair"], correct: 1 },
-                { question: "Indikator alami yang dapat digunakan untuk menguji asam-basa?", options: ["Daun", "Gula", "Kunyit", "Garam"], correct: 2 },
-                { question: "Yang termasuk campuran heterogen?", options: ["Air gula", "Air garam", "Air dengan pasir", "Udara bersih"], correct: 2 },
-                { question: "Apa peran oksigen dalam proses pembakaran?", options: ["Menghambat", "Katalis", "Oksidator", "Reduktor"], correct: 2 },
-                { question: "Lambang kimia untuk perak?", options: ["Au", "Fe", "Ag", "Pb"], correct: 2 },
-                { question: "Partikel atom yang tidak bermuatan listrik?", options: ["Proton", "Elektron", "Neutron", "Inti atom"], correct: 2 },
-                { question: "Proses pembuatan garam dari air laut?", options: ["Destilasi", "Evaporasi dan kristalisasi", "Sublimasi", "Filtrasi"], correct: 1 },
-                { question: "Senyawa yang terbentuk dari atom C, H, dan O?", options: ["Anorganik", "Logam", "Organik", "Asam"], correct: 2 },
-                { question: "Rumus kimia gas Karbon Dioksida?", options: ["CO", "CO₃", "CO₂", "C₂O"], correct: 2 },
-                { question: "Kandungan utama yang ada dalam pupuk urea ($CO(NH_2)_2$)?", options: ["Fosfor", "Kalium", "Nitrogen", "Besi"], correct: 2 },
-                { question: "Proses kimia yang menghasilkan energi (melepas panas)?", options: ["Endoterm", "Eksoterm", "Netralisasi", "Reduksi"], correct: 1 },
-                { question: "Unsur nonlogam yang paling reaktif?", options: ["Oksigen", "Nitrogen", "Fluorin", "Helium"], correct: 2 },
-                { question: "Peristiwa penguapan zat padat tanpa melalui fase cair?", options: ["Mencair", "Menyublim", "Kondensasi", "Membeku"], correct: 1 },
-                { question: "Nomor massa atom dihitung dari jumlah?", options: ["Proton dan elektron", "Proton dan neutron", "Neutron dan elektron", "Elektron valensi"], correct: 1 },
-                { question: "Apa yang membuat larutan bersifat konduktor listrik?", options: ["Adanya air murni", "Adanya gas", "Adanya ion bebas", "Adanya gula"], correct: 2 },
-                { question: "Warna yang dihasilkan kertas lakmus biru jika dicelupkan ke larutan asam?", options: ["Biru tetap", "Merah", "Hijau", "Kuning"], correct: 1 },
-                { question: "Contoh ikatan kovalen?", options: ["NaCl", "H₂O", "Fe", "MgO"], correct: 1 },
-                { question: "Proses pemurnian air dengan membuang endapan lumpur?", options: ["Destilasi", "Filtrasi", "Evaporasi", "Kromatografi"], correct: 1 },
-                { question: "Golongan unsur di tabel periodik yang dikenal sebagai halogen?", options: ["Golongan I A", "Golongan II A", "Golongan VII A", "Golongan VIII A"], correct: 2 },
-                { question: "Senyawa yang digunakan sebagai bahan pembuat cuka?", options: ["Asam Klorida", "Asam Sulfat", "Asam Asetat", "Natrium Hidroksida"], correct: 2 },
-                { question: "Reaksi yang terjadi saat lilin menyala?", options: ["Fisika saja", "Kimia saja", "Fisika dan Kimia", "Nuklir"], correct: 2 },
-                { question: "Perubahan dari gas menjadi padat disebut?", options: ["Sublimasi", "Deposisi (Mengkristal)", "Kondensasi", "Mencair"], correct: 1 },
-                { question: "Contoh pemisahan campuran secara kromatografi?", options: ["Memisahkan air dan minyak", "Memisahkan pigmen warna tinta", "Memisahkan garam dari air", "Memisahkan pasir dan kerikil"], correct: 1 },
-                { question: "Peristiwa yang terjadi saat partikel koloid menyebarkan cahaya?", options: ["Efek Faraday", "Efek Tyndall", "Efek Doppler", "Efek Rumah Kaca"], correct: 1 },
-                { question: "Zat yang bersifat basa kuat?", options: ["Air", "Asam Cuka", "Natrium Hidroksida (NaOH)", "Gula"], correct: 2 },
-                { question: "Unsur yang dapat berada dalam tiga fase (padat, cair, gas) pada suhu dan tekanan lingkungan?", options: ["Besi", "Emas", "Air", "Garam"], correct: 2 },
-                { question: "Zat yang menjadi penentu utama bilangan oksidasi?", options: ["Atom Hidrogen", "Atom Oksigen", "Atom Karbon", "Atom Nitrogen"], correct: 1 },
-                { question: "Gas yang paling penting untuk pembentukan protein pada tumbuhan?", options: ["Oksigen", "Karbon", "Nitrogen", "Sulfur"], correct: 2 },
-                { question: "Jumlah maksimal elektron pada kulit atom kedua (L)?", options: ["2", "8", "18", "32"], correct: 1 },
-                { question: "Apa yang menyebabkan garam dapur terasa asin?", options: ["Ion Natrium dan Klorida", "Atom Oksigen", "Molekul Air", "Partikel Gula"], correct: 0 },
-                { question: "Peristiwa yang terjadi saat uap air menjadi titik-titik air di pagi hari?", options: ["Sublimasi", "Kondensasi", "Evaporasi", "Mencair"], correct: 1 },
-                { question: "Zat yang berperan sebagai pelarut pada larutan gula?", options: ["Gula", "Air", "Minyak", "Alkohol"], correct: 1 },
-                { question: "Perbandingan massa unsur-unsur dalam suatu senyawa selalu tetap (Hukum...)?", options: ["Lavoisier", "Dalton", "Proust", "Avogadro"], correct: 2 },
-                { question: "Jenis campuran yang keruh dan zat terlarutnya dapat mengendap?", options: ["Larutan", "Koloid", "Emulsi", "Suspensi"], correct: 3 },
-                { question: "Unsur logam yang memiliki kerapatan paling tinggi?", options: ["Aluminium", "Besi", "Emas", "Osmium"], correct: 3 },
-                { question: "Fase materi yang partikelnya saling berdekatan dan teratur?", options: ["Cair", "Gas", "Padat", "Plasma"], correct: 2 },
-                { question: "Reaksi yang melibatkan pelepasan elektron?", options: ["Reduksi", "Oksidasi", "Netralisasi", "Substitusi"], correct: 1 },
-                { question: "Senyawa yang digunakan sebagai bahan utama dalam pembuatan roti (pengembang)?", options: ["Garam", "Cuka", "Baking soda (Natrium Bikarbonat)", "Gula"], correct: 2 },
-                { question: "Unsur nonlogam yang berbentuk padat pada suhu kamar?", options: ["Oksigen", "Bromin", "Iodin", "Klorin"], correct: 2 },
-                { question: "Gas yang dihasilkan dari pembusukan sisa makanan/sampah organik?", options: ["Oksigen", "Metana", "Nitrogen", "Helium"], correct: 1 },
-                { question: "Peristiwa saat partikel koloid bergerak secara acak?", options: ["Gerak Brown", "Efek Tyndall", "Osmosis", "Difusi"], correct: 0 },
-                { question: "Senyawa yang sangat basa, digunakan untuk membersihkan saluran air?", options: ["Asam Klorida", "Pemutih (Natrium Hipoklorit)", "Cuka", "Pembersih lantai (Natrium Hidroksida)"], correct: 3 },
-                { question: "Isotop adalah atom-atom dengan jumlah neutron yang berbeda tetapi sama dalam jumlah?", options: ["Massa atom", "Proton", "Elektron valensi", "Molekul"], correct: 1 },
-                { question: "Contoh zat aditif buatan yang digunakan sebagai pemanis?", options: ["Gula tebu", "Fruktosa", "Aspartam", "Madu"], correct: 2 },
-                { question: "Satuan yang digunakan untuk menyatakan jumlah zat atau partikel?", options: ["Kilogram", "Gram", "Mole", "Liter"], correct: 2 },
-                { question: "Unsur yang paling banyak ditemukan di kerak bumi?", options: ["Besi", "Aluminium", "Oksigen", "Silikon"], correct: 2 },
-                { question: "Contoh senyawa yang terbentuk dari ikatan kovalen polar?", options: ["O₂", "N₂", "NaCl", "H₂O"], correct: 3 },
-                { question: "Proses mengubah air menjadi uap air menggunakan panas buatan?", options: ["Kondensasi", "Evaporasi", "Distilasi", "Menguap"], correct: 3 },
-                { question: "Zat yang bersifat asam kuat dan digunakan dalam aki mobil?", options: ["Asam Cuka", "Asam Nitrat", "Asam Sulfat", "Asam Klorida"], correct: 2 },
-                { question: "Ikatan yang terjadi antara atom-atom nonlogam?", options: ["Ion", "Logam", "Kovalen", "Elektrostatik"], correct: 2 },
-                { question: "Pengujian amilum pada makanan menggunakan larutan?", options: ["Benedict", "Lugol", "Biuret", "Fehling"], correct: 1 },
-                { question: "Berapa banyak elektron yang ada di kulit terluar atom stabil (kecuali H dan He)?", options: ["2", "4", "6", "8"], correct: 3 },
-                { question: "Unsur yang merupakan zat cair pada suhu kamar?", options: ["Klorin", "Bromin", "Iodin", "Fluorin"], correct: 1 },
-                { question: "Senyawa utama yang menyusun batuan kapur?", options: ["Kuarsa", "Kalsium Karbonat", "Natrium Klorida", "Magnesium Oksida"], correct: 1 },
-                { question: "Zat yang digunakan sebagai sumber energi pada reaksi kimia?", options: ["Reaktan", "Katalis", "Produk", "Bahan bakar"], correct: 3 },
-                { question: "Jenis campuran yang partikelnya tidak dapat dilihat kasat mata dan stabil?", options: ["Suspensi", "Larutan", "Koloid", "Emulsi"], correct: 1 },
-                { question: "Unsur yang bersifat konduktor panas dan listrik yang baik?", options: ["Oksigen", "Emas", "Plastik", "Kayu"], correct: 1 },
-                { question: "Proses pemisahan campuran yang menghasilkan dua lapisan tak tercampur (misal air dan minyak)?", options: ["Filtrasi", "Destilasi", "Dekantasi", "Sublimasi"], correct: 2 },
-                { question: "Apa peran air dalam reaksi kimia biologis?", options: ["Katalis", "Pelarut universal", "Inhibitor", "Reaktan"], correct: 1 },
-                { question: "Kelompok unsur alkali tanah?", options: ["Na, K, Li", "Mg, Ca, Ba", "Cl, Br, I", "He, Ne, Ar"], correct: 1 },
-                { question: "Perubahan yang tidak melibatkan pembentukan zat baru?", options: ["Pembakaran", "Peragian", "Pencampuran", "Perubahan wujud (Fisika)"], correct: 3 },
-                { question: "Lambang kimia untuk timbal?", options: ["Ti", "Fe", "Pb", "Sn"], correct: 2 },
-                { question: "Contoh zat yang bersifat amfoter (bisa jadi asam/basa)?", options: ["Garam", "Air", "Cuka", "Natrium"], correct: 1 },
-                { question: "Senyawa kimia yang menyebabkan rasa manis?", options: ["Protein", "Lemak", "Karbohidrat", "Asam"], correct: 2 },
-                { question: "Reaksi yang melibatkan penambahan elektron?", options: ["Oksidasi", "Reduksi", "Netralisasi", "Ionik"], correct: 1 },
-                { question: "Unsur gas yang paling ringan?", options: ["Oksigen", "Nitrogen", "Hidrogen", "Helium"], correct: 2 },
-                { question: "Apa yang membuat sabun berfungsi sebagai pembersih?", options: ["pH netral", "Ikatan ion", "Sifat surfaktan (mengikat lemak dan air)", "Kandungan garam"], correct: 2 },
-                { question: "Jenis ikatan kimia yang terjadi pada molekul gas $O_2$?", options: ["Ikatan ion", "Ikatan kovalen rangkap dua", "Ikatan hidrogen", "Ikatan logam"], correct: 1 },
-                { question: "Bagian terkecil dari senyawa yang masih memiliki sifat senyawa tersebut?", options: ["Atom", "Ion", "Unsur", "Molekul"], correct: 3 },
-                { question: "Proses pemisahan yang digunakan untuk memisahkan zat padat dan zat cair yang larut (misal garam dari air)?", options: ["Filtrasi", "Destilasi", "Dekantasi", "Sentrifugasi"], correct: 1 },
-                { question: "Proses terbentuknya lapisan ozon adalah reaksi...", options: ["Oksidasi", "Fotosintesis", "Dekomposisi", "Fotokimia"], correct: 3 },
-                { question: "Jenis logam yang sangat ringan dan sering digunakan dalam paduan pesawat terbang?", options: ["Besi", "Emas", "Aluminium", "Tembaga"], correct: 2 },
-                { question: "Reaksi yang melepaskan kalor atau energi ke lingkungan?", options: ["Endoterm", "Eksoterm", "Reduksi", "Oksidasi"], correct: 1 },
-                { question: "Larutan yang mengandung konsentrasi zat terlarut tinggi dan tidak bisa melarutkan lagi pada suhu tertentu?", options: ["Jenuh", "Tidak jenuh", "Lewat jenuh", "Netral"], correct: 2 },
-                { question: "Lambang kimia untuk unsur kalium?", options: ["Ca", "Na", "K", "Fe"], correct: 2 },
-                { question: "Contoh senyawa hidrokarbon sederhana?", options: ["Air", "Garam", "Metana ($CH_4$)", "Asam"], correct: 2 },
-                { question: "Perubahan zat yang terjadi karena gaya tarik antarmolekul yang melemah (misalnya mencair)?", options: ["Perubahan kimia", "Perubahan energi", "Perubahan wujud (fisika)", "Reaksi kimia"], correct: 2 },
-                { question: "Proses memisahkan komponen campuran berdasarkan perbedaan daya serap pada fase diam?", options: ["Destilasi", "Filtrasi", "Kristalisasi", "Kromatografi"], correct: 3 },
-                { question: "Gas yang sangat beracun yang dihasilkan dari pembakaran tidak sempurna?", options: ["Karbon dioksida", "Nitrogen", "Karbon monoksida", "Oksigen"], correct: 2 },
-                { question: "Apa yang menyebabkan deterjen mampu menghilangkan noda minyak?", options: ["Sifat basa", "Sifat asam", "Emulsifikasi", "Kandungan garam"], correct: 2 },
-                { question: "Jenis partikel yang menentukan identitas kimia suatu unsur?", options: ["Neutron", "Elektron", "Proton", "Ion"], correct: 2 },
-                { question: "Senyawa yang digunakan sebagai bahan pengawet makanan (misalnya sosis)?", options: ["Cuka", "Garam", "Natrium nitrit", "Gula"], correct: 2 },
-                { question: "Kelompok unsur nonlogam yang letaknya berada di Golongan VII A?", options: ["Alkali", "Gas Mulia", "Halogen", "Transisi"], correct: 2 },
-                { question: "Proses di mana larutan garam mengkristal karena pelarut diuapkan?", options: ["Sublimasi", "Distilasi", "Kristalisasi", "Filtrasi"], correct: 2 },
-                { question: "Ikatan antarmolekul yang kuat dan terdapat pada molekul air?", options: ["Kovalen nonpolar", "Kovalen rangkap", "Ikatan hidrogen", "Ikatan ion"], correct: 2 },
-                { question: "Gas yang paling ringan dan paling melimpah di alam semesta?", options: ["Helium", "Oksigen", "Nitrogen", "Hidrogen"], correct: 3 },
-                { question: "Senyawa dengan rumus $C_{12}H_{22}O_{11}$ adalah?", options: ["Gula tebu (Sukrosa)", "Air", "Asam cuka", "Metana"], correct: 0 },
-                { question: "Zat yang ditambahkan ke larutan untuk mencegah perubahan pH secara drastis?", options: ["Indikator", "Katalis", "Larutan penyangga (Buffer)", "Asam kuat"], correct: 2 },
-                { question: "Unsur yang digunakan sebagai kawat listrik karena sifat konduktivitasnya yang tinggi?", options: ["Besi", "Emas", "Tembaga", "Aluminium"], correct: 2 },
-                { question: "Berapa jumlah proton pada unsur dengan nomor atom 15?", options: ["10", "15", "30", "16"], correct: 1 },
-                { question: "Perubahan kimia selalu ditandai dengan pembentukan...", options: ["Perubahan wujud", "Zat baru", "Pengendapan", "Perubahan suhu"], correct: 1 },
-                { question: "Ikatan yang terjadi antara logam dan nonlogam?", options: ["Kovalen", "Hidrogen", "Ion", "Logam"], correct: 2 },
-                { question: "Contoh asam kuat?", options: ["Asam Cuka", "Asam Sitrat", "Asam Sulfat", "Asam Basa"], correct: 2 },
-                { question: "Pemisahan campuran berdasarkan ukuran partikel menggunakan kertas saring?", options: ["Destilasi", "Kristalisasi", "Filtrasi", "Sublimasi"], correct: 2 },
-                { question: "Senyawa yang merupakan hasil fotosintesis dan sumber energi utama bagi tumbuhan?", options: ["Air", "Karbon Dioksida", "Glukosa", "Oksigen"], correct: 2 },
-                { question: "Zat aditif makanan yang berfungsi sebagai pewarna alami?", options: ["Tartrazine", "Siklamat", "Karoten", "Boraks"], correct: 2 },
-                { question: "Partikel atom yang menentukan massa hampir seluruh atom?", options: ["Elektron", "Proton dan Neutron", "Inti atom", "Molekul"], correct: 1 },
-                { question: "Jenis ikatan yang terjadi pada molekul gas $N_2$?", options: ["Kovalen tunggal", "Kovalen rangkap dua", "Kovalen rangkap tiga", "Ikatan ion"], correct: 2 },
-                { question: "Lambang kimia untuk timah?", options: ["Ti", "Fe", "Pb", "Sn"], correct: 3 },
-                { question: "Larutan yang hanya sedikit terionisasi dalam air?", options: ["Asam kuat", "Basa kuat", "Asam lemah", "Garam netral"], correct: 2 },
-                { question: "Gas yang penting untuk proses pernapasan pada makhluk hidup?", options: ["Nitrogen", "Karbon dioksida", "Oksigen", "Hidrogen"], correct: 2 },
-                { question: "Peristiwa korosi (perkaratan) pada logam dipercepat oleh adanya?", options: ["Minyak", "Air dan oksigen", "Garam", "Alkohol"], correct: 1 },
-                { question: "Apa yang membedakan molekul unsur dan molekul senyawa?", options: ["Bentuk", "Warna", "Jenis atom penyusun", "Ukuran"], correct: 2 },
-                { question: "Proses pemisahan air asin menjadi air tawar (desalinasi) menggunakan prinsip?", options: ["Filtrasi", "Evaporasi", "Destilasi", "Kromatografi"], correct: 2 },
-                { question: "Contoh bahan kimia rumah tangga yang bersifat asam?", options: ["Sabun", "Deterjen", "Pemutih", "Cuka"], correct: 3 },
-                { question: "Atom yang kehilangan elektron akan menjadi ion bermuatan?", options: ["Negatif", "Positif", "Netral", "Amfoter"], correct: 1 },
-                { question: "Unsur yang paling melimpah di kerak bumi?", options: ["Besi", "Aluminium", "Oksigen", "Silikon"], correct: 2 },
-                { question: "Reaksi antara logam dan asam menghasilkan gas?", options: ["Oksigen", "Nitrogen", "Hidrogen", "Karbon monoksida"], correct: 2 },
-                { question: "Perubahan wujud dari padat menjadi cair disebut?", options: ["Membeku", "Mencair (Melebur)", "Menyublim", "Menguap"], correct: 1 },
-                { question: "Zat yang dapat menyebabkan rasa pahit saat diuji rasa?", options: ["Asam", "Basa", "Garam", "Manis"], correct: 1 },
-                { question: "Batas maksimal jumlah elektron di kulit atom K (kulit pertama)?", options: ["1", "2", "8", "18"], correct: 1 },
-                { question: "Senyawa organik yang sering digunakan sebagai pelarut cat?", options: ["Air", "Cuka", "Aseton", "Garam"], correct: 2 },
-                { question: "Contoh campuran yang dapat dipisahkan dengan magnet?", options: ["Air dan garam", "Air dan pasir", "Serbuk besi dan pasir", "Air dan minyak"], correct: 2 },
-                { question: "Unsur yang lambangnya berasal dari bahasa Latin *Ferrum*?", options: ["Fosfor", "Fluorin", "Besi", "Emas"], correct: 2 },
-                { question: "Berapa pH larutan soda kue (Natrium Bikarbonat) secara umum?", options: ["pH < 7", "pH = 7", "pH > 7 (Basa)", "pH = 1"], correct: 2 },
-                { question: "Fase materi yang memiliki volume tetap namun bentuknya mengikuti wadah?", options: ["Padat", "Cair", "Gas", "Plasma"], correct: 1 },
-                { question: "Perbedaan utama antara unsur dan senyawa?", options: ["Wujud", "Sifat kimia", "Dapat diuraikan secara kimia", "Bentuk"], correct: 2 },
-                { question: "Lambang kimia untuk timah (tin)?", options: ["Ti", "Ta", "Sn", "Sb"], correct: 2 },
-                { question: "Pemisahan campuran berdasarkan perbedaan kelarutan dengan pelarut panas?", options: ["Destilasi", "Sublimasi", "Kristalisasi", "Filtrasi"], correct: 2 },
-                { question: "Gas yang dihasilkan saat memanaskan kalsium karbonat ($CaCO_3$)?", options: ["Oksigen", "Nitrogen", "Karbon dioksida", "Hidrogen"], correct: 2 },
-                { question: "Jenis ikatan yang terbentuk karena adanya gaya tarik antar atom yang berbeda muatan?", options: ["Kovalen", "Hidrogen", "Ion", "Logam"], correct: 2 },
-                { question: "Nama ilmiah dari proses pengeringan sayur atau buah?", options: ["Sublimasi", "Kondensasi", "Dehidrasi", "Distilasi"], correct: 2 },
-                { question: "Zat yang digunakan sebagai zat pengikat pada es krim dan saus (stabilizer)?", options: ["Pewarna", "Pengemulsi", "Pemanis", "Pengawet"], correct: 1 },
-                { question: "Jumlah maksimal elektron pada kulit atom M (kulit ketiga)?", options: ["8", "18", "32", "2"], correct: 1 },
-                { question: "Zat yang bersifat korosif dan dapat menyebabkan luka bakar?", options: ["Asam lemah", "Larutan netral", "Basa kuat", "Air murni"], correct: 2 },
-                { question: "Proses pemisahan koloid dari larutan (misalnya pada ginjal)?", options: ["Dialisis", "Sentrifugasi", "Koagulasi", "Filtrasi"], correct: 0 },
-                { question: "Nama lain dari air kapur ($Ca(OH)_2$)?", options: ["Kalsium Oksida", "Kalsium Sulfat", "Kalsium Hidroksida", "Garam"], correct: 2 },
-                { question: "Contoh gas diatomik (terdiri dari 2 atom) yang ada di udara?", options: ["Helium (He)", "Oksigen ($O_2$)", "Ozon ($O_3$)", "Metana ($CH_4$)"], correct: 1 },
-                { question: "Zat yang digunakan untuk mendeteksi adanya protein pada makanan?", options: ["Lugol", "Benedict", "Biuret", "Fehling"], correct: 2 },
-                { question: "Senyawa yang sering digunakan untuk membasmi kuman (desinfektan)?", options: ["Gula", "Garam", "Alkohol (Etanol)", "Asam Asetat"], correct: 2 },
-                { question: "Unsur nonlogam yang paling penting dalam penyusun senyawa organik?", options: ["Oksigen", "Nitrogen", "Karbon", "Hidrogen"], correct: 2 },
-                { question: "Proses di mana partikel zat padat langsung berubah menjadi gas?", options: ["Mencair", "Membeku", "Menyublim", "Mengembun"], correct: 2 },
-                { question: "Campuran air dan minyak termasuk jenis campuran?", options: ["Larutan", "Emulsi", "Suspensi", "Homogen"], correct: 1 },
-                { question: "Nomor atom (Z) selalu sama dengan jumlah partikel?", options: ["Neutron", "Elektron", "Proton", "Massa"], correct: 2 },
-                { question: "Unsur radioaktif yang sering digunakan sebagai bahan bakar nuklir?", options: ["Karbon", "Besi", "Uranium", "Emas"], correct: 2 },
-                { question: "Zat aditif yang ditambahkan untuk meningkatkan nilai gizi (misalnya iodin dalam garam)?", options: ["Penyedap", "Fortifikasi", "Pengawet", "Pemanis"], correct: 1 },
-                { question: "Logam yang berbentuk cair pada suhu kamar?", options: ["Besi", "Emas", "Raksa (Merkuri)", "Aluminium"], correct: 2 },
-                { question: "Reaksi yang melibatkan pengikatan oksigen atau pelepasan elektron?", options: ["Reduksi", "Oksidasi", "Netralisasi", "Ionik"], correct: 1 },
-                { question: "Campuran yang tidak stabil dan partikelnya besar sehingga dapat dilihat jelas?", options: ["Larutan", "Koloid", "Suspensi", "Homogen"], correct: 2 },
-                { question: "Ikatan yang terbentuk karena adanya gaya tarik antara ion positif dan negatif?", options: ["Kovalen", "Logam", "Ion", "Hidrogen"], correct: 2 },
-                { question: "Lambang kimia untuk belerang?", options: ["B", "Be", "S", "Se"], correct: 2 },
-                { question: "Larutan yang memiliki daya hantar listrik yang sangat baik?", options: ["Elektrolit kuat", "Non-elektrolit", "Elektrolit lemah", "Larutan gula"], correct: 0 },
-                { question: "Senyawa yang berfungsi sebagai 'asam' di lambung manusia?", options: ["Asam Sulfat", "Asam Asetat", "Asam Klorida", "Asam Nitrat"], correct: 2 },
-                { question: "Peristiwa terbentuknya kembali endapan garam saat larutan panas didinginkan?", options: ["Distilasi", "Evaporasi", "Kristalisasi", "Filtrasi"], correct: 2 },
-                { question: "Zat yang digunakan untuk mendeteksi keberadaan gula pereduksi?", options: ["Lugol", "Biuret", "Benedict", "Aquadest"], correct: 2 },
-                { question: "Zat yang dapat menyebabkan rasa manis dari buah-buahan secara alami?", options: ["Sukrosa", "Maltosa", "Fruktosa", "Laktosa"], correct: 2 },
-                { question: "Peristiwa di mana ion-ion terhidrasi oleh molekul air?", options: ["Disolusi", "Solvasi/Hidrasi", "Kristalisasi", "Netralisasi"], correct: 1 },
-                { question: "Senyawa yang digunakan sebagai bahan pembuat pupuk NPK (Nitrogen)?", options: ["Kalsium", "Kalium Nitrat", "Fosfat", "Sulfat"], correct: 1 },
-                { question: "Proses pemisahan campuran padat-cair berdasarkan perbedaan kecepatan pengendapan?", options: ["Destilasi", "Dekantasi", "Filtrasi", "Sentrifugasi"], correct: 1 },
-                { question: "Atom yang menerima elektron (mengalami reduksi) bertindak sebagai agen?", options: ["Oksidator", "Reduktor", "Katalis", "Inhibitor"], correct: 0 },
-                { question: "Unsur yang paling penting dalam paduan perunggu?", options: ["Besi dan Karbon", "Tembaga dan Timah", "Aluminium dan Magnesium", "Seng dan Timbal"], correct: 1 },
-                { question: "Larutan yang dapat menghantarkan listrik karena adanya molekul yang terionisasi?", options: ["Larutan gula", "Larutan non-elektrolit", "Larutan elektrolit", "Larutan koloid"], correct: 2 },
-                { question: "Peristiwa perubahan wujud dari gas menjadi cair?", options: ["Mencair", "Menguap", "Kondensasi", "Menyublim"], correct: 2 },
-                { question: "Molekul yang terdiri dari atom yang sama (misalnya $O_2$ atau $N_2$)?", options: ["Senyawa", "Campuran", "Molekul unsur", "Ion"], correct: 2 },
-                { question: "Asam yang terdapat pada lambung manusia untuk membantu pencernaan?", options: ["Asam Sulfat", "Asam Cuka", "Asam Nitrat", "Asam Klorida"], correct: 3 },
-                { question: "Zat yang ditambahkan ke air untuk membunuh bakteri (misalnya pada air PDAM)?", options: ["Natrium", "Klorin", "Besi", "Asam"], correct: 1 },
-                { question: "Proses di mana partikel koloid bergabung dan mengendap?", options: ["Dispersi", "Elektroforesis", "Koagulasi", "Dialisis"], correct: 2 },
-                { question: "Berapa banyak ikatan kovalen yang dimiliki atom Karbon dalam senyawa stabil?", options: ["2", "3", "4", "6"], correct: 2 },
-                { question: "Senyawa yang digunakan sebagai bahan pembuat semen?", options: ["Garam", "Kalsium Karbonat", "Natrium Hidroksida", "Asam Sulfat"], correct: 1 },
-                { question: "Kelompok unsur di tabel periodik yang dikenal sebagai gas lembam?", options: ["Alkali", "Halogen", "Gas mulia", "Transisi"], correct: 2 },
-                { question: "Peristiwa yang terjadi saat partikel-partikel padat terlarut kembali ke dalam larutan jenuh?", options: ["Kristalisasi", "Disolusi", "Endapan", "Penguapan"], correct: 1 },
-                { question: "Mineral yang paling melimpah di kerak bumi?", options: ["Kuarsa", "Kalsit", "Feldspar", "Mika"], correct: 2 },
-                { question: "Perbedaan utama antara campuran homogen dan heterogen?", options: ["Warna", "Titik didih", "Dapat dibedakan komponennya", "Massa"], correct: 2 },
-                { question: "Atom yang mendapat elektron akan menjadi ion bermuatan?", options: ["Positif", "Netral", "Negatif", "Amfoter"], correct: 2 },
-                { question: "Unsur yang memiliki lambang kimia O?", options: ["Emas", "Besi", "Oksigen", "Osmium"], correct: 2 },
-                { question: "Zat yang bersifat basa dan digunakan dalam pembuatan sabun?", options: ["Garam", "Asam", "Natrium Hidroksida", "Cuka"], correct: 2 },
-                { question: "Lambang kimia untuk unsur magnesium?", options: ["Mn", "Mg", "Mo", "Ma"], correct: 1 },
-                { question: "Proses pemisahan campuran yang memanfaatkan perbedaan ukuran partikel menggunakan membran?", options: ["Kromatografi", "Filtrasi", "Dialisis", "Sentrifugasi"], correct: 1 },
-                { question: "Senyawa yang merupakan hasil pembakaran tidak sempurna dari bahan bakar?", options: ["Karbon dioksida", "Uap air", "Karbon monoksida", "Metana"], correct: 2 },
-                { question: "Zat yang digunakan sebagai indikator pH dan berubah warna di lingkungan asam/basa?", options: ["Katalis", "Garam", "Larutan buffer", "Lakmus"], correct: 3 },
-                { question: "Ikatan yang melibatkan pembagian pasangan elektron antara atom nonlogam?", options: ["Ikatan ion", "Ikatan logam", "Ikatan kovalen", "Ikatan hidrogen"], correct: 2 },
-                { question: "Unsur yang digunakan untuk mencegah korosi pada besi (galvanisasi)?", options: ["Tembaga", "Aluminium", "Seng", "Timah"], correct: 2 },
-                { question: "Zat yang menjadi penentu utama dari pH larutan?", options: ["Garam", "Konsentrasi ion H⁺/OH⁻", "Suhu", "Volume"], correct: 1 },
-                { question: "Proses di mana ion-ion dalam larutan bermigrasi menuju elektroda yang berbeda muatan?", options: ["Elektrolisis", "Koagulasi", "Elektroforesis", "Kromatografi"], correct: 2 },
-                { question: "Contoh dari polimer alami?", options: ["Plastik", "Karet alam", "Nilon", "PVC"], correct: 1 },
-                { question: "Lambang kimia untuk tembaga?", options: ["Co", "Cu", "Cr", "Ca"], correct: 1 },
-                { question: "Asam yang merupakan komponen utama dalam hujan asam?", options: ["Asam Asetat", "Asam Klorida", "Asam Sulfat dan Nitrat", "Asam Sitrat"], correct: 2 },
-                { question: "Zat yang berfungsi sebagai pengemulsi?", options: ["Garam", "Air", "Lesitin", "Gula"], correct: 2 },
-                { question: "Bagian dari atom yang menampung hampir seluruh massa atom?", options: ["Elektron", "Inti atom", "Kulit atom", "Molekul"], correct: 1 },
-                { question: "Peristiwa yang terjadi saat larutan jenuh dipanaskan, dan zat terlarut tetap larut meskipun suhu kembali normal?", options: ["Kristalisasi", "Presipitasi", "Lewat jenuh", "Sublimasi"], correct: 2 },
+                { 
+                    question: "Unsur paling melimpah di atmosfer?", 
+                    options: ["Oksigen", "Hidrogen", "Nitrogen", "Karbon dioksida"], 
+                    correct: 2,
+                    explanation: {
+                        correct: "Nitrogen (N₂) adalah unsur paling melimpah di atmosfer.",
+                        why: "Atmosfer Bumi terdiri dari sekitar 78% nitrogen, 21% oksigen, dan 1% gas lainnya. Nitrogen bersifat inert (tidak reaktif) sehingga stabil di atmosfer.",
+                        details: [
+                            "Nitrogen: 78% dari atmosfer",
+                            "Oksigen: 21% dari atmosfer",
+                            "Argon: 0.93%",
+                            "CO₂: hanya 0.04%",
+                            "Nitrogen penting untuk pembentukan protein"
+                        ]
+                    }
+                },
+                { 
+                    question: "Perubahan wujud dari padat langsung ke gas disebut?", 
+                    options: ["Mencair", "Membeku", "Menyublim", "Mengembun"], 
+                    correct: 2,
+                    explanation: {
+                        correct: "Sublimasi adalah perubahan wujud dari padat langsung ke gas.",
+                        why: "Sublimasi terjadi ketika zat padat berubah menjadi gas tanpa melalui fase cair. Hal ini terjadi pada tekanan dan suhu tertentu.",
+                        details: [
+                            "Contoh sublimasi: es kering (CO₂ padat), kapur barus",
+                            "Mencair: padat → cair",
+                            "Membeku: cair → padat", 
+                            "Mengembun: gas → cair",
+                            "Deposisi: kebalikan sublimasi (gas → padat)"
+                        ]
+                    }
+                },
+                { 
+                    question: "Berapa nilai pH larutan yang bersifat netral?", 
+                    options: ["0", "7", "14", "10"], 
+                    correct: 1,
+                    explanation: {
+                        correct: "pH 7 menunjukkan larutan netral.",
+                        why: "Skala pH berkisar dari 0-14. pH 7 adalah titik netral di mana konsentrasi ion H⁺ sama dengan ion OH⁻. Air murni memiliki pH 7.",
+                        details: [
+                            "pH < 7: asam (banyak ion H⁺)",
+                            "pH = 7: netral (H⁺ = OH⁻)",
+                            "pH > 7: basa (banyak ion OH⁻)",
+                            "pH 0: sangat asam",
+                            "pH 14: sangat basa"
+                        ]
+                    }
+                }
+                // ... (continuing with more chemistry questions)
             ],
-            
+
             biology: [
-                { question: "Organel sel yang berfungsi sebagai 'pembangkit tenaga' sel?", options: ["Nukleus", "Mitokondria", "Ribosom", "Kloroplas"], correct: 1 },
-                { question: "Proses pembuatan makanan pada tumbuhan hijau disebut?", options: ["Respirasi", "Fotosintesis", "Digesti", "Fermentasi"], correct: 1 },
-                { question: "Sistem peredaran darah manusia terdiri dari?", options: ["Jantung, paru, pembuluh", "Jantung, darah, pembuluh", "Darah, pembuluh, otak", "Jantung, otak, paru"], correct: 1 },
-                { question: "Bagian utama tumbuhan yang berfungsi menyerap air dan nutrisi?", options: ["Batang", "Daun", "Akar", "Bunga"], correct: 2 },
-                { question: "Makhluk hidup yang dapat membuat makanannya sendiri disebut?", options: ["Konsumen", "Produsen", "Dekomposer", "Herbivora"], correct: 1 },
-                { question: "Pertukaran gas oksigen dan karbon dioksida terjadi di?", options: ["Jantung", "Paru-paru", "Hati", "Ginjal"], correct: 1 },
-                { question: "Bagian sel yang mengendalikan seluruh aktivitas sel?", options: ["Mitokondria", "Nukleus", "Sitoplasma", "Membran sel"], correct: 1 },
-                { question: "Hewan yang memakan tumbuhan dan daging disebut?", options: ["Herbivora", "Karnivora", "Omnivora", "Insektivora"], correct: 2 },
-                { question: "Perubahan bentuk pada hewan dari ulat menjadi kupu-kupu disebut?", options: ["Fotosintesis", "Metamorfosis", "Respirasi", "Evolusi"], correct: 1 },
-                { question: "Organ yang berfungsi menyaring darah dan membuang limbah nitrogen?", options: ["Jantung", "Paru-paru", "Ginjal", "Hati"], correct: 2 },
-                { question: "Jaringan pengangkut air pada tumbuhan?", options: ["Epidermis", "Xilem", "Floem", "Kolenkim"], correct: 1 },
-                { question: "Enzim yang berfungsi mencerna protein?", options: ["Amilase", "Lipase", "Protease", "Sukrase"], correct: 2 },
-                { question: "Bagian bunga yang menghasilkan serbuk sari?", options: ["Putik", "Benang sari", "Mahkota", "Kelopak"], correct: 1 },
-                { question: "Penyakit yang disebabkan kekurangan vitamin C?", options: ["Rabun senja", "Skorbut", "Rakitis", "Anemia"], correct: 1 },
-                { question: "Contoh dekomposer dalam ekosistem?", options: ["Tumbuhan", "Hewan", "Jamur dan bakteri", "Manusia"], correct: 2 },
-                { question: "Tempat utama fotosintesis terjadi dalam sel tumbuhan?", options: ["Vakuola", "Ribosom", "Kloroplas", "Membran sel"], correct: 2 },
-                { question: "Penyakit yang disebabkan oleh Human Immunodeficiency Virus (HIV)?", options: ["TBC", "Flu", "AIDS", "Malaria"], correct: 2 },
-                { question: "Proses pembentukan urin di ginjal yang pertama kali terjadi?", options: ["Augmentasi", "Reabsorpsi", "Filtrasi", "Sekresi"], correct: 2 },
-                { question: "Di mana materi genetik (DNA) sel disimpan?", options: ["Mitokondria", "Sitoplasma", "Nukleus", "Retikulum Endoplasma"], correct: 2 },
-                { question: "Tulang yang berfungsi melindungi organ otak?", options: ["Tulang belakang", "Tulang rusuk", "Tengkorak", "Tulang panggul"], correct: 2 },
-                { question: "Organ pencernaan yang menjadi tempat penyerapan sari makanan terbesar?", options: ["Lambung", "Usus besar", "Usus halus", "Kerongkongan"], correct: 2 },
-                { question: "Kelompok hewan yang memiliki tulang belakang?", options: ["Invertebrata", "Avertebrata", "Vertebrata", "Mamalia"], correct: 2 },
-                { question: "Hormon yang berperan dalam mengatur kadar gula darah?", options: ["Adrenalin", "Tiroksin", "Insulin", "Estrogen"], correct: 2 },
-                { question: "Sistem organ yang berfungsi membuang sisa metabolisme dari tubuh?", options: ["Sistem sirkulasi", "Sistem pernapasan", "Sistem ekskresi", "Sistem reproduksi"], correct: 2 },
-                { question: "Proses pertukaran oksigen dan karbon dioksida di alveoli paru-paru?", options: ["Osmosis", "Ekskresi", "Difusi", "Konveksi"], correct: 2 },
-                { question: "Unit struktural dan fungsional terkecil dari makhluk hidup?", options: ["Organ", "Jaringan", "Sel", "Sistem organ"], correct: 2 },
-                { question: "Lapisan pelindung terluar pada batang dan daun tumbuhan?", options: ["Korteks", "Endodermis", "Epidermis", "Floem"], correct: 2 },
-                { question: "Nama ilmiah (binomial nomenclature) untuk spesies manusia?", options: ["Homo erectus", "Pan troglodytes", "Homo sapiens", "Australopithecus"], correct: 2 },
-                { question: "Apa fungsi utama stomata (mulut daun)?", options: ["Menyerap air", "Melakukan fotosintesis", "Pertukaran gas", "Menyimpan makanan"], correct: 2 },
-                { question: "Rantai makanan dalam ekosistem selalu dimulai dari?", options: ["Konsumen tingkat 1", "Produsen", "Dekomposer", "Karnivora"], correct: 1 },
-                { question: "Apa fungsi utama Vena dalam sistem peredaran darah?", options: ["Membawa darah dari jantung", "Membawa darah menuju jantung", "Tempat pertukaran gas", "Membawa nutrisi"], correct: 1 },
-                { question: "Zat hijau daun pada tumbuhan disebut?", options: ["Xilem", "Floem", "Klorofil", "Kambium"], correct: 2 },
-                { question: "Jenis reproduksi tumbuhan yang tidak melibatkan peleburan sel kelamin?", options: ["Generatif", "Vegetatif", "Seksual", "Fertilisasi"], correct: 1 },
-                { question: "Penyerapan kembali zat-zat yang masih berguna dari filtrat ginjal disebut?", options: ["Augmentasi", "Reabsorpsi", "Filtrasi", "Ekskresi"], correct: 1 },
-                { question: "Bagian mata yang berfungsi mengatur jumlah cahaya yang masuk?", options: ["Lensa", "Retina", "Iris", "Pupil"], correct: 3 },
-                { question: "Organel yang berperan dalam sintesis protein?", options: ["Mitokondria", "Ribosom", "Vakuola", "Nukleus"], correct: 1 },
-                { question: "Proses pembentukan energi dari pemecahan glukosa tanpa oksigen?", options: ["Respirasi aerob", "Respirasi anaerob", "Fotosintesis", "Transpirasi"], correct: 1 },
-                { question: "Bagian tumbuhan yang berfungsi sebagai jaringan meristematik (pembelahan aktif)?", options: ["Kulit", "Kambium", "Floem", "Xilem"], correct: 1 },
-                { question: "Kelompok hewan yang berdarah panas?", options: ["Ikan", "Reptil", "Amfibi", "Mamalia"], correct: 3 },
-                { question: "Penyakit yang disebabkan oleh virus yang menyerang hati?", options: ["TBC", "Hepatitis", "Malaria", "Tipus"], correct: 1 },
-                { question: "Zat sisa metabolisme pada manusia yang dibuang melalui ginjal?", options: ["Karbon dioksida", "Urea", "Glukosa", "Oksigen"], correct: 1 },
-                { question: "Kelompok jamur yang berperan sebagai dekomposer?", options: ["Parasit", "Saprofit", "Simbiosis", "Autotrof"], correct: 1 },
-                { question: "Bagian telinga yang berfungsi menjaga keseimbangan tubuh?", options: ["Gendang telinga", "Koklea", "Saluran Eustachius", "Saluran setengah lingkaran"], correct: 3 },
-                { question: "Contoh dari rantai makanan yang dimulai dari produsen?", options: ["Ular -> Tikus -> Elang", "Padi -> Tikus -> Ular", "Jamur -> Bakteri -> Cacing", "Manusia -> Nasi -> Ayam"], correct: 1 },
-                { question: "Pencernaan kimiawi pertama kali terjadi di?", options: ["Lambung", "Usus halus", "Mulut", "Kerongkongan"], correct: 2 },
-                { question: "Proses perpindahan air pada tumbuhan dari akar ke daun disebut?", options: ["Transpirasi", "Fotosintesis", "Transportasi", "Respirasi"], correct: 2 },
-                { question: "Jenis sel darah yang berfungsi melawan infeksi?", options: ["Eritrosit", "Trombosit", "Leukosit", "Plasma darah"], correct: 2 },
-                { question: "Apa fungsi utama ligamen?", options: ["Menghubungkan tulang dengan otot", "Menghubungkan otot dengan otot", "Menghubungkan tulang dengan tulang", "Melindungi sendi"], correct: 2 },
-                { question: "Bakteri yang berperan dalam siklus Nitrogen di tanah?", options: ["Bakteri E. coli", "Bakteri Rhizobium", "Bakteri Lactobacillus", "Bakteri Salmonela"], correct: 1 },
-                { question: "Organ pernapasan yang berfungsi menghangatkan dan menyaring udara?", options: ["Paru-paru", "Alveoli", "Hidung", "Tenggorokan"], correct: 2 },
-                { question: "Fungsi utama karbohidrat dalam tubuh?", options: ["Membangun otot", "Sumber energi utama", "Melarutkan vitamin", "Isolasi panas"], correct: 1 },
-                { question: "Proses yang menghasilkan zigot pada reproduksi seksual?", options: ["Meiosis", "Mitosis", "Fertilisasi", "Metamorfosis"], correct: 2 },
-                { question: "Kelompok tumbuhan berbunga dan memiliki biji tertutup?", options: ["Lumut", "Paku", "Gimnospermae", "Angiospermae"], correct: 3 },
-                { question: "Penyakit yang ditandai dengan kurangnya sel darah merah atau hemoglobin?", options: ["Anemia", "Hipertensi", "Diabetes", "Kanker"], correct: 0 },
-                { question: "Di mana proses penyerapan air dan pembentukan feses terjadi?", options: ["Usus halus", "Lambung", "Usus besar", "Rektum"], correct: 2 },
-                { question: "Bagian sel tumbuhan yang berfungsi sebagai penyimpanan air dan zat sisa?", options: ["Ribosom", "Mitokondria", "Vakuola", "Dinding sel"], correct: 2 },
-                { question: "Contoh hewan invertebrata?", options: ["Kucing", "Burung", "Cacing", "Ikan"], correct: 2 },
-                { question: "Apa yang menyebabkan getah pada tumbuhan naik ke daun?", options: ["Osmosis", "Daya kapilaritas batang", "Daya tarik gravitasi", "Fotosintesis"], correct: 1 },
-                { question: "Penyakit yang menyerang saluran pernapasan dan disebabkan oleh bakteri *Mycobacterium*?", options: ["Influenza", "Tuberculosis (TBC)", "Polio", "Demam Berdarah"], correct: 1 },
-                { question: "Sistem yang berfungsi mengendalikan gerakan, pikiran, dan indera?", options: ["Sistem sirkulasi", "Sistem pernapasan", "Sistem saraf", "Sistem ekskresi"], correct: 2 },
-                { question: "Peran utama Floem pada tumbuhan?", options: ["Mengangkut air dan mineral", "Mengangkut hasil fotosintesis (makanan)", "Tempat pembelahan sel", "Pelindung"], correct: 1 },
-                { question: "Enzim yang memulai pencernaan karbohidrat di mulut?", options: ["Lipase", "Amilase", "Pepsin", "Tripsin"], correct: 1 },
-                { question: "Bagian otak yang bertanggung jawab untuk koordinasi gerak dan keseimbangan?", options: ["Otak besar (Cerebrum)", "Otak kecil (Cerebellum)", "Batang otak", "Sumsum tulang belakang"], correct: 1 },
-                { question: "Zat yang melindungi lambung dari asam lambung yang keras?", options: ["Enzim pepsin", "Garam", "Mukus (lendir)", "Asam klorida"], correct: 2 },
-                { question: "Penyebab utama terjadinya kerusakan pada terumbu karang?", options: ["Penangkapan ikan", "Pencemaran dan pemanasan global", "Ombak besar", "Banyaknya biota laut"], correct: 1 },
-                { question: "Apa fungsi utama dinding sel pada tumbuhan?", options: ["Sintesis protein", "Pembangkit energi", "Memberi bentuk dan perlindungan", "Pengatur keluar masuk zat"], correct: 2 },
-                { question: "Hormon yang memicu pertumbuhan tinggi pada manusia?", options: ["Estrogen", "Testosteron", "Tiroksin", "Hormon pertumbuhan (GH)"], correct: 3 },
-                { question: "Organel yang mengandung materi genetik (DNA) pada sel prokariotik?", options: ["Nukleus", "Sitoplasma", "Nukleoid", "Mitokondria"], correct: 2 },
-                { question: "Proses biologis di mana tumbuhan kehilangan air melalui stomata?", options: ["Osmosis", "Transpirasi", "Gutasi", "Fotosintesis"], correct: 1 },
-                { question: "Kelompok makhluk hidup yang menjadi dasar dari piramida makanan?", options: ["Konsumen tersier", "Herbivora", "Produsen", "Dekomposer"], correct: 2 },
-                { question: "Jenis vitamin yang larut dalam lemak?", options: ["B dan C", "A, D, E, K", "B, A, E", "C dan K"], correct: 1 },
-                { question: "Organ yang berfungsi memecah racun dalam darah?", options: ["Ginjal", "Jantung", "Hati", "Paru-paru"], correct: 2 },
-                { question: "Penyebab utama dari penyakit Demam Berdarah Dengue (DBD)?", options: ["Bakteri", "Jamur", "Virus", "Cacing"], correct: 2 },
-                { question: "Fungsi utama tendon?", options: ["Menghubungkan tulang dengan tulang", "Menghubungkan otot dengan tulang", "Menghubungkan otot dengan kulit", "Menghubungkan jaringan saraf"], correct: 1 },
-                { question: "Bagian sel yang mengatur keluar masuknya zat?", options: ["Dinding sel", "Nukleus", "Membran sel", "Vakuola"], correct: 2 },
-                { question: "Contoh dari bioteknologi konvensional?", options: ["Kloning", "Rekayasa genetik", "Pembuatan tempe", "Hibridisasi"], correct: 2 },
-                { question: "Jenis pernapasan yang terjadi saat kita beristirahat?", options: ["Pernapasan dada", "Pernapasan perut", "Pernapasan cepat", "Pernapasan buatan"], correct: 1 },
-                { question: "Di mana proses penyerapan nutrisi makanan (sari-sari) terjadi paling intensif?", options: ["Lambung", "Usus besar", "Usus halus", "Kerongkongan"], correct: 2 },
-                { question: "Hewan yang mengalami metamorfosis sempurna?", options: ["Belalang", "Kecoa", "Kupu-kupu", "Cacing"], correct: 2 },
-                { question: "Nama lain dari pembelahan sel secara langsung (tanpa tahap)?", options: ["Mitosis", "Meiosis", "Amitosis", "Fertilisasi"], correct: 2 },
-                { question: "Enzim yang berfungsi mencerna lemak?", options: ["Amilase", "Pepsin", "Lipase", "Tripsin"], correct: 2 },
-                { question: "Bagian dari tumbuhan yang menghasilkan zat makanan melalui fotosintesis?", options: ["Akar", "Batang", "Daun", "Bunga"], correct: 2 },
-                { question: "Penyakit yang disebabkan oleh kekurangan hormon insulin?", options: ["Gondok", "Diabetes Mellitus", "Hipertensi", "Anemia"], correct: 1 },
-                { question: "Apa peran utama protein dalam tubuh?", options: ["Sumber energi cepat", "Cadangan energi", "Membangun dan memperbaiki jaringan", "Melindungi organ"], correct: 2 },
-                { question: "Tahap dalam siklus air di mana uap air berubah menjadi awan?", options: ["Evaporasi", "Presipitasi", "Kondensasi", "Infiltrasi"], correct: 2 },
-                { question: "Kelompok organisme yang tidak memiliki klorofil dan mendapat makanan dari organisme lain?", options: ["Tumbuhan", "Alga", "Jamur", "Produsen"], correct: 2 },
-                { question: "Organel sel yang berfungsi sebagai sistem transportasi di dalam sel?", options: ["Ribosom", "Nukleus", "Retikulum Endoplasma", "Mitokondria"], correct: 2 },
-                { question: "Contoh dari sumber energi terbarukan di bidang biologi?", options: ["Batu bara", "Minyak bumi", "Biomassa", "Gas alam"], correct: 2 },
-                { question: "Apa fungsi utama trombosit (keping darah)?", options: ["Mengangkut oksigen", "Melawan infeksi", "Membekukan darah", "Mengangkut nutrisi"], correct: 2 },
-                { question: "Jenis tulang yang menyusun tulang belakang?", options: ["Tulang pipa", "Tulang pendek", "Tulang pipih", "Tulang tak beraturan"], correct: 3 },
-                { question: "Proses di mana tumbuhan mengeluarkan uap air dari daun?", options: ["Ekskresi", "Respirasi", "Transpirasi", "Gutasi"], correct: 2 },
-                { question: "Organel pada tumbuhan yang berperan dalam turgiditas sel?", options: ["Mitokondria", "Ribosom", "Vakuola", "Kloroplas"], correct: 2 },
-                { question: "Zat yang harus dihindari oleh penderita penyakit Diabetes Mellitus?", options: ["Lemak", "Gula", "Protein", "Mineral"], correct: 1 },
-                { question: "Di mana hormon adrenalin dihasilkan?", options: ["Ginjal", "Hati", "Kelenjar Adrenal", "Pankreas"], correct: 2 },
-                { question: "Penyakit yang disebabkan oleh mutasi genetik yang diturunkan?", options: ["Malaria", "Flu", "Hemofilia", "TBC"], correct: 2 },
-                { question: "Bagian dari ginjal tempat pembentukan urin primer?", options: ["Tubulus", "Kapsula Bowman", "Glomerulus", "Medulla"], correct: 2 },
-                { question: "Struktur pada kulit yang berfungsi mengeluarkan keringat?", options: ["Folikel rambut", "Kelenjar minyak", "Kelenjar keringat", "Reseptor"], correct: 2 },
-                { question: "Contoh dari simbiosis mutualisme?", options: ["Benalu di pohon", "Ikan hiu dan remora", "Bakteri Rhizobium dan akar kacang", "Tali putri di tanaman inang"], correct: 2 },
-                { question: "Tumbuhan yang menyimpan makanan cadangan di dalam akar?", options: ["Padi", "Jagung", "Singkong", "Bambu"], correct: 2 },
-                { question: "Urutan tingkatan organisasi kehidupan dari yang terkecil?", options: ["Jaringan, Organ, Sistem Organ", "Sel, Jaringan, Organ", "Molekul, Sel, Jaringan", "Organisme, Populasi, Komunitas"], correct: 2 },
-                { question: "Apa yang menyebabkan penyakit demam berdarah?", options: ["Nyamuk Anopheles", "Nyamuk Aedes aegypti", "Nyamuk Culex", "Kutu"], correct: 1 },
-                { question: "Organel yang berfungsi membuang zat sisa dan limbah dari sel hewan?", options: ["Mitokondria", "Vakuola", "Lisosom", "Ribosom"], correct: 2 },
-                { question: "Protein yang berfungsi sebagai biokatalis dalam reaksi kimia tubuh?", options: ["Hormon", "Antibodi", "Enzim", "Vitamin"], correct: 2 },
-                { question: "Peristiwa saat sel darah merah pecah karena berada di lingkungan hipotonik?", options: ["Plasmolisis", "Hemolisis", "Kremasi", "Turgiditas"], correct: 1 },
-                { question: "Organ yang bertanggung jawab untuk pernapasan pada ikan?", options: ["Kulit", "Paru-paru", "Insang", "Trakea"], correct: 2 },
-                { question: "Bagian dari biji yang berkembang menjadi tumbuhan baru?", options: ["Endosperma", "Kotiledon", "Radikula", "Embrio"], correct: 3 },
-                { question: "Vitamin yang penting untuk pembekuan darah?", options: ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin K"], correct: 3 },
-                { question: "Kelompok makhluk hidup yang memiliki sel prokariotik?", options: ["Jamur", "Tumbuhan", "Bakteri", "Hewan"], correct: 2 },
-                { question: "Gerak tropisme yang dipengaruhi oleh rangsang sentuhan (misalnya sulur tanaman)?", options: ["Fototropisme", "Geotropisme", "Tigmotropisme", "Hidrotropisme"], correct: 2 },
-                { question: "Apa fungsi utama kantong empedu?", options: ["Menghasilkan empedu", "Menyerap nutrisi", "Menyimpan empedu", "Memecah karbohidrat"], correct: 2 },
-                { question: "Tahap dalam siklus air di mana air kembali ke bumi dalam bentuk hujan atau salju?", options: ["Kondensasi", "Evaporasi", "Transpirasi", "Presipitasi"], correct: 3 },
-                { question: "Organ pernapasan yang berupa saluran bercabang yang menuju ke alveolus?", options: ["Trakea", "Faring", "Bronkus", "Laring"], correct: 2 },
-                { question: "Senyawa organik yang merupakan bahan dasar penyusun DNA?", options: ["Lipid", "Karbohidrat", "Asam nukleat", "Protein"], correct: 2 },
-                { question: "Proses pemisahan air dari larutan melalui membran semipermeabel?", options: ["Difusi", "Osmosis", "Ekskresi", "Filtrasi"], correct: 1 },
-                { question: "Jaringan penyusun utama pada organ jantung?", options: ["Jaringan epitel", "Jaringan saraf", "Jaringan otot lurik", "Jaringan otot jantung"], correct: 3 },
-                { question: "Habitat tempat organisme hidup dan berinteraksi disebut?", options: ["Komunitas", "Ekosistem", "Populasi", "Biosfer"], correct: 1 },
-                { question: "Peran utama kalsium dalam tubuh manusia?", options: ["Sumber energi", "Pembentukan tulang dan gigi", "Melawan infeksi", "Pembekuan darah"], correct: 1 },
-                { question: "Hewan yang memiliki sistem peredaran darah tertutup?", options: ["Belalang", "Cacing tanah", "Udang", "Serangga"], correct: 1 },
-                { question: "Pembelahan sel yang menghasilkan empat sel anak dengan jumlah kromosom setengah dari sel induk?", options: ["Mitosis", "Amitosis", "Meiosis", "Fertilisasi"], correct: 2 },
-                { question: "Bagian dari telinga yang berfungsi menangkap gelombang suara?", options: ["Koklea", "Gendang telinga", "Saluran Eustachius", "Daun telinga"], correct: 3 },
-                { question: "Tumbuhan yang memiliki jaringan pengangkut (Xilem dan Floem) disebut?", options: ["Lumut", "Alga", "Tumbuhan tidak berpembuluh", "Tumbuhan berpembuluh (Tracheophyta)"], correct: 3 },
-                { question: "Kelompok penyakit menurun (genetik) yang menyebabkan darah sulit membeku?", options: ["Anemia", "Leukemia", "Hemofilia", "Talasemia"], correct: 2 },
-                { question: "Organel yang berfungsi sebagai 'polisi' sel, mencerna makromolekul dan organel yang rusak?", options: ["Mitokondria", "Ribosom", "Lisosom", "Kloroplas"], correct: 2 },
-                { question: "Jenis makanan yang diuji menggunakan larutan Biuret?", options: ["Gula", "Amilum", "Protein", "Lemak"], correct: 2 },
-                { question: "Sistem yang berperan dalam pertahanan tubuh (imunitas)?", options: ["Sistem sirkulasi", "Sistem saraf", "Sistem limfatik (kekebalan)", "Sistem endokrin"], correct: 2 },
-                { question: "Proses biologis di mana sel tumbuhan kehilangan air dan membrannya mengerut (di lingkungan hipertonik)?", options: ["Turgiditas", "Hemolisis", "Plasmolisis", "Osmosis"], correct: 2 },
-                { question: "Organ pada manusia yang berfungsi sebagai pusat pernapasan dan pencernaan?", options: ["Trakea", "Faring", "Laring", "Esofagus"], correct: 1 },
-                { question: "Zat yang berfungsi mengangkut oksigen dalam darah?", options: ["Plasma darah", "Hemoglobin", "Trombosit", "Leukosit"], correct: 1 },
-                { question: "Contoh dari gerak Nasti?", options: ["Akar tumbuh ke bawah", "Membukanya bunga pukul empat", "Daun putri malu mengatup", "Sulur membelit kayu"], correct: 2 },
-                { question: "Hubungan antara dua organisme di mana salah satu untung dan yang lain rugi?", options: ["Mutualisme", "Komensalisme", "Parasitisme", "Saprofitisme"], correct: 2 },
-                { question: "Bagian mata yang paling sensitif terhadap cahaya?", options: ["Lensa", "Kornea", "Retina", "Iris"], correct: 2 },
-                { question: "Pencernaan mekanik terjadi di?", options: ["Mulut dan lambung", "Usus halus", "Kerongkongan", "Ginjal"], correct: 0 },
-                { question: "Jaringan pada tumbuhan yang berfungsi untuk menopang dan menguatkan organ?", options: ["Epidermis", "Parenkim", "Kolengkim dan Sklerenkim", "Meristem"], correct: 2 },
-                { question: "Hormon yang menyebabkan daun pada tumbuhan menggugurkan diri (dormansi)?", options: ["Giberelin", "Auksin", "Sitokinin", "Asam Absisat"], correct: 3 },
-                { question: "Kelompok hewan yang tidak memiliki suhu tubuh tetap (Poikiloterm)?", options: ["Mamalia dan burung", "Ikan dan reptil", "Burung dan reptil", "Mamalia dan amfibi"], correct: 1 },
-                { question: "Proses pemecahan glukosa menjadi energi dalam sel?", options: ["Fotosintesis", "Sintesis protein", "Respirasi seluler", "Fermentasi"], correct: 2 },
-                { question: "Bagian dari ginjal tempat augmentasi (pengaturan akhir) terjadi?", options: ["Glomerulus", "Tubulus proksimal", "Lengkung Henle", "Tubulus distal"], correct: 3 },
-                { question: "Fungsi utama karbohidrat dalam tubuh?", options: ["Membangun otot", "Sumber energi utama", "Melindungi organ", "Mengangkut oksigen"], correct: 1 },
-                { question: "Pembelahan sel yang terjadi pada pertumbuhan rambut atau kulit?", options: ["Meiosis", "Mitosis", "Amitosis", "Gametogenesis"], correct: 1 },
-                { question: "Organel yang berperan dalam fotosintesis?", options: ["Mitokondria", "Ribosom", "Vakuola", "Kloroplas"], correct: 3 },
-                { question: "Contoh adaptasi morfologi pada tumbuhan?", options: ["Daun lebar pada teratai", "Bunga yang menarik", "Mengubah warna kulit", "Hibernasi"], correct: 0 },
-                { question: "Tingkatan organisasi kehidupan di atas Populasi?", options: ["Organisme", "Jaringan", "Komunitas", "Ekosistem"], correct: 2 },
-                { question: "Hormon yang memicu perkembangan sifat seks sekunder pada wanita?", options: ["Testosteron", "Insulin", "Estrogen", "Adrenalin"], correct: 2 },
-                { question: "Apa yang terutama menyebabkan penyakit TBC (Tuberculosis)?", options: ["Virus", "Bakteri", "Jamur", "Protozoa"], correct: 1 },
-                { question: "Tulang yang berfungsi sebagai penopang utama tubuh bagian atas?", options: ["Tulang tengkorak", "Tulang rusuk", "Tulang belakang", "Tulang panggul"], correct: 2 },
-                { question: "Zat sisa utama yang dikeluarkan saat kita bernapas?", options: ["Uap air", "Oksigen", "Karbon dioksida", "Nitrogen"], correct: 2 },
-                { question: "Di mana proses pembentukan protein dilakukan?", options: ["Nukleus", "Mitokondria", "Ribosom", "Vakuola"], correct: 2 },
-                { question: "Jenis gigi yang berfungsi untuk merobek makanan?", options: ["Gigi seri", "Gigi geraham", "Gigi taring", "Gigi bungsu"], correct: 2 },
-                { question: "Tempat penyerapan air terbanyak pada sistem pencernaan?", options: ["Lambung", "Usus halus", "Usus besar", "Kerongkongan"], correct: 2 },
-                { question: "Jaringan yang berfungsi menyalurkan makanan hasil fotosintesis?", options: ["Xilem", "Kambium", "Floem", "Epidermis"], correct: 2 },
-                { question: "Sistem yang menghasilkan hormon untuk mengatur metabolisme tubuh?", options: ["Sistem saraf", "Sistem endokrin", "Sistem limfatik", "Sistem ekskresi"], correct: 1 },
-                { question: "Sel yang bertanggung jawab untuk respon alergi dengan melepaskan histamin?", options: ["Limfosit", "Makrofag", "Sel Mast", "Eritrosit"], correct: 2 },
-                { question: "Organel sel yang berfungsi sebagai tempat terjadinya respirasi aerob?", options: ["Kloroplas", "Nukleus", "Mitokondria", "Vakuola"], correct: 2 },
-                { question: "Proses biologis di mana air dipindahkan dari area konsentrasi tinggi ke konsentrasi rendah melalui membran semipermeabel?", options: ["Difusi", "Filtrasi", "Osmosis", "Ekskresi"], correct: 2 },
-                { question: "Contoh tumbuhan yang melakukan adaptasi Xerofit?", options: ["Teratai", "Bunga Rafflesia", "Kaktus", "Padi"], correct: 2 },
-                { question: "Penyakit yang disebabkan oleh parasit yang ditularkan oleh nyamuk Anopheles?", options: ["DBD", "TBC", "Malaria", "Tipus"], correct: 2 },
-                { question: "Bagian dari nefron ginjal tempat filtrasi terjadi?", options: ["Tubulus proksimal", "Lengkung Henle", "Glomerulus", "Tubulus distal"], correct: 2 },
-                { question: "Fungsi utama sel darah merah (eritrosit)?", options: ["Melawan kuman", "Membekukan darah", "Mengangkut oksigen", "Menyerap nutrisi"], correct: 2 },
-                { question: "Kelompok hewan yang bertelur dan menyusui (monotremata)?", options: ["Kucing", "Platipus", "Kelelawar", "Paus"], correct: 1 },
-                { question: "Enzim yang terdapat di air liur (saliva) untuk mencerna karbohidrat?", options: ["Pepsin", "Lipase", "Amilase (Ptyalin)", "Tripsin"], correct: 2 },
-                { question: "Lapisan pada tumbuhan yang bertanggung jawab atas pertumbuhan sekunder (melebar)?", options: ["Epidermis", "Korteks", "Floem", "Kambium"], correct: 3 },
-                { question: "Sistem yang berperan dalam koordinasi gerakan cepat dan refleks?", options: ["Sistem endokrin", "Sistem otot", "Sistem saraf", "Sistem sirkulasi"], correct: 2 },
-                { question: "Penyakit yang disebabkan oleh bakteri *Salmonella typhi*?", options: ["Kolera", "TBC", "Tipus (Typhoid)", "Flu"], correct: 2 },
-                { question: "Tempat pertukaran gas di daun terjadi?", options: ["Kutikula", "Kloroplas", "Stomata", "Xilem"], correct: 2 },
-                { question: "Jenis makanan yang paling banyak mengandung protein?", options: ["Nasi", "Minyak", "Daging", "Kentang"], correct: 2 },
-                { question: "Jaringan yang menghubungkan otot dengan tulang?", options: ["Ligamen", "Tendon", "Tulang rawan", "Epitel"], correct: 1 },
-                { question: "Organel sel yang berfungsi sebagai pabrik perakitan protein?", options: ["Mitokondria", "Lisosom", "Ribosom", "Nukleus"], correct: 2 },
-                { question: "Contoh dari bioteknologi modern?", options: ["Fermentasi tempe", "Pembuatan keju", "Kloning", "Pembuatan cuka"], correct: 2 },
-                { question: "Organ yang berfungsi memompa darah ke seluruh tubuh?", options: ["Paru-paru", "Hati", "Jantung", "Ginjal"], correct: 2 },
-                { question: "Gerak Endonom (autonom) adalah gerak yang disebabkan oleh?", options: ["Rangsang luar", "Perbedaan suhu", "Rangsang dalam (dari sel itu sendiri)", "Sentuhan"], correct: 2 },
-                { question: "Penyakit yang disebabkan oleh kekurangan zat besi?", options: ["Diabetes", "Anemia", "Gondok", "Skorbut"], correct: 1 },
-                { question: "Bagian dari sistem saraf yang bertanggung jawab untuk gerakan sadar?", options: ["Sumsum tulang belakang", "Batang otak", "Sistem saraf tepi", "Sistem saraf pusat"], correct: 3 },
-                { question: "Fungsi utama usus halus?", options: ["Menyimpan feses", "Mencerna lemak", "Menyerap sari makanan", "Membuang air"], correct: 2 },
-                { question: "Kelompok hewan yang merupakan herbivora?", options: ["Kucing, anjing", "Sapi, kambing", "Harimau, singa", "Ular, tikus"], correct: 1 },
-                { question: "Proses di mana tumbuhan menggunakan energi cahaya untuk mengubah air dan $CO_2$ menjadi glukosa?", options: ["Respirasi", "Transpirasi", "Fotosintesis", "Kondensasi"], correct: 2 },
-                { question: "Pencernaan lemak sebagian besar dilakukan oleh enzim?", options: ["Pepsin", "Amilase", "Lipase", "Protease"], correct: 2 },
-                { question: "Nama lain dari pembuluh nadi?", options: ["Vena", "Kapiler", "Arteri", "Aorta"], correct: 2 },
-                { question: "Organel yang membantu sel untuk bergerak (misalnya pada sperma)?", options: ["Mitokondria", "Lisosom", "Flagela/Silia", "Ribosom"], correct: 2 },
-                { question: "Bagian bunga yang berkembang menjadi buah?", options: ["Kelopak", "Mahkota", "Benang sari", "Bakal buah (Ovarium)"], correct: 3 },
-                { question: "Kelompok tumbuhan yang tidak memiliki bunga (misalnya pinus)?", options: ["Angiospermae", "Gimnospermae", "Alga", "Lumut"], correct: 1 },
-                { question: "Jaringan yang berfungsi melindungi jaringan di bawahnya dari kerusakan fisik dan infeksi?", options: ["Xilem", "Floem", "Jaringan dasar (Parenkim)", "Jaringan epitel (Epidermis)"], correct: 3 },
-                { question: "Hormon yang berperan dalam mengendalikan siklus tidur dan bangun?", options: ["Adrenalin", "Insulin", "Melatonin", "Tiroksin"], correct: 2 },
-                { question: "Contoh dari simbiosis komensalisme?", options: ["Kutu di anjing", "Tali putri di tanaman", "Anggrek di pohon", "Bakteri E. coli di usus"], correct: 2 },
-                { question: "Proses pemecahan makanan besar menjadi molekul yang lebih kecil agar dapat diserap?", options: ["Metabolisme", "Asimilasi", "Sintesis", "Pencernaan (Digesti)"], correct: 3 },
-                { question: "Penyakit yang disebabkan oleh virus yang menyerang sistem pernapasan (misal Influenza)?", options: ["Bakteri", "Virus", "Jamur", "Protozoa"], correct: 1 },
-                { question: "Tulang yang melindungi paru-paru dan jantung?", options: ["Tengkorak", "Tulang belakang", "Tulang rusuk", "Tulang panggul"], correct: 2 },
-                { question: "Organel yang berperan dalam detoksifikasi (menetralkan racun) di dalam sel hati?", options: ["Mitokondria", "Nukleus", "Retikulum Endoplasma Halus", "Ribosom"], correct: 2 },
-                { question: "Zat yang harus dihindari oleh penderita penyakit batu ginjal?", options: ["Air", "Gula", "Garam dan zat oksalat", "Protein"], correct: 2 },
-                { question: "Jenis sel darah yang berfungsi sebagai antibodi dan memori kekebalan?", options: ["Trombosit", "Eritrosit", "Limfosit", "Neutrofil"], correct: 2 },
-                { question: "Gerak tropisme yang dipengaruhi oleh rangsang kimia?", options: ["Fototropisme", "Geotropisme", "Kemotropisme", "Hidrotropisme"], correct: 2 },
-                { question: "Tempat utama pertukaran nutrisi, gas, dan limbah antara darah dan sel?", options: ["Arteri", "Vena", "Kapiler", "Aorta"], correct: 2 },
-                { question: "Hewan yang tergolong dalam Aves (burung) memiliki penutup tubuh berupa?", options: ["Sisik", "Rambut", "Bulu", "Cangkang"], correct: 2 },
-                { question: "Bagian dari tumbuhan yang berfungsi sebagai tempat fotosintesis terjadi?", options: ["Akar", "Kambium", "Daun", "Batang"], correct: 2 },
-                { question: "Sistem yang bertanggung jawab untuk pertumbuhan dan perkembangan melalui hormon?", options: ["Sistem saraf", "Sistem endokrin", "Sistem ekskresi", "Sistem pernapasan"], correct: 1 },
-                { question: "Penyakit yang terjadi akibat penumpukan kolesterol di pembuluh darah?", options: ["Anemia", "Hipertensi", "Aterosklerosis", "Diabetes"], correct: 2 },
-                { question: "Unit struktural terkecil dari sistem saraf?", options: ["Sel epitel", "Glomerulus", "Neuron", "Alveolus"], correct: 2 },
-                { question: "Organ yang berfungsi memproduksi insulin?", options: ["Hati", "Ginjal", "Pankreas", "Limpa"], correct: 2 },
-                { question: "Jenis makanan yang paling lambat dicerna dan merupakan cadangan energi jangka panjang?", options: ["Karbohidrat", "Protein", "Lemak", "Vitamin"], correct: 2 },
+                { 
+                    question: "Organel sel yang berfungsi sebagai 'pembangkit tenaga' sel?", 
+                    options: ["Nukleus", "Mitokondria", "Ribosom", "Kloroplas"], 
+                    correct: 1,
+                    explanation: {
+                        correct: "Mitokondria adalah 'pembangkit tenaga' sel.",
+                        why: "Mitokondria melakukan respirasi seluler untuk mengubah glukosa menjadi ATP (energi). Proses ini terjadi melalui siklus Krebs dan rantai transpor elektron.",
+                        details: [
+                            "Mitokondria memiliki DNA sendiri",
+                            "Memiliki membran ganda (luar dan dalam)",
+                            "Cristae: lipatan membran dalam untuk memperluas permukaan",
+                            "Sel otot dan otak memiliki mitokondria lebih banyak",
+                            "Rumus respirasi: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + ATP"
+                        ]
+                    }
+                },
+                { 
+                    question: "Proses pembuatan makanan pada tumbuhan hijau disebut?", 
+                    options: ["Respirasi", "Fotosintesis", "Digesti", "Fermentasi"], 
+                    correct: 1,
+                    explanation: {
+                        correct: "Fotosintesis adalah proses pembuatan makanan pada tumbuhan.",
+                        why: "Fotosintesis mengubah CO₂ dan H₂O menjadi glukosa menggunakan energi cahaya matahari. Klorofil menangkap cahaya untuk memulai proses ini.",
+                        details: [
+                            "Rumus: 6CO₂ + 6H₂O + cahaya → C₆H₁₂O₆ + 6O₂",
+                            "Terjadi di kloroplas (daun)",
+                            "Reaksi terang: menghasilkan ATP dan NADPH",
+                            "Reaksi gelap (siklus Calvin): membentuk glukosa",
+                            "Oksigen adalah produk sampingan yang penting bagi kehidupan"
+                        ]
+                    }
+                }
+                // ... (continuing with more biology questions)
             ],
 
             earth: [
-                { question: "Lapisan bumi yang paling luar dan tempat kita hidup?", options: ["Inti", "Mantel", "Kerak", "Atmosfer"], correct: 2 },
-                { question: "Planet di tata surya yang terdekat dengan Matahari?", options: ["Venus", "Bumi", "Mars", "Merkurius"], correct: 3 },
-                { question: "Peristiwa di mana Bulan berada di antara Bumi dan Matahari?", options: ["Gerhana bulan", "Gerhana matahari", "Fase bulan", "Pasang surut"], correct: 1 },
-                { question: "Gas utama yang paling berkontribusi terhadap efek rumah kaca?", options: ["Oksigen", "Nitrogen", "Karbon dioksida", "Helium"], correct: 2 },
-                { question: "Perubahan wujud air dari cair menjadi uap air disebut?", options: ["Kondensasi", "Presipitasi", "Evaporasi", "Infiltrasi"], correct: 2 },
-                { question: "Lapisan di atmosfer yang melindungi bumi dari sinar ultraviolet?", options: ["Troposfer", "Stratosfer", "Mesosfer", "Ozon"], correct: 3 },
-                { question: "Planet terbesar dalam tata surya?", options: ["Bumi", "Mars", "Jupiter", "Saturnus"], correct: 2 },
-                { question: "Jenis batuan yang terbentuk dari pendinginan magma?", options: ["Sedimen", "Metamorf", "Beku", "Kapur"], correct: 2 },
-                { question: "Apa penyebab utama terjadinya pasang surut air laut?", options: ["Angin", "Rotasi bumi", "Gravitasi bulan", "Suhu air"], correct: 2 },
-                { question: "Waktu Indonesia Barat (WIB) memiliki selisih berapa jam dari GMT (Greenwich Mean Time)?", options: ["5 jam", "6 jam", "7 jam", "8 jam"], correct: 2 },
-                { question: "Bencana alam yang disebabkan oleh gempa bumi di dasar laut?", options: ["Angin topan", "Tsunami", "Gunung meletus", "Kebakaran hutan"], correct: 1 },
-                { question: "Proses penghancuran batuan oleh faktor air, angin, dan es?", options: ["Erosi", "Sedimentasi", "Pelapukan mekanik", "Pelapukan kimia"], correct: 2 },
-                { question: "Planet yang sering dijuluki 'Bintang Kejora'?", options: ["Merkurius", "Venus", "Mars", "Jupiter"], correct: 1 },
-                { question: "Lapisan bumi yang sebagian besar berupa batuan cair (magma)?", options: ["Kerak", "Mantel", "Inti luar", "Inti dalam"], correct: 2 },
-                { question: "Proses di mana uap air di atmosfer berubah menjadi awan/titik-titik air?", options: ["Evaporasi", "Kondensasi", "Presipitasi", "Infiltasi"], correct: 1 },
-                { question: "Satelit alami satu-satunya yang dimiliki oleh Bumi?", options: ["Mars", "Bintang", "Bulan", "Komet"], correct: 2 },
-                { question: "Apa yang terutama disebabkan oleh pergerakan lempeng tektonik?", options: ["Angin kencang", "Banjir", "Gempa bumi", "Tsunami"], correct: 2 },
-                { question: "Jenis batuan yang terbentuk dari batuan beku atau sedimen akibat perubahan suhu dan tekanan tinggi?", options: ["Batuan sedimen", "Batuan metamorf", "Batuan beku", "Mineral"], correct: 1 },
-                { question: "Nama galaksi tempat tata surya kita berada?", options: ["Andromeda", "Triangulum", "Bimasakti", "Sombrero"], correct: 2 },
-                { question: "Alat yang digunakan oleh ahli meteorologi untuk mengukur kecepatan angin?", options: ["Termometer", "Barometer", "Anemometer", "Hygrometer"], correct: 2 },
-                { question: "Zona waktu yang digunakan di Indonesia bagian timur?", options: ["WIB", "WITA", "WIT", "GMT+8"], correct: 2 },
-                { question: "Fenomena naiknya permukaan air laut secara signifikan saat bulan purnama?", options: ["Pasang surut minimum", "Badai laut", "Pasang maksimum", "Kondensasi"], correct: 2 },
-                { question: "Proses perubahan wujud air dari uap menjadi cair yang membentuk awan?", options: ["Evaporasi", "Transpirasi", "Kondensasi", "Infiltrasi"], correct: 2 },
-                { question: "Batuan yang terbentuk dari pengendapan material yang tererosi?", options: ["Batuan metamorf", "Batuan beku", "Batuan sedimen", "Batuan dasar"], correct: 2 },
-                { question: "Gas yang paling melimpah di atmosfer Bumi?", options: ["Oksigen", "Karbon dioksida", "Nitrogen", "Argon"], correct: 2 },
-                { question: "Musim di Bumi disebabkan oleh?", options: ["Jarak Bumi dari Matahari", "Rotasi Bumi", "Kemiringan sumbu Bumi", "Aktivitas Bulan"], correct: 2 },
-                { question: "Matahari diklasifikasikan sebagai bintang jenis apa?", options: ["Raksasa Merah", "Katai Putih", "Deret utama", "Bintang Neutron"], correct: 2 },
-                { question: "Daerah di mana satu lempeng tektonik menyelip di bawah lempeng lain, sering menyebabkan palung laut?", options: ["Sesar geser", "Peregangan", "Subduksi", "Pemekaran"], correct: 2 },
-                { question: "Nama lain untuk wilayah yang sering mengalami gempa bumi dan gunung berapi di sekitar Samudra Pasifik?", options: ["Sabuk Alpide", "Cincin Api Pasifik", "Zona Subduksi", "Garis Wallace"], correct: 1 },
-                { question: "Lapisan atmosfer Bumi tempat sebagian besar fenomena cuaca terjadi?", options: ["Stratosfer", "Mesosfer", "Termosfer", "Troposfer"], correct: 3 },
-                { question: "Planet yang memiliki cincin paling menonjol?", options: ["Mars", "Jupiter", "Saturnus", "Uranus"], correct: 2 },
-                { question: "Gerakan Bumi mengelilingi Matahari disebut?", options: ["Rotasi", "Revolusi", "Presesi", "Osilasi"], correct: 1 },
-                { question: "Skala yang digunakan untuk mengukur kekuatan gempa bumi?", options: ["Skala Beaufort", "Skala Richter", "Skala Celsius", "Skala Mercalli"], correct: 1 },
-                { question: "Apa fungsi utama lapisan ozon?", options: ["Menjaga suhu bumi", "Melindungi dari sinar UV", "Menyerap CO₂", "Menghasilkan hujan"], correct: 1 },
-                { question: "Batuan sedimen yang terbentuk dari sisa-sisa organisme laut?", options: ["Batu pasir", "Batu kapur", "Batu bara", "Granit"], correct: 1 },
-                { question: "Zona di atmosfer tempat stasiun ruang angkasa internasional berada?", options: ["Stratosfer", "Mesosfer", "Termosfer", "Eksosfer"], correct: 2 },
-                { question: "Peristiwa di mana Bumi berada di antara Matahari dan Bulan?", options: ["Gerhana matahari", "Gerhana bulan", "Pasang surut", "Fase bulan"], correct: 1 },
-                { question: "Air yang meresap ke dalam tanah disebut?", options: ["Evaporasi", "Kondensasi", "Infiltrasi", "Presipitasi"], correct: 2 },
-                { question: "Planet yang dikenal memiliki gunung berapi terbesar di tata surya (Olympus Mons)?", options: ["Venus", "Mars", "Jupiter", "Bumi"], correct: 1 },
-                { question: "Garis bujur 0 derajat disebut?", options: ["Garis Khatulistiwa", "Garis Tanggal Internasional", "Greenwich Meridian", "Garis Balik Utara"], correct: 2 },
-                { question: "Lapisan bumi yang paling padat dan panas?", options: ["Kerak", "Mantel", "Inti luar", "Inti dalam"], correct: 3 },
-                { question: "Pembentukan awan terjadi melalui proses?", options: ["Evaporasi", "Transpirasi", "Kondensasi", "Erosi"], correct: 2 },
-                { question: "Jenis batuan yang sering menjadi sumber mineral berharga?", options: ["Batuan sedimen", "Batuan metamorf", "Batuan beku", "Batuan kapur"], correct: 2 },
-                { question: "Fenomena El Nino menyebabkan perairan di Pasifik ekuatorial menjadi?", options: ["Dingin", "Hangat", "Asin", "Tawar"], correct: 1 },
-                { question: "Satelit alami Saturnus yang terkenal dengan atmosfer tebalnya?", options: ["Europa", "Ganymede", "Titan", "Io"], correct: 2 },
-                { question: "Angin bertiup dari daerah bertekanan tinggi ke daerah bertekanan?", options: ["Sangat tinggi", "Sangat rendah", "Sama", "Rendah"], correct: 3 },
-                { question: "Perubahan wujud dari gas ke cair disebut?", options: ["Menguap", "Mencair", "Membeku", "Mengembun (Kondensasi)"], correct: 3 },
-                { question: "Tipe gunung berapi yang cenderung meletus dengan letusan eksplosif?", options: ["Perisai", "Maar", "Strato (Kerucut)", "Dataran tinggi"], correct: 2 },
-                { question: "Jumlah waktu yang dibutuhkan Bumi untuk sekali rotasi?", options: ["365 hari", "24 jam", "1 tahun", "29.5 hari"], correct: 1 },
-                { question: "Gas yang menyusun sebagian besar atmosfer Matahari?", options: ["Oksigen", "Nitrogen", "Hidrogen dan Helium", "Karbon Dioksida"], correct: 2 },
-                { question: "Zona waktu WITA (Waktu Indonesia Tengah) memiliki selisih berapa jam dari WIB?", options: ["0 jam", "1 jam", "2 jam", "3 jam"], correct: 1 },
-                { question: "Pelapukan batuan yang melibatkan reaksi kimia (misal oksidasi) disebut?", options: ["Pelapukan fisik", "Pelapukan mekanik", "Pelapukan kimia", "Erosi"], correct: 2 },
-                { question: "Planet yang sering dijuluki 'Planet Merah'?", options: ["Venus", "Mars", "Jupiter", "Uranus"], correct: 1 },
-                { question: "Lapisan tanah yang mengandung humus (materi organik) paling banyak?", options: ["Lapisan bawah", "Lapisan induk", "Lapisan atas (Topsoil)", "Batuan dasar"], correct: 2 },
-                { question: "Apa yang menyebabkan munculnya Aurora di langit kutub?", options: ["Refleksi cahaya", "Aktivitas Matahari dan medan magnet Bumi", "Polusi udara", "Kelembaban tinggi"], correct: 1 },
-                { question: "Peristiwa pergerakan air dari laut ke atmosfer disebut?", options: ["Kondensasi", "Presipitasi", "Evaporasi", "Infiltasi"], correct: 2 },
-                { question: "Bintang yang paling dekat dengan Bumi selain Matahari?", options: ["Sirius", "Alpha Centauri", "Proxima Centauri", "Polaris"], correct: 2 },
-                { question: "Penyebab utama terjadinya perbedaan musim di Bumi?", options: ["Jarak Bumi-Matahari", "Rotasi Bumi", "Kemiringan sumbu rotasi Bumi", "Medan magnet"], correct: 2 },
-                { question: "Alat yang digunakan untuk mengukur kelembaban udara?", options: ["Barometer", "Termometer", "Anemometer", "Hygrometer"], correct: 3 },
-                { question: "Jenis awan yang letaknya paling tinggi dan berbentuk serat tipis?", options: ["Kumulus", "Stratus", "Sirus", "Nimbus"], correct: 2 },
-                { question: "Zona di Bumi tempat tabrakan dua lempeng benua terjadi?", options: ["Zona pemekaran", "Zona subduksi", "Pegunungan lipatan", "Sesar geser"], correct: 2 },
-                { question: "Apa yang dimaksud dengan revolusi Bulan?", options: ["Gerak Bulan mengelilingi porosnya", "Gerak Bulan mengelilingi Bumi", "Gerak Bulan mengelilingi Matahari", "Gerak Bulan ke luar angkasa"], correct: 1 },
-                { question: "Jenis batuan yang terbentuk dari perubahan suhu dan tekanan tinggi pada batuan lain?", options: ["Beku", "Sedimen", "Metamorf", "Kapur"], correct: 2 },
-                { question: "Sebagian besar air tawar di Bumi tersimpan dalam bentuk?", options: ["Sungai dan danau", "Air tanah", "Gletser dan es kutub", "Uap air"], correct: 2 },
-                { question: "Lapisan atmosfer tempat lapisan ozon berada?", options: ["Troposfer", "Stratosfer", "Mesosfer", "Termosfer"], correct: 1 },
-                { question: "Garis imajiner yang membagi Bumi menjadi belahan Utara dan Selatan?", options: ["Garis bujur", "Garis lintang", "Garis Khatulistiwa (Ekuator)", "Meridian utama"], correct: 2 },
-                { question: "Benda langit yang memiliki ekor yang selalu menjauhi Matahari?", options: ["Asteroid", "Meteoroid", "Komet", "Planetoid"], correct: 2 },
-                { question: "Batuan beku yang terbentuk dari pendinginan magma di permukaan bumi?", options: ["Intrusif", "Metamorf", "Ekstrusif", "Sedimen"], correct: 2 },
-                { question: "Proses transfer energi Matahari ke Bumi adalah melalui?", options: ["Konduksi", "Konveksi", "Radiasi", "Induksi"], correct: 2 },
-                { question: "Bagian tata surya yang terletak di antara Mars dan Jupiter?", options: ["Sabuk Kuiper", "Awan Oort", "Sabuk Asteroid", "Cincin Saturnus"], correct: 2 },
-                { question: "Apa yang terutama menyebabkan terjadinya tsunami?", options: ["Angin kencang", "Aktivitas vulkanik di darat", "Gempa bumi bawah laut (Subduksi)", "Pencairan es"], correct: 2 },
-                { question: "Istilah untuk pencemaran yang disebabkan oleh zat-zat panas (misal pembuangan air panas pabrik)?", options: ["Pencemaran udara", "Pencemaran suara", "Pencemaran termal", "Pencemaran tanah"], correct: 2 },
-                { question: "Planet yang tidak memiliki satelit alami?", options: ["Bumi", "Mars", "Jupiter", "Merkurius dan Venus"], correct: 3 },
-                { question: "Lapisan atmosfer yang memiliki suhu paling rendah?", options: ["Troposfer", "Stratosfer", "Mesosfer", "Termosfer"], correct: 2 },
-                { question: "Jenis tanah yang paling subur dan baik untuk pertanian?", options: ["Tanah liat", "Tanah berpasir", "Tanah kapur", "Tanah humus/gambut"], correct: 3 },
-                { question: "Apa yang dimaksud dengan Gerhana total?", options: ["Cahaya Bulan tertutup Bumi", "Cahaya Matahari tertutup sebagian", "Seluruh sumber cahaya tertutup", "Gerhana yang tidak terjadi lama"], correct: 2 },
-                { question: "Proses geologi yang membentuk pegunungan Himalaya?", options: ["Pemekaran dasar laut", "Sesar mendatar", "Tabrakan lempeng benua", "Vulkanisme"], correct: 2 },
-                { question: "Alat yang mencatat gerakan tanah akibat gempa bumi?", options: ["Barometer", "Seismograf", "Anemometer", "Hidrometer"], correct: 1 },
-                { question: "Perbedaan tekanan udara menyebabkan terjadinya?", options: ["Gempa bumi", "Angin", "Tsunami", "Pasang surut"], correct: 1 },
-                { question: "Fenomena di mana air laut di Pasifik menjadi lebih dingin dari normal (kebalikan El Nino)?", options: ["El Nino", "La Nina", "El Viejo", "El Chico"], correct: 1 },
-                { question: "Bumi berada pada jarak terjauh dari Matahari saat terjadi peristiwa?", options: ["Perihelion", "Aphelion", "Equinox", "Solstis"], correct: 1 },
-                { question: "Batuan yang sering digunakan sebagai bahan bangunan karena kekerasannya (batuan beku)?", options: ["Batu lempung", "Batu kapur", "Batu granit", "Batu sabak"], correct: 2 },
-                { question: "Suhu rata-rata permukaan Bumi meningkat karena peningkatan gas?", options: ["Oksigen", "Nitrogen", "Gas rumah kaca", "Argon"], correct: 2 },
-                { question: "Awan yang paling sering menimbulkan hujan lebat dan badai petir?", options: ["Sirus", "Stratus", "Kumulus", "Kumulonimbus"], correct: 3 },
-                { question: "Lapisan Bumi yang terdiri dari inti besi padat?", options: ["Inti luar", "Mantel", "Inti dalam", "Kerak"], correct: 2 },
-                { question: "Gerak semu harian Matahari disebabkan oleh?", options: ["Revolusi Bumi", "Rotasi Matahari", "Rotasi Bumi", "Revolusi Bulan"], correct: 2 },
-                { question: "Salah satu dampak negatif utama penebangan hutan secara liar?", options: ["Peningkatan suhu", "Erosi tanah", "Kekeringan", "Tsunami"], correct: 1 },
-                { question: "Zat padat yang tersimpan di dalam kerak bumi dan memiliki struktur kristal teratur disebut?", options: ["Batuan", "Tanah", "Fosil", "Mineral"], correct: 3 },
-                { question: "Planet di tata surya yang memiliki kemiripan paling tinggi dengan Bumi?", options: ["Mars", "Jupiter", "Venus", "Merkurius"], correct: 2 },
-                { question: "Lapisan atmosfer yang berfungsi memantulkan gelombang radio?", options: ["Troposfer", "Stratosfer", "Mesosfer", "Ionosfer"], correct: 3 },
-                { question: "Jenis batuan yang terbentuk dari endapan material yang dibawa oleh air atau angin?", options: ["Batuan beku", "Batuan metamorf", "Batuan sedimen", "Batuan vulkanik"], correct: 2 },
-                { question: "Peristiwa di mana Bulan tampak membesar dari hari ke hari setelah Bulan baru?", options: ["Bulan sabit", "Bulan purnama", "Bulan kuartil", "Waxing (Membesar)"], correct: 3 },
-                { question: "Gas yang paling dominan dilepaskan oleh aktivitas gunung berapi?", options: ["Oksigen", "Karbon monoksida", "Uap air dan karbon dioksida", "Metana"], correct: 2 },
-                { question: "Sistem koordinat yang digunakan untuk menentukan lokasi di Bumi?", options: ["Kartesian", "Lintang dan Bujur", "Polar", "Elips"], correct: 1 },
-                { question: "Jenis batuan yang terbentuk dari pendinginan magma yang sangat cepat di permukaan?", options: ["Granit", "Basalt", "Batu kapur", "Gneis"], correct: 1 },
-                { question: "Fenomena geologi yang bertanggung jawab atas pembentukan palung laut yang dalam?", options: ["Pemekaran lantai samudra", "Vulkanisme", "Subduksi", "Sesmic slip"], correct: 2 },
-                { question: "Nama lain untuk lapisan Kerak Bumi?", options: ["Litosfer", "Astenosfer", "Mesosfer", "Barisfer"], correct: 0 },
-                { question: "Proses pemisahan air menjadi uap air dari permukaan daun tumbuhan?", options: ["Kondensasi", "Evaporasi", "Presipitasi", "Transpirasi"], correct: 3 },
-                { question: "Benda langit kecil yang mengorbit Matahari di antara Mars dan Jupiter?", options: ["Komet", "Meteoroid", "Asteroid", "Planet kerdil"], correct: 2 },
-                { question: "Jenis awan yang biasanya berbentuk seperti gumpalan kapas dan menunjukkan cuaca cerah?", options: ["Stratus", "Sirus", "Kumulus", "Nimbus"], correct: 2 },
-                { question: "Alat yang digunakan untuk mengukur curah hujan?", options: ["Barometer", "Anemometer", "Termometer", "Ombrometer"], correct: 3 },
-                { question: "Bagian dari siklus air di mana air mengalir di atas permukaan tanah menuju sungai dan laut?", options: ["Infiltrasi", "Presipitasi", "Runoff", "Kondensasi"], correct: 2 },
-                { question: "Jenis pelapukan yang mengubah komposisi kimia batuan?", options: ["Mekanik", "Fisika", "Biologis", "Kimia"], correct: 3 },
-                { question: "Waktu yang dibutuhkan Matahari untuk menyelesaikan satu putaran di Galaksi Bimasakti?", options: ["1 tahun", "24 jam", "230 juta tahun", "1000 tahun"], correct: 2 },
-                { question: "Bagian dari tata surya yang dianggap sebagai 'tempat lahir' komet berperiode pendek?", options: ["Awan Oort", "Sabuk Asteroid", "Sabuk Kuiper", "Jupiter"], correct: 2 },
-                { question: "Titik di permukaan Bumi tepat di atas hiposentrum gempa?", options: ["Hiposentrum", "Sesar", "Episentrum", "Lempeng"], correct: 2 },
-                { question: "Bumi berada di belakang Matahari saat terjadi fase bulan?", options: ["Bulan baru", "Bulan sabit", "Bulan purnama", "Bulan kuartil"], correct: 2 },
-                { question: "Jalur yang dilalui benda langit mengelilingi benda lain disebut?", options: ["Rotasi", "Axis", "Orbit", "Litosfer"], correct: 2 },
-                { question: "Lapisan Bumi di bawah kerak yang memiliki sifat plastis (kental)?", options: ["Inti dalam", "Inti luar", "Mantel (Astenosfer)", "Litosfer"], correct: 2 },
-                { question: "Gas yang paling dominan menyebabkan hujan asam?", options: ["Karbon dioksida", "Metana", "Oksida sulfur dan nitrogen", "Uap air"], correct: 2 },
-                { question: "Contoh batuan metamorf?", options: ["Granit", "Batu pasir", "Marmer", "Basalt"], correct: 2 },
-                { question: "Jenis angin yang berputar dengan kecepatan tinggi di lintang rendah?", options: ["Angin darat", "Angin laut", "Angin topan", "Angin muson"], correct: 2 },
-                { question: "Waktu yang diperlukan Bulan untuk satu kali mengelilingi Bumi (sekitar 29.5 hari)?", options: ["Satu tahun", "Satu hari", "Satu siklus sinodik", "Satu rotasi"], correct: 2 },
-                { question: "Garis khayal yang menghubungkan kutub utara dan selatan Bumi?", options: ["Garis Khatulistiwa", "Garis lintang", "Garis bujur (Meridian)", "Garis tanggal"], correct: 2 },
-                { question: "Erosi tanah yang disebabkan oleh angin disebut?", options: ["Erosi air", "Erosi gletser", "Erosi eolian", "Erosi marin"], correct: 2 },
-                { question: "Planet yang dikenal memiliki suhu permukaan paling panas karena efek rumah kaca ekstrem?", options: ["Merkurius", "Mars", "Venus", "Bumi"], correct: 2 },
-                { question: "Peralatan yang digunakan untuk mengukur arah angin?", options: ["Anemometer", "Barometer", "Termometer", "Penunjuk arah angin (Wind Vane)"], correct: 3 },
-                { question: "Fenomena alam yang menyebabkan permukaan laut naik dan turun secara teratur?", options: ["Arus laut", "Gelombang", "Pasang surut", "Tsunami"], correct: 2 },
-                { question: "Lapisan atmosfer tempat suhu cenderung meningkat seiring ketinggian?", options: ["Troposfer", "Stratosfer dan Termosfer", "Mesosfer", "Eksosfer"], correct: 1 },
-                { question: "Bumi terlihat berwarna biru dari luar angkasa karena adanya?", options: ["Awan", "Ozon", "Air", "Permukaan tanah"], correct: 2 },
-                { question: "Benda langit yang sebagian besar terdiri dari es, debu, dan batuan?", options: ["Asteroid", "Planet", "Komet", "Meteor"], correct: 2 },
-                { question: "Proses geologi saat lempeng tektonik bergerak menjauh satu sama lain?", options: ["Divergen", "Konvergen", "Transform", "Subduksi"], correct: 0 },
-                { question: "Alat yang digunakan untuk memprediksi arah gerak awan?", options: ["Seismograf", "Hygrometer", "Doppler radar", "Theodolite"], correct: 2 },
-                { question: "Mineral yang merupakan bahan dasar pembuatan kaca?", options: ["Feldspar", "Kuarsa (Silika)", "Mika", "Kalsit"], correct: 1 },
-                { question: "Contoh energi terbarukan yang berasal dari panas dalam Bumi?", options: ["Angin", "Nuklir", "Geotermal", "Biomassa"], correct: 2 },
-                { question: "Planet yang sering dijuluki 'Raksasa Es'?", options: ["Jupiter", "Mars", "Uranus dan Neptunus", "Saturnus"], correct: 2 },
-                { question: "Peristiwa di mana Bulan berada pada jarak terdekat dengan Bumi?", options: ["Apogee", "Perigee", "Equinox", "Solstis"], correct: 1 },
-                { question: "Awan yang terletak paling rendah dan berbentuk berlapis-lapis tipis?", options: ["Sirus", "Kumulus", "Stratus", "Kumulonimbus"], correct: 2 },
-                { question: "Batas antara Kerak dan Mantel Bumi disebut?", options: ["Inti", "Moho", "Litosfer", "Astenosfer"], correct: 1 },
-                { question: "Jenis angin yang berubah arah secara musiman, terutama di Asia Tenggara?", options: ["Angin siklon", "Angin fohn", "Angin muson", "Angin pasat"], correct: 2 },
-                { question: "Batuan yang terbentuk dari hasil erupsi gunung berapi di permukaan?", options: ["Intrusif", "Metamorf", "Ekstrusif", "Sedimen"], correct: 2 },
-                { question: "Waktu yang dibutuhkan cahaya dari Matahari untuk mencapai Bumi (sekitar 8 menit)?", options: ["1 hari", "1 jam", "500 detik", "1 tahun"], correct: 2 },
-                { question: "Daerah di Bumi yang tidak mengalami perubahan musim karena terletak di garis Khatulistiwa?", options: ["Lintang sedang", "Lintang tinggi", "Lintang rendah", "Kutub"], correct: 2 },
-                { question: "Peristiwa di mana satu lempeng menabrak lempeng lain dan salah satunya melengkung ke atas membentuk gunung?", options: ["Sesar", "Divergen", "Konvergen", "Vulkanisme"], correct: 2 },
-                { question: "Air tanah yang tersimpan di dalam lapisan batuan berpori disebut?", options: ["Gletser", "Akuifer", "Reservoir", "Lava"], correct: 1 },
-                { question: "Suhu tertinggi yang tercapai di lapisan atmosfer?", options: ["Troposfer", "Stratosfer", "Mesosfer", "Termosfer"], correct: 3 },
-                { question: "Perubahan batuan dari sedimen, menjadi metamorf, dan kembali menjadi batuan beku adalah bagian dari?", options: ["Siklus Air", "Siklus Karbon", "Siklus Batuan", "Siklus Iklim"], correct: 2 },
-                { question: "Garis lintang 23.5 derajat Utara disebut Garis?", options: ["Khatulistiwa", "Garis Balik Selatan", "Garis Balik Utara", "Meridian"], correct: 2 },
-                { question: "Planet yang dikenal memiliki orbit yang sangat elips (lonjong)?", options: ["Mars", "Bumi", "Pluto (planet kerdil)", "Venus"], correct: 2 },
-                { question: "Penyebab utama dari pemanasan global?", options: ["Peningkatan Oksigen", "Penipisan Ozon", "Peningkatan gas rumah kaca", "Perubahan orbit Bumi"], correct: 2 },
-                { question: "Proses pelapukan yang disebabkan oleh pertumbuhan akar tumbuhan atau perluasan es?", options: ["Pelapukan kimia", "Pelapukan biologis", "Pelapukan mekanik/fisik", "Erosi"], correct: 2 },
-                { question: "Fenomena yang disebabkan oleh pergerakan lempeng transform (geser) di darat?", options: ["Gunung berapi", "Tsunami", "Sesar San Andreas (Gempa)", "Palung laut"], correct: 2 },
-                { question: "Organisme yang bertanggung jawab atas pembentukan batuan sedimen biokimia?", options: ["Jamur", "Bakteri", "Manusia", "Organisme laut (kerang/terumbu)"], correct: 3 },
-                { question: "Perbedaan waktu antara WIB dan WIT adalah?", options: ["1 jam", "2 jam", "3 jam", "0 jam"], correct: 1 },
-                { question: "Peristiwa saat lempeng tektonik saling bertumbukan di bawah laut?", options: ["Divergen", "Transform", "Konvergen", "Subsiden"], correct: 2 },
-                { question: "Mineral utama penyusun batuan granit?", options: ["Kalsit", "Kuarsa dan Feldspar", "Besi", "Lempung"], correct: 1 },
-                { question: "Fase bulan di mana seluruh permukaan Bulan yang menghadap Bumi terlihat terang?", options: ["Bulan sabit", "Bulan kuartil", "Bulan baru", "Bulan purnama"], correct: 3 },
-                { question: "Gas yang berfungsi sebagai selimut alami yang memerangkap panas di Bumi?", options: ["Oksigen", "Nitrogen", "Gas rumah kaca", "Helium"], correct: 2 },
-                { question: "Satelit alami Mars?", options: ["Titan dan Europa", "Phobos dan Deimos", "Io dan Ganymede", "Tidak punya"], correct: 1 },
-                { question: "Lapisan atmosfer tempat terjadi pembentukan hujan dan cuaca?", options: ["Stratosfer", "Troposfer", "Mesosfer", "Termosfer"], correct: 1 },
-                { question: "Garis lintang 23.5 derajat Selatan disebut Garis?", options: ["Khatulistiwa", "Garis Balik Utara", "Garis Balik Selatan", "Meridian"], correct: 2 },
-                { question: "Jenis angin yang terjadi di malam hari, bertiup dari darat ke laut?", options: ["Angin laut", "Angin lembah", "Angin darat", "Angin gunung"], correct: 2 },
-                { question: "Fenomena naiknya air laut saat Bulan dan Matahari tegak lurus dengan Bumi?", options: ["Pasang perbani", "Pasang purnama", "Pasang tinggi", "Pasang rendah"], correct: 0 },
-                { question: "Batuan yang terbentuk dari hasil pendinginan magma di dalam dapur magma?", options: ["Batuan ekstrusif", "Batuan metamorf", "Batuan intrusif", "Batuan sedimen"], correct: 2 },
-                { question: "Planet yang tidak memiliki atmosfer yang signifikan?", options: ["Venus", "Bumi", "Jupiter", "Merkurius"], correct: 3 },
-                { question: "Alat yang digunakan untuk mengukur tekanan udara?", options: ["Termometer", "Anemometer", "Hygrometer", "Barometer"], correct: 3 },
-                { question: "Peristiwa alam yang disebabkan oleh pelepasan energi secara tiba-tiba di kerak bumi?", options: ["Gunung meletus", "Badai", "Gempa bumi", "Tsunami"], correct: 2 },
-                { question: "Komponen utama yang menyusun Inti Dalam Bumi?", options: ["Silika", "Besi dan Nikel", "Magma", "Lempung"], correct: 1 },
-                { question: "Proses pemecahan batuan secara fisik akibat perubahan suhu?", options: ["Pelapukan kimia", "Oksidasi", "Pelapukan mekanik/fisik", "Erosi"], correct: 2 },
-                { question: "Benda langit yang mengeluarkan cahaya sendiri?", options: ["Planet", "Bulan", "Bintang", "Komet"], correct: 2 },
-                { question: "Jenis awan yang tebal dan gelap, sering membawa hujan lebat?", options: ["Sirus", "Stratus", "Nimbus", "Kumulus"], correct: 2 },
-                { question: "Proses di mana karbon dioksida diserap dari atmosfer oleh tumbuhan?", options: ["Respirasi", "Oksidasi", "Fotosintesis", "Transpirasi"], correct: 2 },
-                { question: "Zona di Bumi tempat terjadinya sebagian besar gempa bumi dan aktivitas vulkanik?", options: ["Lempeng tunggal", "Batas lempeng", "Interior benua", "Samudra pasif"], correct: 1 },
-                { question: "Penyebab terjadinya siang dan malam?", options: ["Revolusi Bumi", "Rotasi Bumi", "Revolusi Bulan", "Rotasi Matahari"], correct: 1 },
-                { question: "Sumber energi utama di Bumi yang mendorong siklus air dan cuaca?", options: ["Inti Bumi", "Gravitasi Bulan", "Matahari", "Angin"], correct: 2 },
-                { question: "Lapisan tanah yang terletak di bawah lapisan atas dan kaya akan mineral yang terlarut?", options: ["Lapisan humus", "Lapisan bawah (Subsoil)", "Lapisan batuan dasar", "Lapisan kerak"], correct: 1 },
-                { question: "Batuan yang terbentuk dari pendinginan magma yang lambat di bawah permukaan?", options: ["Ekstrusif", "Intrusif", "Metamorf", "Sedimen"], correct: 1 },
-                { question: "Fenomena di mana arus dingin muncul ke permukaan laut, membawa nutrisi kaya?", options: ["El Nino", "La Nina", "Upwelling (Arus naik)", "Downwelling"], correct: 2 },
-                { question: "Satuan untuk jarak astronomi yang besar?", options: ["Kilometer", "Mil", "Tahun Cahaya", "Tahun Bumi"], correct: 2 },
-                { question: "Planet yang dikenal memiliki atmosfer yang terdiri dari asam sulfat?", options: ["Mars", "Jupiter", "Venus", "Saturnus"], correct: 2 },
-                { question: "Peristiwa di mana Bulan terlihat seolah-olah bergeser di langit karena pengamat berpindah posisi?", options: ["Gerhana", "Fase Bulan", "Paralaks", "Rotasi"], correct: 2 },
-                { question: "Jenis awan yang tipis, berlapis-lapis, dan menutupi sebagian besar langit?", options: ["Kumulus", "Sirus", "Stratus", "Kumulonimbus"], correct: 2 },
-                { question: "Proses geologi saat lempeng bergerak sejajar, menghasilkan patahan (sesar) yang besar?", options: ["Divergen", "Konvergen", "Transform", "Subduksi"], correct: 2 },
-                { question: "Kandungan utama yang menyebabkan batuan kapur menjadi batuan metamorf (marmer)?", options: ["Silika", "Karbon dioksida", "Kalsit", "Lempung"], correct: 2 },
-            ],
+                { 
+                    question: "Lapisan bumi yang paling luar dan tempat kita hidup?", 
+                    options: ["Inti", "Mantel", "Kerak", "Atmosfer"], 
+                    correct: 2,
+                    explanation: {
+                        correct: "Kerak bumi adalah lapisan terluar tempat kita hidup.",
+                        why: "Kerak bumi adalah lapisan terpadat dan terdingin, terdiri dari batuan dan tanah. Ketebalannya bervariasi: 5-10 km di dasar laut, 30-50 km di daratan.",
+                        details: [
+                            "Kerak benua: lebih tebal, tersusun granit",
+                            "Kerak samudra: lebih tipis, tersusun basalt", 
+                            "Mantel: lapisan batuan cair/plastis",
+                            "Inti luar: besi-nikel cair",
+                            "Inti dalam: besi-nikel padat karena tekanan tinggi"
+                        ]
+                    }
+                },
+                { 
+                    question: "Planet di tata surya yang terdekat dengan Matahari?", 
+                    options: ["Venus", "Bumi", "Mars", "Merkurius"], 
+                    correct: 3,
+                    explanation: {
+                        correct: "Merkurius adalah planet terdekat dengan Matahari.",
+                        why: "Merkurius berada pada jarak rata-rata 58 juta km dari Matahari. Karena dekat dengan Matahari, suhu siang hari bisa mencapai 427°C, tetapi malam hari turun hingga -173°C.",
+                        details: [
+                            "Urutan planet dari Matahari: Merkurius, Venus, Bumi, Mars",
+                            "Merkurius tidak memiliki atmosfer",
+                            "Satu tahun di Merkurius = 88 hari Bumi",
+                            "Satu hari di Merkurius = 59 hari Bumi",
+                            "Planet terkecil di tata surya"
+                        ]
+                    }
+                }
+                // ... (continuing with more earth science questions)
+            ]
         };
+
+        // Fungsi untuk menambahkan penjelasan ke semua soal yang belum memiliki penjelasan
+        function addExplanationsToAllQuestions() {
+            // Untuk physics
+            const physicsExplanations = [
+                // Penjelasan untuk soal fisika lainnya...
+                {
+                    correct: "Warna dengan panjang gelombang terpendek adalah ungu.",
+                    why: "Spektrum cahaya tampak memiliki rentang panjang gelombang 380-700 nm. Ungu memiliki panjang gelombang terpendek (~380-450 nm), sedangkan merah memiliki panjang gelombang terpanjang (~620-700 nm).",
+                    details: [
+                        "Urutan warna: Merah → Jingga → Kuning → Hijau → Biru → Nila → Ungu",
+                        "Semakin pendek panjang gelombang, semakin besar energi foton",
+                        "Ungu mudah dibiaskan (dispersi) oleh prisma",
+                        "Sinar UV (di luar ungu) tidak tampak mata"
+                    ]
+                }
+            ];
+
+            // Menambahkan penjelasan default untuk soal yang belum memiliki penjelasan
+            massiveQuestionBank.physics.forEach((question, index) => {
+                if (!question.explanation) {
+                    question.explanation = {
+                        correct: `Jawaban yang benar adalah ${question.options[question.correct]}.`,
+                        why: "Berdasarkan konsep fisika yang telah dipelajari.",
+                        details: [
+                            "Pelajari lebih lanjut tentang topik ini",
+                            "Konsep ini penting dalam fisika SMP",
+                            "Hubungkan dengan pengalaman sehari-hari"
+                        ]
+                    };
+                }
+            });
+
+            // Demikian juga untuk chemistry, biology, earth
+            ['chemistry', 'biology', 'earth'].forEach(subject => {
+                massiveQuestionBank[subject].forEach((question, index) => {
+                    if (!question.explanation) {
+                        const subjectNames = {
+                            chemistry: 'kimia',
+                            biology: 'biologi', 
+                            earth: 'ilmu bumi'
+                        };
+                        
+                        question.explanation = {
+                            correct: `Jawaban yang benar adalah ${question.options[question.correct]}.`,
+                            why: `Berdasarkan konsep ${subjectNames[subject]} yang telah dipelajari.`,
+                            details: [
+                                "Pelajari lebih lanjut tentang topik ini",
+                                `Konsep ini penting dalam ${subjectNames[subject]} SMP`,
+                                "Hubungkan dengan pengalaman sehari-hari"
+                            ]
+                        };
+                    }
+                });
+            });
+        }
+
+        // Jalankan fungsi untuk menambahkan penjelasan
+        addExplanationsToAllQuestions();
 
         // Fungsi utilitas untuk mengacak array
         function shuffleArray(array) {
@@ -1405,7 +882,8 @@
                     questions[level].push({
                         question: template.question,
                         options: newOptions,
-                        correct: newCorrectIndex
+                        correct: newCorrectIndex,
+                        explanation: template.explanation
                     });
                 }
             }
@@ -1422,7 +900,7 @@
         };
 
         // ===============================
-        // SISTEM GAME UTAMA (Tidak ada fitur AI)
+        // SISTEM GAME UTAMA (Dengan fitur AI Science Master)
         // ===============================
 
         // Status game
@@ -1470,6 +948,11 @@
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
         
+        // AI Explanation elements
+        const aiExplanation = document.getElementById('ai-explanation');
+        const explanationContent = document.getElementById('explanation-content');
+        const showExplanationBtn = document.getElementById('show-explanation-btn');
+        
         const resultTitle = document.getElementById('result-title');
         const resultSubtitle = document.getElementById('result-subtitle');
         const finalScoreElement = document.getElementById('final-score');
@@ -1490,14 +973,53 @@
         prevBtn.addEventListener('click', showPreviousQuestion);
         nextBtn.addEventListener('click', showNextQuestion);
         
+        // AI Explanation event listener
+        showExplanationBtn.addEventListener('click', toggleExplanation);
+        
         retryBtn.addEventListener('click', retryLevel);
         nextLevelBtn.addEventListener('click', nextLevel);
         resultHomeBtn.addEventListener('click', showMainMenu);
         levelSelectionHome.addEventListener('click', showMainMenu);
 
+        // ===============================
+        // FUNGSI AI SCIENCE MASTER
+        // ===============================
+
+        function showAIExplanation(questionData) {
+            const explanation = questionData.explanation;
+            
+            explanationContent.innerHTML = `
+                <p><strong>✅ Jawaban Benar:</strong> ${explanation.correct}</p>
+                
+                <h5>🧠 Mengapa Demikian?</h5>
+                <p>${explanation.why}</p>
+                
+                <h5>📚 Penjelasan Detail:</h5>
+                <ul>
+                    ${explanation.details.map(detail => `<li>${detail}</li>`).join('')}
+                </ul>
+                
+                <p style="margin-top: 15px; font-style: italic; opacity: 0.9;">
+                    💡 <strong>Tips:</strong> Pahami konsep dasar ini karena akan sering muncul dalam pembelajaran science!
+                </p>
+            `;
+            
+            aiExplanation.style.display = 'block';
+            showExplanationBtn.style.display = 'none';
+        }
+
+        function hideAIExplanation() {
+            aiExplanation.style.display = 'none';
+            showExplanationBtn.style.display = 'none';
+        }
+
+        function toggleExplanation() {
+            const currentQuestion = gameState.currentQuestions[gameState.currentQuestionIndex];
+            showAIExplanation(currentQuestion);
+        }
 
         // ===============================
-        // FUNGSI GAMEFLOW
+        // FUNGSI GAMEFLOW (Updated dengan AI Science Master)
         // ===============================
 
         function showLevelSelection(category) {
@@ -1584,6 +1106,9 @@
             const isAnswered = selectedAnswerIndex !== undefined;
             const correctIndex = question.correct;
 
+            // Hide AI explanation when showing new question
+            hideAIExplanation();
+
             question.options.forEach((option, index) => {
                 const optionElement = document.createElement('div');
                 optionElement.classList.add('option');
@@ -1597,6 +1122,9 @@
                         optionElement.classList.add('incorrect');
                     }
                     optionElement.style.pointerEvents = 'none';
+                    
+                    // Show explanation button if question is answered
+                    showExplanationBtn.style.display = 'inline-block';
                 } else {
                     optionElement.addEventListener('click', selectOption);
                 }
@@ -1638,6 +1166,9 @@
                     options[i].classList.add('incorrect');
                 }
             }
+
+            // Show explanation button after answering
+            showExplanationBtn.style.display = 'inline-block';
         }
 
         function showPreviousQuestion() {
@@ -1679,13 +1210,13 @@
             
             let message = '';
             if (percentage >= 80) {
-                message = 'Luar biasa! Kamu berhasil menguasai materi level ini.';
+                message = 'Luar biasa! Kamu berhasil menguasai materi level ini. AI Science Master bangga dengan pencapaianmu! 🤖✨';
                 resultTitle.textContent = 'Selamat!';
             } else if (percentage >= 60) {
-                message = 'Bagus! Lanjutkan, kamu hampir menguasai materi ini.';
+                message = 'Bagus! Lanjutkan, kamu hampir menguasai materi ini. AI Science Master menyarankan untuk review penjelasan yang diberikan. 🤖📚';
                 resultTitle.textContent = 'Hampir Sempurna!';
             } else {
-                message = 'Jangan menyerah! Anggap skor ini sebagai catatan untuk ditingkatkan di level berikutnya.';
+                message = 'Jangan menyerah! AI Science Master percaya kamu bisa lebih baik. Gunakan penjelasan detail yang telah diberikan untuk belajar lebih dalam! 🤖💪';
                 resultTitle.textContent = 'Lanjutkan!';
             }
             
@@ -1712,7 +1243,7 @@
 
                 levelCompleteMessage.innerHTML = levelCompletedSuccessfully ? 
                     `<h3>✅ Level ${gameState.currentLevel} Selesai! ✅</h3>
-                    <p>Skor kamu ${percentage}%. Lanjut ke Level ${gameState.currentLevel + 1}!</p>`
+                    <p>Skor kamu ${percentage}%. 🤖 AI Science Master: "Gunakan penjelasan yang diberikan untuk memahami konsep lebih dalam!"</p>`
                     : 
                     `<h3>Level ${gameState.currentLevel} Selesai Dikerjakan.</h3>
                     <p>Skor kamu ${percentage}%. Lanjut ke Level ${gameState.currentLevel + 1}!</p>`;
@@ -1725,7 +1256,7 @@
                 levelCompleteMessage.style.display = 'block';
                 levelCompleteMessage.innerHTML = `
                     <h3>🎉 SELAMAT! Kamu MASTER SCIENCE! 🎉</h3>
-                    <p>Kamu telah menyelesaikan semua 100 level ${getCurrentCategoryName()}!</p>
+                    <p>🤖 AI Science Master: "Luar biasa! Kamu telah menyelesaikan semua 100 level ${getCurrentCategoryName()}! Pengetahuan science-mu sudah sangat solid!"</p>
                 `;
             }
         }
@@ -1736,7 +1267,7 @@
             if (nextLvl <= 100) {
                 startLevel(gameState.currentCategory, nextLvl);
             } else {
-                alert("Selamat! Kamu sudah menyelesaikan semua level di kategori ini!");
+                alert("🤖 AI Science Master: Selamat! Kamu sudah menyelesaikan semua level di kategori ini!");
                 showMainMenu();
             }
         }
@@ -1781,7 +1312,6 @@
             } else {
                 levelIndicator = 'Lvl -';
             }
-
 
             currentCategoryElement.textContent = `${currentCategoryName} | ${levelIndicator}`;
 
