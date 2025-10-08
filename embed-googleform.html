@@ -1,45 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gemini Embed</title>
-  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/9/99/Google_Gemini_logo.svg" type="image/svg+xml">
-  <style>
-    ::-webkit-scrollbar {
-      display: none;
-    }
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background-color: #000; /* biar kalau loading nggak putih */
-    }
-    .iframe-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-    iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Embed Contoh</title>
+    <style>
+        /* Gaya dasar untuk memastikan iframe memenuhi layar */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Mencegah scrollbar ganda */
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Warna latar belakang halaman */
+        }
+        
+        /* Gaya untuk iframe */
+        #embedded-website {
+            width: 100%;
+            height: 100%;
+            border: none; /* Menghilangkan border default iframe */
+            display: block; /* Memastikan tidak ada spasi tambahan */
+        }
+
+        /* Gaya opsional untuk header jika Anda ingin menambahkannya */
+        /* .header {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+        } */
+    </style>
 </head>
 <body>
-  <div class="iframe-container">
+
     <iframe 
-      src="https://g.co/gemini/share/c0b7efa1864a"
-      title="Gemini Share"
-      allowfullscreen
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade">
+        id="embedded-website" 
+        src="https://t02h0817vha1-deploy.space.z.ai/" 
+        title="Website yang Di-Embed"
+        allowfullscreen
+    >
+        <p>Browser Anda tidak mendukung iframe.</p>
     </iframe>
-  </div>
+
 </body>
 </html>
