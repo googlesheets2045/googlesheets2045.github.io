@@ -3,25 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Google Form</title>
-  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Google_Forms_2020_Logo.svg/800px-Google_Forms_2020_Logo.svg.png" type="image/x-icon">
+  <title>Gemini Embed</title>
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/9/99/Google_Gemini_logo.svg" type="image/svg+xml">
   <style>
     ::-webkit-scrollbar {
-    display: none;}
+      display: none;
+    }
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
       overflow: hidden;
+      background-color: #000; /* biar kalau loading nggak putih */
     }
-
     .iframe-container {
       position: relative;
       width: 100%;
       height: 100%;
     }
-
     iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       border: none;
@@ -30,8 +33,13 @@
 </head>
 <body>
   <div class="iframe-container">
-  <div data-customgform="cmfnvkgar00g6wnkxpd9p5f95"></div>
-<script async src="https://cdn.customgform.com/cgf.js"></script>
+    <iframe 
+      src="https://g.co/gemini/share/c0b7efa1864a"
+      title="Gemini Share"
+      allowfullscreen
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
   </div>
 </body>
 </html>
