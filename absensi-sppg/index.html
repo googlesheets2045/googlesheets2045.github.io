@@ -6,7 +6,8 @@
     <title>Absensi SPPG</title>
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/thumb/2/29/Logo_Badan_Gizi_Nasional.svg/320px-Logo_Badan_Gizi_Nasional.svg.png?20241112074750" type="image/x-icon">
     
-    <link rel="manifest" href="./manifest.json">
+    <!-- PERBAIKI PATH MANIFEST -->
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -37,6 +38,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
+            font-size: 18px;
         }
 
         .install-popup {
@@ -83,15 +85,15 @@
 </head>
 <body>
     <div class="loading" id="loading">
-        Memuat aplikasi...
+        Memuat aplikasi Absensi SPPG...
     </div>
 
     <iframe 
-    src="https://script.google.com/macros/s/AKfycbxatK3ePfiuhmgB9QJl-wJqHX0yBFmUFXESN9i8EXjXCbI5vbm970-YMNAdBIs00Zhg0A/exec"
-    allow="geolocation *; microphone *; camera *"
-    onload="document.getElementById('loading').style.display = 'none';"
-    onerror="document.getElementById('loading').innerHTML = 'Error memuat aplikasi';">
-</iframe>
+        src="https://script.google.com/macros/s/AKfycbxatK3ePfiuhmgB9QJl-wJqHX0yBFmUFXESN9i8EXjXCbI5vbm970-YMNAdBIs00Zhg0A/exec"
+        allow="geolocation *; microphone *; camera *"
+        onload="document.getElementById('loading').style.display = 'none';"
+        onerror="document.getElementById('loading').innerHTML = 'Error memuat aplikasi. Silakan refresh halaman.';">
+    </iframe>
 
     <div id="install-popup" class="install-popup" style="display: none;">
         <h4>Absensi SPPG</h4>
@@ -104,7 +106,10 @@
         // Sembunyikan loading setelah 5 detik maksimal
         setTimeout(() => {
             const loading = document.getElementById('loading');
-            if (loading) loading.style.display = 'none';
+            if (loading) {
+                loading.style.display = 'none';
+                console.log('Loading hidden by timeout');
+            }
         }, 5000);
 
         let deferredPrompt;
@@ -112,17 +117,12 @@
         const installButton = document.getElementById('installButton');
         const cancelButton = document.getElementById('cancelButton');
 
-        // Pastikan PWA diakses via HTTPS
-        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-            location.replace(`https:${location.href.substring(location.protocol.length)}`);
-        }
-
-        // Service Worker Registration
+        // Service Worker Registration - PERBAIKI PATH
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('./sw.js')
+                navigator.serviceWorker.register('/sw.js')
                     .then(function(registration) {
-                        console.log('SW registered: ', registration);
+                        console.log('SW registered successfully: ', registration.scope);
                     })
                     .catch(function(registrationError) {
                         console.log('SW registration failed: ', registrationError);
@@ -156,6 +156,16 @@
             console.log('PWA installed');
             installPopup.style.display = 'none';
         });
+
+        // Error handling untuk iframe
+        window.addEventListener('message', (event) => {
+            // Handle messages dari iframe jika diperlukan
+            console.log('Message from iframe:', event.data);
+        });
+
+        // Log untuk debugging
+        console.log('App loaded successfully');
+        console.log('Current path:', window.location.pathname);
     </script>
 </body>
 </html>
