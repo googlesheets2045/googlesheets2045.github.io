@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi SPPG</title>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/thumb/2/29/Logo_Badan_Gizi_Nasional.svg/320px-Logo_Badan_Gizi_Nasional.svg.png?20241112074750" type="image/x-icon">
+    
+    <!-- Tambahan untuk PWA dan Geolocation -->
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Absensi SPPG">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Permission untuk geolocation -->
+    <meta http-equiv="Permissions-Policy" content="geolocation=(self)">
+    
+    <link rel="manifest" href="manifest.json">
+    
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Style untuk popup notifikasi */
+        .install-popup {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            font-family: sans-serif;
+            z-index: 1000;
+            max-width: 90%;
+            width: 400px;
+        }
+        .install-popup h4 {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .install-popup p {
+            font-size: 0.9em;
+            color: #555;
+            line-height: 1.4;
+        }
+        .install-popup button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            margin: 0 5px;
+            transition: background-color 0.3s;
+        }
+        #installButton {
+            background-color: #007bff;
+            color: white;
+        }
+        #installButton:hover {
+            background-color: #0056b3;
+        }
+        #cancelButton {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        #cancelButton:hover {
+            background-color: #dcdcdc;
+        }
+
+        /* Loading indicator */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #007bff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading p {
+            margin-top: 15px;
+            color: #333;
+            font-size: 16px;
+        }
+
+        /* GPS Permission Prompt */
+        .gps-permission {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+        .gps-permission-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .gps-permission h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .gps-permission p {
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        .gps-permission button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+        #allowGps {
+            background-color: #28a745;
+            color: white;
+        }
+        #allowGps:hover {
+            background-color: #218838;
+        }
+        #skipGps {
+            background-color: #6c757d;
+            color: white;
+        }
+        #skipGps:hover {
+            background-color: #545b62;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Indicator -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Memuat aplikasi...</p>
+    </div>
+
+    <!-- GPS Permission Prompt -->
+    <div id="gpsPermission" class="gps-permission" style="display: none;">
+        <div class="gps-permission-content">
+            <h3>Izin Akses Lokasi</h3>
+            <p>Aplikasi Absensi SPPG memerlukan akses ke lokasi Anda untuk fungsi absensi. Izinkan akses lokasi untuk melanjutkan.</p>
+            <button id="allowGps">Izinkan Lokasi</button>
+            <button id="skipGps">Nanti Saja</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <iframe 
+        id="absensiFrame"
+        src="https://script.google.com/macros/s/AKfycbxatK3ePfiuhmgB9QJl-wJqHX0yBFmUFXESN9i8EXjXCbI5vbm970-YMNAdBIs00Zhg0A/exec"
+        allow="geolocation"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-geolocation">
+    </iframe>
+
+    <!-- Install PWA Popup -->
+    <div id="install-popup" class="install-popup" style="display: none;">
+        <h4>Absensi SPPG</h4>
+        <p>Situs ini memiliki fungsionalitas aplikasi. Instal di perangkat Anda untuk pengalaman yang lebih baik.</p>
+        <button id="installButton">Instal</button>
+        <button id="cancelButton">Tutup</button>
+    </div>
+
+    <script>
+        // Elemen DOM
+        const loadingElement = document.getElementById('loading');
+        const gpsPermissionElement = document.getElementById('gpsPermission');
+        const allowGpsButton = document.getElementById('allowGps');
+        const skipGpsButton = document.getElementById('skipGps');
+        const absensiFrame = document.getElementById('absensiFrame');
+        const installPopup = document.getElementById('install-popup');
+        const installButton = document.getElementById('installButton');
+        const cancelButton = document.getElementById('cancelButton');
+        
+        let deferredPrompt;
+
+        // Function untuk request geolocation permission
+        function requestGeolocationPermission() {
+            if ("geolocation" in navigator) {
+                console.log("Meminta izin akses lokasi...");
+                
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        console.log("Izin lokasi diberikan:", position);
+                        hideGpsPrompt();
+                        // Refresh iframe setelah permission diberikan
+                        refreshIframe();
+                    },
+                    function(error) {
+                        console.error("Error geolocation:", error);
+                        // Tetap lanjutkan meskipun ada error, tapi beri tahu user
+                        if (error.code === error.PERMISSION_DENIED) {
+                            alert("Akses lokasi ditolak. Beberapa fitur absensi mungkin tidak berfungsi dengan baik. Anda dapat mengaktifkannya nanti melalui pengaturan browser.");
+                        }
+                        hideGpsPrompt();
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                console.log("Browser tidak mendukung geolocation");
+                hideGpsPrompt();
+            }
+        }
+
+        // Function untuk menyembunyikan prompt GPS
+        function hideGpsPrompt() {
+            gpsPermissionElement.style.display = 'none';
+            loadingElement.style.display = 'none';
+        }
+
+        // Function untuk refresh iframe
+        function refreshIframe() {
+            // Tambahkan timestamp untuk menghindari cache
+            const currentSrc = absensiFrame.src.split('?')[0];
+            absensiFrame.src = currentSrc + '?t=' + new Date().getTime();
+        }
+
+        // Function untuk menampilkan prompt GPS
+        function showGpsPrompt() {
+            // Tunggu sebentar sebelum menampilkan prompt
+            setTimeout(() => {
+                gpsPermissionElement.style.display = 'flex';
+            }, 1000);
+        }
+
+        // Event listener untuk tombol izin GPS
+        allowGpsButton.addEventListener('click', function() {
+            requestGeolocationPermission();
+        });
+
+        // Event listener untuk tombol skip GPS
+        skipGpsButton.addEventListener('click', function() {
+            hideGpsPrompt();
+            alert("Anda dapat mengaktifkan akses lokasi nanti melalui pengaturan browser jika diperlukan.");
+        });
+
+        // Event listener untuk iframe load
+        absensiFrame.addEventListener('load', function() {
+            console.log('Iframe absensi berhasil dimuat');
+            loadingElement.style.display = 'none';
+        });
+
+        // Event listener untuk iframe error
+        absensiFrame.addEventListener('error', function() {
+            console.error('Error memuat iframe');
+            loadingElement.style.display = 'none';
+            alert("Terjadi kesalahan saat memuat aplikasi absensi. Silakan refresh halaman.");
+        });
+
+        // Mendaftarkan service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                    console.log('Service Worker registered dengan scope: ', registration.scope);
+                }).catch(function(err) {
+                    console.log('Service Worker registration failed: ', err);
+                });
+            });
+        }
+
+        // Event beforeinstallprompt akan terpicu ketika PWA bisa diinstal
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Mencegah browser menampilkan notifikasi bawaan
+            e.preventDefault();
+            // Simpan event untuk digunakan nanti
+            deferredPrompt = e;
+            // Tampilkan popup notifikasi kustom Anda
+            installPopup.style.display = 'block';
+        });
+
+        // Tangani klik tombol "Instal"
+        installButton.addEventListener('click', (e) => {
+            // Sembunyikan popup
+            installPopup.style.display = 'none';
+            // Panggil event yang tersimpan untuk memicu instalasi
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    console.log('User choice:', choiceResult.outcome);
+                    deferredPrompt = null;
+                });
+            }
+        });
+
+        // Tangani klik tombol "Tutup"
+        cancelButton.addEventListener('click', () => {
+            installPopup.style.display = 'none';
+        });
+
+        // Mendeteksi ketika PWA sudah terinstal
+        window.addEventListener('appinstalled', (e) => {
+            console.log('Aplikasi PWA sudah terinstal!');
+            installPopup.style.display = 'none';
+        });
+
+        // Inisialisasi saat DOM siap
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Aplikasi Absensi SPPG dimuat');
+            
+            // Cek apakah aplikasi diakses sebagai PWA
+            if (window.matchMedia('(display-mode: standalone)').matches || 
+                window.navigator.standalone === true) {
+                console.log('Aplikasi diakses sebagai PWA');
+                // Tampilkan prompt GPS untuk PWA
+                showGpsPrompt();
+            } else {
+                console.log('Aplikasi diakses melalui browser');
+                // Untuk browser biasa, langsung minta izin GPS
+                setTimeout(requestGeolocationPermission, 2000);
+            }
+            
+            // Fallback: sembunyikan loading setelah 10 detik
+            setTimeout(function() {
+                loadingElement.style.display = 'none';
+            }, 10000);
+        });
+
+        // Handle visibility change (untuk detect ketika user kembali ke app)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                // App menjadi visible lagi, refresh iframe jika perlu
+                console.log('Aplikasi menjadi visible');
+            }
+        });
+
+        // Handle online/offline status
+        window.addEventListener('online', function() {
+            console.log('Koneksi internet tersedia');
+        });
+
+        window.addEventListener('offline', function() {
+            console.log('Tidak ada koneksi internet');
+            alert('Tidak ada koneksi internet. Beberapa fitur mungkin tidak berfungsi.');
+        });
+    </script>
+</body>
+</html>
