@@ -6,10 +6,12 @@
     <title>Absensi SPPG</title>
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/thumb/2/29/Logo_Badan_Gizi_Nasional.svg/320px-Logo_Badan_Gizi_Nasional.svg.png?20241112074750" type="image/x-icon">
     
-    <link rel="manifest" href="manifest.json">
+    <!-- Manifest harus di-load -->
+    <link rel="manifest" href="manifest.json" id="app-manifest">
+    
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Absensi SPPG">
     
     <!-- Apple Touch Icon -->
@@ -57,32 +59,57 @@
             font-family: sans-serif;
             z-index: 1000;
             max-width: 90%;
-            width: 300px;
+            width: 350px;
+            border: 2px solid #007bff;
         }
+        
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 1001;
+            max-width: 300px;
+            display: none;
+        }
+
         .install-popup h4 {
             margin-top: 0;
             font-size: 1.2em;
+            color: #007bff;
         }
         .install-popup p {
             font-size: 0.9em;
             color: #555;
+            margin-bottom: 15px;
         }
         .install-popup button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
             font-size: 1em;
             margin: 0 5px;
+            transition: all 0.3s;
         }
         #installButton {
             background-color: #007bff;
             color: white;
         }
+        #installButton:hover {
+            background-color: #0056b3;
+        }
         #cancelButton {
-            background-color: #f0f0f0;
-            color: #333;
+            background-color: #6c757d;
+            color: white;
+        }
+        #cancelButton:hover {
+            background-color: #545b62;
         }
         
         .error-message {
@@ -92,11 +119,36 @@
             padding: 10px;
             text-align: center;
             border: 1px solid #ffcdd2;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1002;
+        }
+        
+        #debugToggle {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            z-index: 1003;
         }
     </style>
 </head>
 <body>
     <div class="error-message" id="errorMessage"></div>
+    
+    <div class="debug-info" id="debugInfo">
+        <strong>Debug Info:</strong><br>
+        <span id="debugContent">Loading...</span>
+    </div>
+    
+    <button id="debugToggle" onclick="toggleDebug()">Debug</button>
     
     <div class="loading" id="loading">
         <div>Memuat aplikasi Absensi SPPG...</div>
@@ -112,16 +164,35 @@
     </iframe>
 
     <div id="install-popup" class="install-popup" style="display: none;">
-        <h4>Absensi SPPG</h4>
-        <p>Situs ini memiliki fungsionalitas aplikasi. Instal di perangkat Anda untuk pengalaman yang lebih baik.</p>
-        <button id="installButton">Instal</button>
-        <button id="cancelButton">Tutup</button>
+        <h4>📱 Install Absensi SPPG</h4>
+        <p>Instal aplikasi untuk pengalaman yang lebih baik dan akses cepat!</p>
+        <button id="installButton">Install Aplikasi</button>
+        <button id="cancelButton">Nanti Saja</button>
     </div>
 
     <script>
-        // Debug info
-        const loadingDetails = document.getElementById('loadingDetails');
-        loadingDetails.textContent = `Path: ${window.location.pathname}`;
+        // Debugging functions
+        function toggleDebug() {
+            const debugInfo = document.getElementById('debugInfo');
+            debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function updateDebugInfo() {
+            const debugContent = document.getElementById('debugContent');
+            const info = [
+                `URL: ${window.location.href}`,
+                `HTTPS: ${window.location.protocol === 'https:'}`,
+                `SW: ${navigator.serviceWorker ? 'Supported' : 'Not Supported'}`,
+                `Manifest: ${document.querySelector('link[rel="manifest"]') ? 'Loaded' : 'Missing'}`,
+                `BeforeInstallPrompt: ${window.deferredPrompt ? 'Fired' : 'Not Fired'}`,
+                `Standalone: ${window.matchMedia('(display-mode: standalone)').matches ? 'Yes' : 'No'}`,
+                `User Agent: ${navigator.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop'}`
+            ];
+            debugContent.innerHTML = info.join('<br>');
+        }
+
+        // Initial debug info
+        setTimeout(updateDebugInfo, 1000);
 
         // Fungsi untuk handle loading
         function hideLoading() {
@@ -129,6 +200,7 @@
             if (loading) {
                 loading.style.display = 'none';
             }
+            updateDebugInfo();
         }
 
         function showError(message) {
@@ -143,99 +215,152 @@
                 errorMessage.textContent = message;
                 errorMessage.style.display = 'block';
             }
+            updateDebugInfo();
         }
 
-        // Sembunyikan loading setelah 8 detik maksimal (lebih lama untuk mobile)
+        // Debug info
+        const loadingDetails = document.getElementById('loadingDetails');
+        loadingDetails.textContent = `Mengecek PWA compatibility...`;
+
+        // Sembunyikan loading setelah 8 detik maksimal
         setTimeout(() => {
             const loading = document.getElementById('loading');
             if (loading && loading.style.display !== 'none') {
-                loadingDetails.textContent += ' - Timeout,但仍然 mencoba...';
+                loadingDetails.textContent += ' - Loading lambat, periksa koneksi';
             }
         }, 8000);
 
-        // Handle path issues - jika bukan di root, redirect
-        if (window.location.pathname !== '/' && !window.location.pathname.endsWith('index.html')) {
-            window.history.replaceState({}, '', '/');
-        }
-
+        // PWA Installation Logic
         let deferredPrompt;
         const installPopup = document.getElementById('install-popup');
         const installButton = document.getElementById('installButton');
         const cancelButton = document.getElementById('cancelButton');
 
-        // Service Worker Registration dengan path absolute
+        // Check if app is already installed
+        function isAppInstalled() {
+            return window.matchMedia('(display-mode: standalone)').matches || 
+                   window.navigator.standalone ||
+                   document.referrer.includes('android-app://');
+        }
+
+        // Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                // Coba beberapa path untuk service worker
-                const swPaths = [
-                    '/sw.js',
-                    './sw.js',
-                    'sw.js'
-                ];
-                
-                let registered = false;
-                
-                swPaths.forEach(path => {
-                    if (!registered) {
-                        navigator.serviceWorker.register(path)
-                            .then(function(registration) {
-                                console.log('SW registered successfully at:', path);
-                                registered = true;
-                            })
-                            .catch(function(registrationError) {
-                                console.log('SW registration failed at', path, ':', registrationError);
-                            });
-                    }
-                });
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('SW registered: ', registration);
+                        loadingDetails.textContent = 'Service Worker aktif - Menunggu install prompt...';
+                        updateDebugInfo();
+                    })
+                    .catch(function(registrationError) {
+                        console.log('SW registration failed: ', registrationError);
+                        loadingDetails.textContent = 'Service Worker gagal - ' + registrationError.message;
+                        updateDebugInfo();
+                    });
             });
         }
 
-        // PWA Installation
+        // BeforeInstallPrompt Event - INI YANG MEMICU INSTALL PROMPT
         window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('🎉 beforeinstallprompt event fired!');
+            
+            // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
+            
+            // Stash the event so it can be triggered later
             deferredPrompt = e;
-            // Tampilkan popup setelah 3 detik
+            
+            // Update UI to notify the user they can install the PWA
+            loadingDetails.textContent = 'Aplikasi siap diinstall!';
+            
+            // Show custom install prompt after a delay
             setTimeout(() => {
-                installPopup.style.display = 'block';
-            }, 3000);
+                if (!isAppInstalled() && installPopup) {
+                    installPopup.style.display = 'block';
+                    console.log('📱 Menampilkan install popup');
+                }
+            }, 2000);
+            
+            updateDebugInfo();
         });
 
-        installButton.addEventListener('click', (e) => {
-            installPopup.style.display = 'none';
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    console.log('User choice:', choiceResult.outcome);
-                    deferredPrompt = null;
-                });
+        // Install Button Click
+        installButton.addEventListener('click', async (e) => {
+            console.log('Install button clicked');
+            
+            if (!deferredPrompt) {
+                console.log('No deferred prompt available');
+                return;
+            }
+            
+            // Show the install prompt
+            deferredPrompt.prompt();
+            
+            // Wait for the user to respond to the prompt
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+            
+            // We've used the prompt, and can't use it again, throw it away
+            deferredPrompt = null;
+            
+            // Hide the custom install UI
+            if (installPopup) {
+                installPopup.style.display = 'none';
             }
         });
 
+        // Cancel Button Click
         cancelButton.addEventListener('click', () => {
-            installPopup.style.display = 'none';
-        });
-
-        window.addEventListener('appinstalled', (e) => {
-            console.log('PWA installed');
-            installPopup.style.display = 'none';
-        });
-
-        // Online/offline detection
-        window.addEventListener('online', () => {
-            console.log('Koneksi internet tersedia');
-            const errorMessage = document.getElementById('errorMessage');
-            if (errorMessage && errorMessage.style.display === 'block') {
-                window.location.reload();
+            if (installPopup) {
+                installPopup.style.display = 'none';
             }
         });
 
-        window.addEventListener('offline', () => {
-            showError('Koneksi internet terputus. Periksa koneksi Anda.');
+        // App Installed Event
+        window.addEventListener('appinstalled', (e) => {
+            console.log('🎊 PWA was installed successfully!');
+            if (installPopup) {
+                installPopup.style.display = 'none';
+            }
+            updateDebugInfo();
         });
 
-        // Log untuk debugging
-        console.log('App loaded - Path:', window.location.pathname);
+        // Check PWA criteria on load
+        window.addEventListener('load', function() {
+            // Check if all PWA criteria are met
+            setTimeout(() => {
+                const manifestLink = document.querySelector('link[rel="manifest"]');
+                const hasManifest = !!manifestLink;
+                const hasSW = 'serviceWorker' in navigator;
+                const isHTTPS = window.location.protocol === 'https:';
+                
+                console.log('PWA Checklist:');
+                console.log('- Manifest:', hasManifest);
+                console.log('- Service Worker:', hasSW);
+                console.log('- HTTPS:', isHTTPS);
+                console.log('- BeforeInstallPrompt fired:', !!deferredPrompt);
+                
+                loadingDetails.textContent = `PWA Ready: ${hasManifest && hasSW && isHTTPS ? 'YES' : 'NO'}`;
+                updateDebugInfo();
+
+                // If no beforeinstallprompt after 5 seconds, show manual install instructions
+                setTimeout(() => {
+                    if (!deferredPrompt && !isAppInstalled()) {
+                        console.log('No install prompt after 5 seconds, showing manual option');
+                        loadingDetails.textContent += ' - Gunakan menu browser untuk install';
+                    }
+                }, 5000);
+            }, 1000);
+        });
+
+        // Update debug info periodically
+        setInterval(updateDebugInfo, 3000);
+
+        // Log initial state
+        console.log('PWA Installation Debug Started');
         console.log('User Agent:', navigator.userAgent);
+        console.log('HTTPS:', window.location.protocol === 'https:');
+        console.log('Service Worker Support:', 'serviceWorker' in navigator);
     </script>
 </body>
 </html>
