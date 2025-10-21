@@ -2,10 +2,11 @@
   "name": "Absensi SPPG",
   "short_name": "Absensi SPPG",
   "description": "Aplikasi Absensi SPPG Jl. Cisokan No. 2, Kec. Cibeunying Kidul, Kota Bandung, Jawa Barat",
-  "start_url": "./",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
+  "scope": "/",
   "icons": [
     {
       "src": "images/icon-192x192.png",
@@ -18,5 +19,4 @@
       "type": "image/png"
     }
   ]
-
 }
