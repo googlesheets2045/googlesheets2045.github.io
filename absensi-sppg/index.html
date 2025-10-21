@@ -6,12 +6,14 @@
     <title>Absensi SPPG</title>
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/id/thumb/2/29/Logo_Badan_Gizi_Nasional.svg/320px-Logo_Badan_Gizi_Nasional.svg.png?20241112074750" type="image/x-icon">
     
-    <!-- PERBAIKI PATH MANIFEST -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Absensi SPPG">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="images/icon-192x192.png">
     
     <style>
         body, html {
@@ -39,6 +41,7 @@
             align-items: center;
             z-index: 9999;
             font-size: 18px;
+            flex-direction: column;
         }
 
         .install-popup {
@@ -81,18 +84,31 @@
             background-color: #f0f0f0;
             color: #333;
         }
+        
+        .error-message {
+            display: none;
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ffcdd2;
+        }
     </style>
 </head>
 <body>
+    <div class="error-message" id="errorMessage"></div>
+    
     <div class="loading" id="loading">
-        Memuat aplikasi Absensi SPPG...
+        <div>Memuat aplikasi Absensi SPPG...</div>
+        <div style="font-size: 14px; margin-top: 10px; color: #666;" id="loadingDetails"></div>
     </div>
 
     <iframe 
+        id="appFrame"
         src="https://script.google.com/macros/s/AKfycbxatK3ePfiuhmgB9QJl-wJqHX0yBFmUFXESN9i8EXjXCbI5vbm970-YMNAdBIs00Zhg0A/exec"
         allow="geolocation *; microphone *; camera *"
-        onload="document.getElementById('loading').style.display = 'none';"
-        onerror="document.getElementById('loading').innerHTML = 'Error memuat aplikasi. Silakan refresh halaman.';">
+        onload="hideLoading()"
+        onerror="showError('Gagal memuat aplikasi. Periksa koneksi internet Anda.')">
     </iframe>
 
     <div id="install-popup" class="install-popup" style="display: none;">
@@ -103,30 +119,74 @@
     </div>
 
     <script>
-        // Sembunyikan loading setelah 5 detik maksimal
-        setTimeout(() => {
+        // Debug info
+        const loadingDetails = document.getElementById('loadingDetails');
+        loadingDetails.textContent = `Path: ${window.location.pathname}`;
+
+        // Fungsi untuk handle loading
+        function hideLoading() {
             const loading = document.getElementById('loading');
             if (loading) {
                 loading.style.display = 'none';
-                console.log('Loading hidden by timeout');
             }
-        }, 5000);
+        }
+
+        function showError(message) {
+            const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (loading) {
+                loading.style.display = 'none';
+            }
+            
+            if (errorMessage) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        // Sembunyikan loading setelah 8 detik maksimal (lebih lama untuk mobile)
+        setTimeout(() => {
+            const loading = document.getElementById('loading');
+            if (loading && loading.style.display !== 'none') {
+                loadingDetails.textContent += ' - Timeout,但仍然 mencoba...';
+            }
+        }, 8000);
+
+        // Handle path issues - jika bukan di root, redirect
+        if (window.location.pathname !== '/' && !window.location.pathname.endsWith('index.html')) {
+            window.history.replaceState({}, '', '/');
+        }
 
         let deferredPrompt;
         const installPopup = document.getElementById('install-popup');
         const installButton = document.getElementById('installButton');
         const cancelButton = document.getElementById('cancelButton');
 
-        // Service Worker Registration - PERBAIKI PATH
+        // Service Worker Registration dengan path absolute
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(function(registration) {
-                        console.log('SW registered successfully: ', registration.scope);
-                    })
-                    .catch(function(registrationError) {
-                        console.log('SW registration failed: ', registrationError);
-                    });
+                // Coba beberapa path untuk service worker
+                const swPaths = [
+                    '/sw.js',
+                    './sw.js',
+                    'sw.js'
+                ];
+                
+                let registered = false;
+                
+                swPaths.forEach(path => {
+                    if (!registered) {
+                        navigator.serviceWorker.register(path)
+                            .then(function(registration) {
+                                console.log('SW registered successfully at:', path);
+                                registered = true;
+                            })
+                            .catch(function(registrationError) {
+                                console.log('SW registration failed at', path, ':', registrationError);
+                            });
+                    }
+                });
             });
         }
 
@@ -134,7 +194,10 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            installPopup.style.display = 'block';
+            // Tampilkan popup setelah 3 detik
+            setTimeout(() => {
+                installPopup.style.display = 'block';
+            }, 3000);
         });
 
         installButton.addEventListener('click', (e) => {
@@ -157,15 +220,22 @@
             installPopup.style.display = 'none';
         });
 
-        // Error handling untuk iframe
-        window.addEventListener('message', (event) => {
-            // Handle messages dari iframe jika diperlukan
-            console.log('Message from iframe:', event.data);
+        // Online/offline detection
+        window.addEventListener('online', () => {
+            console.log('Koneksi internet tersedia');
+            const errorMessage = document.getElementById('errorMessage');
+            if (errorMessage && errorMessage.style.display === 'block') {
+                window.location.reload();
+            }
+        });
+
+        window.addEventListener('offline', () => {
+            showError('Koneksi internet terputus. Periksa koneksi Anda.');
         });
 
         // Log untuk debugging
-        console.log('App loaded successfully');
-        console.log('Current path:', window.location.pathname);
+        console.log('App loaded - Path:', window.location.pathname);
+        console.log('User Agent:', navigator.userAgent);
     </script>
 </body>
 </html>
