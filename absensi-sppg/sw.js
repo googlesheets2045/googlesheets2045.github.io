@@ -1,10 +1,10 @@
-const CACHE_NAME = 'absensi-sppg-cache-v2';
+const CACHE_NAME = 'absensi-sppg-cache-v3';
 const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.json',
-  './images/icon-192x192.png',
-  './images/icon-512x512.png'
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/images/icon-192x192.png',
+  '/images/icon-512x512.png'
 ];
 
 self.addEventListener('install', event => {
@@ -19,6 +19,24 @@ self.addEventListener('install', event => {
         console.error('Cache addAll failed:', error);
       })
   );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+  console.log('Service Worker activating.');
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+  self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
@@ -28,11 +46,29 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Return cached version or fetch new
-        return response || fetch(event.request);
-      })
-  );
+  // Untuk same-origin requests, gunakan cache-first strategy
+  if (event.request.url.startsWith(self.location.origin)) {
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => {
+          if (response) {
+            return response;
+          }
+          return fetch(event.request).then(response => {
+            // Cache new requests
+            if (response.status === 200) {
+              const responseToCache = response.clone();
+              caches.open(CACHE_NAME)
+                .then(cache => {
+                  cache.put(event.request, responseToCache);
+                });
+            }
+            return response;
+          });
+        })
+    );
+  } else {
+    // Untuk cross-origin requests, langsung fetch
+    event.respondWith(fetch(event.request));
+  }
 });
