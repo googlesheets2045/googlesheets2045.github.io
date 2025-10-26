@@ -2,10 +2,10 @@
   "name": "Sandiwangi",
   "short_name": "Sandiwangi",
   "description": "Aplikasi Sandiwangi, Surat, Arsip, dan Naskah Digital Siliwangi",
-  "start_url": "./",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#007bff",
   "orientation": "portrait",
   "scope": "/",
   "icons": [
