@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sandiwangi</title>
-    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/540px-Lambang_Kodam_Siliwangi.png" type="image/x-icon">
+    
+    <!-- Favicon dengan cache busting -->
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/540px-Lambang_Kodam_Siliwangi.png?v=2" type="image/x-icon">
     
     <!-- Tambahan untuk PWA -->
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#007bff">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Sandiwangi">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="Aplikasi Sandiwangi">
     
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json?v=2">
     
     <style>
         body, html {
@@ -22,6 +25,7 @@
             height: 100%;
             overflow: hidden;
             font-family: Arial, sans-serif;
+            background: #f5f5f5;
         }
         iframe {
             width: 100%;
@@ -44,6 +48,7 @@
             z-index: 1000;
             max-width: 90%;
             width: 400px;
+            border: 2px solid #007bff;
         }
         .install-popup h4 {
             margin-top: 0;
@@ -87,7 +92,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.95);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -111,28 +116,47 @@
             color: #333;
             font-size: 16px;
         }
+
+        /* Manual install button */
+        .manual-install {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
+    <!-- Manual Install Button untuk testing -->
+    <button id="manualInstall" class="manual-install" style="display: none;">Instal App</button>
+
     <!-- Loading Indicator -->
     <div id="loading" class="loading">
         <div class="spinner"></div>
-        <p>Memuat aplikasi...</p>
+        <p>Memuat aplikasi Sandiwangi...</p>
     </div>
 
     <!-- Main Content -->
     <iframe 
         id="mainFrame"
         src="https://script.google.com/macros/s/AKfycbynGD1rfN8nlcbcRqdqMb3t5ADYI1qEKAu303Z37mEd3TMok5BbtGIoEAtdoLDdPCaZ/exec"
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+        allow="fullscreen">
     </iframe>
 
     <!-- Install PWA Popup -->
     <div id="install-popup" class="install-popup" style="display: none;">
-        <h4>Sandiwangi</h4>
-        <p>Situs ini memiliki fungsionalitas aplikasi. Instal di perangkat Anda untuk pengalaman yang lebih baik.</p>
-        <button id="installButton">Instal</button>
-        <button id="cancelButton">Tutup</button>
+        <h4>📱 Sandiwangi</h4>
+        <p>Instal aplikasi Sandiwangi untuk pengalaman yang lebih baik dan akses cepat!</p>
+        <button id="installButton">Instal Sekarang</button>
+        <button id="cancelButton">Nanti</button>
     </div>
 
     <script>
@@ -142,13 +166,28 @@
         const installPopup = document.getElementById('install-popup');
         const installButton = document.getElementById('installButton');
         const cancelButton = document.getElementById('cancelButton');
+        const manualInstall = document.getElementById('manualInstall');
         
         let deferredPrompt;
+        let isAppInstalled = false;
+
+        // Cek apakah app sudah diinstall
+        function checkIfAppInstalled() {
+            if (window.matchMedia('(display-mode: standalone)').matches || 
+                window.navigator.standalone === true) {
+                console.log('Aplikasi sudah diinstall sebagai PWA');
+                isAppInstalled = true;
+                return true;
+            }
+            return false;
+        }
 
         // Event listener untuk iframe load
         mainFrame.addEventListener('load', function() {
             console.log('Iframe berhasil dimuat');
-            loadingElement.style.display = 'none';
+            setTimeout(() => {
+                loadingElement.style.display = 'none';
+            }, 1000);
         });
 
         // Event listener untuk iframe error
@@ -161,7 +200,15 @@
         // Mendaftarkan service worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                // Unregister service worker lama jika ada
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) {
+                        registration.unregister();
+                    }
+                });
+
+                // Register service worker baru
+                navigator.serviceWorker.register('/sw.js?v=2').then(function(registration) {
                     console.log('Service Worker registered dengan scope: ', registration.scope);
                 }).catch(function(err) {
                     console.log('Service Worker registration failed: ', err);
@@ -171,53 +218,102 @@
 
         // Event beforeinstallprompt akan terpicu ketika PWA bisa diinstal
         window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('beforeinstallprompt event triggered');
+            
             // Mencegah browser menampilkan notifikasi bawaan
             e.preventDefault();
             // Simpan event untuk digunakan nanti
             deferredPrompt = e;
-            // Tampilkan popup notifikasi kustom Anda
-            installPopup.style.display = 'block';
+            
+            // Tampilkan tombol manual install untuk testing
+            manualInstall.style.display = 'block';
+            
+            // Tampilkan popup notifikasi kustom setelah delay
+            setTimeout(() => {
+                if (!checkIfAppInstalled() && deferredPrompt) {
+                    installPopup.style.display = 'block';
+                }
+            }, 3000);
         });
 
         // Tangani klik tombol "Instal"
-        installButton.addEventListener('click', (e) => {
+        installButton.addEventListener('click', async (e) => {
+            console.log('Install button clicked');
+            
+            if (!deferredPrompt) {
+                console.log('No deferred prompt available');
+                return;
+            }
+
             // Sembunyikan popup
             installPopup.style.display = 'none';
+            manualInstall.style.display = 'none';
+            
             // Panggil event yang tersimpan untuk memicu instalasi
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    console.log('User choice:', choiceResult.outcome);
-                    deferredPrompt = null;
-                });
-            }
+            deferredPrompt.prompt();
+            
+            // Tunggu user memilih
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log('User choice:', outcome);
+            
+            deferredPrompt = null;
         });
 
         // Tangani klik tombol "Tutup"
         cancelButton.addEventListener('click', () => {
             installPopup.style.display = 'none';
+            // Sembunyikan untuk sesi ini, tapi bisa muncul lagi nanti
+            localStorage.setItem('installPromptClosed', new Date().toISOString());
+        });
+
+        // Manual install untuk testing
+        manualInstall.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+            } else {
+                alert('Fitur instalasi belum tersedia. Pastikan Anda mengakses melalui HTTPS dan memenuhi kriteria PWA.');
+            }
         });
 
         // Mendeteksi ketika PWA sudah terinstal
         window.addEventListener('appinstalled', (e) => {
             console.log('Aplikasi PWA sudah terinstal!');
+            isAppInstalled = true;
             installPopup.style.display = 'none';
+            manualInstall.style.display = 'none';
         });
 
         // Inisialisasi saat DOM siap
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Aplikasi Sandiwangi dimuat');
             
+            // Clear cache untuk favicon
+            const favicon = document.querySelector('link[rel="icon"]');
+            if (favicon) {
+                favicon.href = favicon.href.split('?')[0] + '?v=' + new Date().getTime();
+            }
+
+            // Cek jika app sudah diinstall
+            checkIfAppInstalled();
+
             // Fallback: sembunyikan loading setelah 10 detik
             setTimeout(function() {
                 loadingElement.style.display = 'none';
             }, 10000);
+
+            // Coba tampilkan prompt instalasi setelah beberapa detik (fallback)
+            setTimeout(() => {
+                if (!deferredPrompt && !isAppInstalled) {
+                    console.log('Trying to show install prompt as fallback');
+                    // Tampilkan manual install button sebagai fallback
+                    manualInstall.style.display = 'block';
+                }
+            }, 5000);
         });
 
-        // Handle visibility change (untuk detect ketika user kembali ke app)
+        // Handle visibility change
         document.addEventListener('visibilitychange', function() {
             if (!document.hidden) {
-                // App menjadi visible lagi
                 console.log('Aplikasi menjadi visible');
             }
         });
