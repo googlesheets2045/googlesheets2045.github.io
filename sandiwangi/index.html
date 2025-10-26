@@ -41,14 +41,14 @@
             left: 50%;
             transform: translateX(-50%);
             background-color: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
             text-align: center;
             font-family: sans-serif;
             z-index: 1000;
-            width: 85%;
-            max-width: 400px;
+            width: 90%;
+            max-width: 500px;
             animation: fadeInUp 0.5s ease-out;
         }
         
@@ -65,34 +65,43 @@
         
         .install-popup h4 {
             margin-top: 0;
-            font-size: 1.4em;
+            font-size: 1.6em;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .install-popup h4 .phone-icon {
+            font-size: 1.4em;
+            color: #007bff;
         }
         
         .install-popup p {
-            font-size: 1em;
+            font-size: 1.1em;
             color: #555;
-            line-height: 1.5;
-            margin-bottom: 20px;
+            line-height: 1.6;
+            margin-bottom: 25px;
         }
         
         .install-popup .button-container {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
         }
         
         .install-popup button {
-            padding: 12px 25px;
+            padding: 14px 30px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1em;
+            font-size: 1.1em;
             transition: all 0.3s ease;
             flex: 1;
-            max-width: 150px;
+            max-width: 180px;
         }
         
         #installButton {
@@ -103,6 +112,7 @@
         #installButton:hover {
             background-color: #0056b3;
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
         }
         
         #cancelButton {
@@ -113,6 +123,7 @@
         #cancelButton:hover {
             background-color: #e0e0e0;
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
         /* Overlay untuk background gelap */
@@ -134,7 +145,10 @@
     <div id="popup-overlay" class="popup-overlay"></div>
     
     <div id="install-popup" class="install-popup" style="display: none;">
-        <h4>sandiwangi</h4>
+        <h4>
+            <span class="phone-icon">📱</span>
+            sandiwangi
+        </h4>
         <p>Situs ini memiliki fungsionalitas aplikasi. Instal di perangkat Anda untuk pengalaman yang lebih baik.</p>
         <div class="button-container">
             <button id="installButton">Instal</button>
