@@ -1,7 +1,7 @@
 {
   "name": "Sandiwangi",
   "short_name": "Sandiwangi",
-  "description": "Aplikasi Sandiwangi, Surat, Arsip, dan Naskah Digital Siliwangi",
+  "description": "Aplikasi Sandiwangi",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -12,12 +12,14 @@
     {
       "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/192px-Lambang_Kodam_Siliwangi.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/512px-Lambang_Kodam_Siliwangi.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
