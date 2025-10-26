@@ -6,6 +6,18 @@
     <title>sandiwangi</title>
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/64px-Lambang_Kodam_Siliwangi.png" type="image/x-icon">
     
+    <!-- Meta tags untuk thumbnail saat share -->
+    <meta property="og:title" content="sandiwangi">
+    <meta property="og:description" content="Aplikasi Sandiwangi, Surat, Arsip, dan Naskah Digital Siliwangi">
+    <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/64px-Lambang_Kodam_Siliwangi.png">
+    <meta property="og:url" content="https://yourdomain.com">
+    <meta property="og:type" content="website">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="sandiwangi">
+    <meta name="twitter:description" content="Aplikasi Sandiwangi, Surat, Arsip, dan Naskah Digital Siliwangi">
+    <meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/64px-Lambang_Kodam_Siliwangi.png">
+    
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ffffff">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,6 +30,7 @@
             padding: 0;
             height: 100%;
             overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         iframe {
             width: 100%;
@@ -25,60 +38,99 @@
             border: none;
         }
 
-        /* Style untuk popup notifikasi */
+        /* Style untuk popup notifikasi - DIPERBAIKI LEBIH LEBAR */
         .install-popup {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
             text-align: center;
             font-family: sans-serif;
             z-index: 1000;
+            width: 90%;
+            max-width: 500px;
+            box-sizing: border-box;
         }
         .install-popup h4 {
             margin-top: 0;
-            font-size: 1.2em;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            color: #333;
         }
         .install-popup p {
-            font-size: 0.9em;
+            font-size: 1em;
             color: #555;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        .install-popup .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
         }
         .install-popup button {
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             font-size: 1em;
-            margin: 0 5px;
+            transition: all 0.3s ease;
+            flex: 1;
+            max-width: 150px;
         }
         #installButton {
             background-color: #007bff;
             color: white;
         }
+        #installButton:hover {
+            background-color: #0056b3;
+        }
         #cancelButton {
             background-color: #f0f0f0;
             color: #333;
+        }
+        #cancelButton:hover {
+            background-color: #dcdcdc;
+        }
+        
+        /* Overlay untuk background gelap */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
         }
     </style>
 </head>
 <body>
     <iframe src="https://script.google.com/macros/s/AKfycbynGD1rfN8nlcbcRqdqMb3t5ADYI1qEKAu303Z37mEd3TMok5BbtGIoEAtdoLDdPCaZ/exec"></iframe>
 
+    <!-- Overlay untuk background gelap -->
+    <div id="popup-overlay" class="popup-overlay"></div>
+    
+    <!-- Popup instal yang diperbaiki -->
     <div id="install-popup" class="install-popup" style="display: none;">
         <h4>sandiwangi</h4>
         <p>Situs ini memiliki fungsionalitas aplikasi. Instal di perangkat Anda untuk pengalaman yang lebih baik.</p>
-        <button id="installButton">Instal</button>
-        <button id="cancelButton">Tutup</button>
+        <div class="button-container">
+            <button id="installButton">Instal</button>
+            <button id="cancelButton">Tutup</button>
+        </div>
     </div>
 
     <script>
         let deferredPrompt;
         const installPopup = document.getElementById('install-popup');
+        const popupOverlay = document.getElementById('popup-overlay');
         const installButton = document.getElementById('installButton');
         const cancelButton = document.getElementById('cancelButton');
 
@@ -101,12 +153,14 @@
             deferredPrompt = e;
             // Tampilkan popup notifikasi kustom Anda
             installPopup.style.display = 'block';
+            popupOverlay.style.display = 'block';
         });
 
         // Tangani klik tombol "Instal"
         installButton.addEventListener('click', (e) => {
             // Sembunyikan popup
             installPopup.style.display = 'none';
+            popupOverlay.style.display = 'none';
             // Panggil event yang tersimpan untuk memicu instalasi
             if (deferredPrompt) {
                 deferredPrompt.prompt();
@@ -120,14 +174,21 @@
         // Tangani klik tombol "Tutup"
         cancelButton.addEventListener('click', () => {
             installPopup.style.display = 'none';
+            popupOverlay.style.display = 'none';
+        });
+
+        // Tangani klik pada overlay
+        popupOverlay.addEventListener('click', () => {
+            installPopup.style.display = 'none';
+            popupOverlay.style.display = 'none';
         });
 
         // Mendeteksi ketika PWA sudah terinstal
         window.addEventListener('appinstalled', (e) => {
             console.log('Aplikasi PWA sudah terinstal!');
             installPopup.style.display = 'none';
+            popupOverlay.style.display = 'none';
         });
     </script>
 </body>
-
 </html>
