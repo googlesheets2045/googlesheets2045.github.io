@@ -10,7 +10,7 @@
     <meta property="og:title" content="sandiwangi">
     <meta property="og:description" content="Aplikasi Sandiwangi, Surat, Arsip, dan Naskah Digital Siliwangi">
     <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/64px-Lambang_Kodam_Siliwangi.png">
-    <meta property="og:url" content="https://yourdomain.com">
+    <meta property="og:url" content="https://googlesheets2045.github.io/sandiwangi">
     <meta name="twitter:card" content="summary_large_image">
     
     <link rel="manifest" href="manifest.json">
@@ -19,6 +19,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="sandiwangi">
     <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/64px-Lambang_Kodam_Siliwangi.png">
+    
+    <!-- Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         body, html {
@@ -137,6 +140,13 @@
             z-index: 999;
             display: none;
         }
+        
+        /* Alternatif ikon menggunakan SVG */
+        .phone-icon-svg {
+            width: 24px;
+            height: 24px;
+            fill: #007bff;
+        }
     </style>
 </head>
 <body>
@@ -146,7 +156,10 @@
     
     <div id="install-popup" class="install-popup" style="display: none;">
         <h4>
+            <!-- Emoji ponsel sebagai fallback pertama -->
             <span class="phone-icon">📱</span>
+            <!-- Ikon Font Awesome sebagai fallback kedua -->
+            <i class="fas fa-mobile-alt phone-icon" style="display: none;"></i>
             sandiwangi
         </h4>
         <p>Situs ini memiliki fungsionalitas aplikasi. Instal di perangkat Anda untuk pengalaman yang lebih baik.</p>
@@ -162,6 +175,8 @@
         const popupOverlay = document.getElementById('popup-overlay');
         const installButton = document.getElementById('installButton');
         const cancelButton = document.getElementById('cancelButton');
+        const emojiIcon = document.querySelector('.phone-icon');
+        const fontAwesomeIcon = document.querySelector('.fa-mobile-alt');
 
         // Mendaftarkan service worker
         if ('serviceWorker' in navigator) {
@@ -183,6 +198,16 @@
             // Tampilkan popup notifikasi kustom Anda
             installPopup.style.display = 'block';
             popupOverlay.style.display = 'block';
+            
+            // Cek apakah emoji berhasil ditampilkan
+            setTimeout(() => {
+                const emojiWidth = emojiIcon.offsetWidth;
+                if (emojiWidth === 0) {
+                    // Jika emoji tidak tampil, gunakan Font Awesome
+                    emojiIcon.style.display = 'none';
+                    fontAwesomeIcon.style.display = 'inline-block';
+                }
+            }, 100);
         });
 
         // Tangani klik tombol "Instal"
