@@ -1,28 +1,40 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" prefix="og: https://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sandiwangi</title>
+    <title>sandiwangi - Aplikasi Digital Siliwangi</title>
+    
+    <!-- Favicon -->
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/64px-Lambang_Kodam_Siliwangi.png" type="image/x-icon">
     
-    <!-- Meta tags untuk thumbnail saat share -->
-    <meta property="og:title" content="sandiwangi">
+    <!-- Meta tags untuk WhatsApp & Social Media -->
+    <meta property="og:title" content="sandiwangi - Aplikasi Digital Siliwangi">
     <meta property="og:description" content="Aplikasi Sandiwangi, Surat, Arsip, dan Naskah Digital Siliwangi">
-    <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/64px-Lambang_Kodam_Siliwangi.png">
-    <meta property="og:url" content="https://yourdomain.com">
+    <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/640px-Lambang_Kodam_Siliwangi.png">
+    <meta property="og:image:width" content="640">
+    <meta property="og:image:height" content="640">
+    <meta property="og:url" content="https://sandiwangi-app.web.app"> <!-- GANTI DENGAN URL ANDA -->
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="sandiwangi">
+    <meta property="og:locale" content="id_ID">
     
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="sandiwangi">
+    <meta name="twitter:title" content="sandiwangi - Aplikasi Digital Siliwangi">
     <meta name="twitter:description" content="Aplikasi Sandiwangi, Surat, Arsip, dan Naskah Digital Siliwangi">
-    <meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/64px-Lambang_Kodam_Siliwangi.png">
+    <meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/640px-Lambang_Kodam_Siliwangi.png">
     
+    <!-- WhatsApp specific -->
+    <meta name="description" content="Aplikasi Sandiwangi, Surat, Arsip, dan Naskah Digital Siliwangi">
+    
+    <!-- PWA -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#B71C1C">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="sandiwangi">
+    <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/180px-Lambang_Kodam_Siliwangi.png">
     
     <style>
         body, html {
@@ -31,6 +43,7 @@
             height: 100%;
             overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
         }
         iframe {
             width: 100%;
@@ -44,58 +57,67 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             text-align: center;
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             z-index: 1000;
-            width: 90%;
-            max-width: 500px;
+            width: 85%;
+            max-width: 450px;
             box-sizing: border-box;
+            border: 2px solid #e0e0e0;
         }
         .install-popup h4 {
             margin-top: 0;
-            font-size: 1.4em;
+            font-size: 1.5em;
             margin-bottom: 15px;
-            color: #333;
+            color: #B71C1C;
+            font-weight: 600;
         }
         .install-popup p {
-            font-size: 1em;
+            font-size: 1.05em;
             color: #555;
-            line-height: 1.5;
-            margin-bottom: 20px;
+            line-height: 1.6;
+            margin-bottom: 25px;
         }
         .install-popup .button-container {
             display: flex;
             justify-content: center;
             gap: 15px;
+            flex-wrap: wrap;
         }
         .install-popup button {
-            padding: 12px 25px;
+            padding: 14px 28px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
             font-size: 1em;
             transition: all 0.3s ease;
             flex: 1;
-            max-width: 150px;
+            min-width: 120px;
+            max-width: 180px;
         }
         #installButton {
-            background-color: #007bff;
+            background: linear-gradient(135deg, #B71C1C 0%, #D32F2F 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(183, 28, 28, 0.3);
         }
         #installButton:hover {
-            background-color: #0056b3;
+            background: linear-gradient(135deg, #9A0007 0%, #B71C1C 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(183, 28, 28, 0.4);
         }
         #cancelButton {
-            background-color: #f0f0f0;
-            color: #333;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #495057;
+            border: 2px solid #dee2e6;
         }
         #cancelButton:hover {
-            background-color: #dcdcdc;
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            transform: translateY(-2px);
         }
         
         /* Overlay untuk background gelap */
@@ -105,25 +127,62 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
             z-index: 999;
             display: none;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Loading screen */
+        .loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .loading-logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        .loading-text {
+            font-size: 1.2em;
+            color: #B71C1C;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <iframe src="https://script.google.com/macros/s/AKfycbynGD1rfN8nlcbcRqdqMb3t5ADYI1qEKAu303Z37mEd3TMok5BbtGIoEAtdoLDdPCaZ/exec"></iframe>
+    <!-- Loading Screen -->
+    <div class="loading-container" id="loading">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Lambang_Kodam_Siliwangi.png/120px-Lambang_Kodam_Siliwangi.png" 
+             alt="Logo Sandiwangi" class="loading-logo">
+        <div class="loading-text">Memuat Sandiwangi...</div>
+    </div>
+
+    <iframe src="https://script.google.com/macros/s/AKfycbynGD1rfN8nlcbcRqdqMb3t5ADYI1qEKAu303Z37mEd3TMok5BbtGIoEAtdoLDdPCaZ/exec" 
+            onload="document.getElementById('loading').style.opacity = '0'; setTimeout(() => { document.getElementById('loading').style.display = 'none'; }, 500);"></iframe>
 
     <!-- Overlay untuk background gelap -->
     <div id="popup-overlay" class="popup-overlay"></div>
     
     <!-- Popup instal yang diperbaiki -->
     <div id="install-popup" class="install-popup" style="display: none;">
-        <h4>sandiwangi</h4>
-        <p>Situs ini memiliki fungsionalitas aplikasi. Instal di perangkat Anda untuk pengalaman yang lebih baik.</p>
+        <h4>📱 sandiwangi</h4>
+        <p>Pasang aplikasi Sandiwangi di perangkat Anda untuk pengalaman yang lebih baik dan akses lebih cepat!</p>
         <div class="button-container">
-            <button id="installButton">Instal</button>
-            <button id="cancelButton">Tutup</button>
+            <button id="installButton">Pasang Aplikasi</button>
+            <button id="cancelButton">Nanti Saja</button>
         </div>
     </div>
 
@@ -133,12 +192,13 @@
         const popupOverlay = document.getElementById('popup-overlay');
         const installButton = document.getElementById('installButton');
         const cancelButton = document.getElementById('cancelButton');
+        const loading = document.getElementById('loading');
 
         // Mendaftarkan service worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/sw.js').then(function(registration) {
-                    console.log('Service Worker registered!');
+                    console.log('Service Worker registered with scope:', registration.scope);
                 }).catch(function(err) {
                     console.log('Service Worker registration failed: ', err);
                 });
@@ -151,9 +211,11 @@
             e.preventDefault();
             // Simpan event untuk digunakan nanti
             deferredPrompt = e;
-            // Tampilkan popup notifikasi kustom Anda
-            installPopup.style.display = 'block';
-            popupOverlay.style.display = 'block';
+            // Tampilkan popup notifikasi kustom setelah delay
+            setTimeout(() => {
+                installPopup.style.display = 'block';
+                popupOverlay.style.display = 'block';
+            }, 3000);
         });
 
         // Tangani klik tombol "Instal"
@@ -189,6 +251,14 @@
             installPopup.style.display = 'none';
             popupOverlay.style.display = 'none';
         });
+
+        // Fallback untuk hide loading
+        setTimeout(() => {
+            loading.style.opacity = '0';
+            setTimeout(() => {
+                loading.style.display = 'none';
+            }, 500);
+        }, 3000);
     </script>
 </body>
 </html>
